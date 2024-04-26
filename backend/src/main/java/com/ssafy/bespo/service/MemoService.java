@@ -5,6 +5,8 @@ import com.ssafy.bespo.dto.MemoDto;
 import com.ssafy.bespo.entity.Member;
 import com.ssafy.bespo.entity.Memo;
 import com.ssafy.bespo.entity.Team;
+import com.ssafy.bespo.exception.CustomException;
+import com.ssafy.bespo.exception.ErrorCode;
 import com.ssafy.bespo.repository.MemberRepository;
 import com.ssafy.bespo.repository.MemoRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ public class MemoService {
     public List<MemoDto.readMemoResponse> getPlayerMemos(int memberId, MemoType type){
 
         Member member = memberRepository.findByMemberIdAndFlagFalse(memberId);
+        if(member == null) throw new CustomException(ErrorCode.NO_EXIST_MEMBER);
         Team team = member.getTeam();
         List<Memo> memos = memoRepository.findByTeamAndTypeAndFlagFalse(team, type);
 
