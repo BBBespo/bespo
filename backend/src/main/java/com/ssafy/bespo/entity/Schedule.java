@@ -2,6 +2,7 @@ package com.ssafy.bespo.entity;
 
 import com.ssafy.bespo.Enum.ScheduleType;
 import jakarta.persistence.*;
+import lombok.Getter;
 import org.springframework.cglib.core.Local;
 
 import java.sql.Timestamp;
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
+@Getter
 public class Schedule extends BaseTime {
 
     @Id @GeneratedValue

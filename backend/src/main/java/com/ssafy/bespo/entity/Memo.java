@@ -2,10 +2,12 @@ package com.ssafy.bespo.entity;
 
 import com.ssafy.bespo.Enum.MemoType;
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.util.List;
 
 @Entity
+@Getter
 public class Memo extends BaseTime {
 
     @Id @GeneratedValue
@@ -27,5 +29,9 @@ public class Memo extends BaseTime {
 
     @OneToMany(mappedBy = "memo")
     private List<Comment> comments;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_id")
+    private Team team;
 
 }

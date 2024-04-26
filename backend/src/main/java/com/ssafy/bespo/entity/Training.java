@@ -2,10 +2,12 @@ package com.ssafy.bespo.entity;
 
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
 public class Training extends BaseTime {
 
     @Id @GeneratedValue
