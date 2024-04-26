@@ -1,11 +1,13 @@
 package com.ssafy.bespo.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import org.antlr.v4.runtime.misc.NotNull;
 
 import java.util.List;
 
 @Entity
+@Getter
 public class Team extends BaseTime {
 
     @Id @GeneratedValue
@@ -21,5 +23,8 @@ public class Team extends BaseTime {
 
     @OneToMany(mappedBy = "team")
     private List<Notification> notifications;
+
+    @OneToMany(mappedBy = "team")
+    private List<Memo> memos;
 
 }

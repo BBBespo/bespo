@@ -1,8 +1,10 @@
 package com.ssafy.bespo.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
+@Getter
 public class Comment extends BaseTime {
 
     @Id @GeneratedValue

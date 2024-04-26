@@ -1,11 +1,13 @@
 package com.ssafy.bespo.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import javax.script.ScriptEngine;
 import java.util.List;
 
 @Entity
+@Getter
 public class Member extends BaseTime {
 
     @Id
