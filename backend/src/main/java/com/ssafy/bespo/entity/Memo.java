@@ -1,15 +1,16 @@
 package com.ssafy.bespo.entity;
 
 import com.ssafy.bespo.Enum.MemoType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
-public class Memo {
+public class Memo extends BaseTime {
 
     @Id @GeneratedValue
-    private Integer id;
+    @Column(name = "memo_id")
+    private Integer memoId;
 
     private String name;
     private String content;
@@ -19,5 +20,12 @@ public class Memo {
     private String image;
 
     private String scope;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    @OneToMany(mappedBy = "memo")
+    private List<Comment> comments;
 
 }

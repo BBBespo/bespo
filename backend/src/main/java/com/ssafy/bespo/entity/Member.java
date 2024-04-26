@@ -1,16 +1,17 @@
 package com.ssafy.bespo.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
+
+import javax.script.ScriptEngine;
+import java.util.List;
 
 @Entity
-public class Member {
-    @Id @GeneratedValue
-    private Integer Id;
+public class Member extends BaseTime {
+
+    @Id
+    @Column(name = "member_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer memberId;
 
     private String email;
     private String name;
@@ -22,7 +23,23 @@ public class Member {
     @Column(name = "back_number")
     private Integer backNumber;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "team_id")
     private Team team;
+
+    @OneToMany(mappedBy = "member")
+    private List<Condition> conditions;
+
+    @OneToMany(mappedBy = "member")
+    private List<Training> trainings;
+
+    @OneToMany(mappedBy = "member")
+    private List<InjuryInfo> injuryInfos;
+
+    @OneToMany(mappedBy = "member")
+    private List<Schedule> schedules;
+
+    @OneToMany(mappedBy = "member")
+    private List<Memo> memos;
+
 }

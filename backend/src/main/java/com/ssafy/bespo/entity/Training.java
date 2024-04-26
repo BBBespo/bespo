@@ -1,13 +1,25 @@
 package com.ssafy.bespo.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
+
+import java.time.LocalDateTime;
 
 @Entity
-public class Training {
+public class Training extends BaseTime {
 
     @Id @GeneratedValue
-    private Integer id;
+    @Column(name = "training_id")
+    private Integer trainingId;
+
+    private Integer bpm;
+
+    private double distance;
+
+    private LocalDateTime time;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
 }

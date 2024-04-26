@@ -1,15 +1,18 @@
 package com.ssafy.bespo.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
-public class Comment {
+public class Comment extends BaseTime {
 
     @Id @GeneratedValue
-    private Integer id;
+    @Column(name = "comment_id")
+    private Integer commentId;
 
     private String content;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "memo_id")
+    private Memo memo;
 
 }

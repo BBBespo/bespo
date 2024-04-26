@@ -1,15 +1,13 @@
 package com.ssafy.bespo.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
-public class InjuryInfo {
+public class InjuryInfo extends BaseTime {
 
     @Id @GeneratedValue
-    private Integer id;
+    @Column(name = "injury_info_id")
+    private Integer injuryInfoId;
 
     @Column(name = "injury_area")
     private String injuryArea;
@@ -22,4 +20,9 @@ public class InjuryInfo {
 
     @Column(name = "is_contact")
     private boolean isContact;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
 }
