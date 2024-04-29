@@ -6,12 +6,12 @@ import lombok.Getter;
 
 @Entity
 @Getter
-public class Condition extends BaseTime {
+public class Status extends BaseTime {
 
     @Id
-    @Column(name = "condition_id")
     @GeneratedValue
-    private Integer conditionId;
+    @Column(name = "status_id")
+    private Integer statusId;
 
     private int fatigue;
 

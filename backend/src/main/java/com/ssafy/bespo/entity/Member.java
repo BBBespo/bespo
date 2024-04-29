@@ -30,7 +30,7 @@ public class Member extends BaseTime {
     private Team team;
 
     @OneToMany(mappedBy = "member")
-    private List<Condition> conditions;
+    private List<Status> statuses;
 
     @OneToMany(mappedBy = "member")
     private List<Training> trainings;
