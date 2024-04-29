@@ -12,16 +12,15 @@ module.exports = {
   rules: {
     'prettier/prettier': 0,
   },
+
   settings: {
+    'import/parsers': { '@typescript-eslint/parser': ['.ts', '.tsx'] },
     'import/resolver': {
       node: {
-        extensions: [
-          '.js',
-          //   '.jsx',
-          '.ts',
-          //   '.tsx',
-        ],
+        paths: ['./'],
+        extensions: ['.js', '.jsx', '.ts', '.d.ts', '.tsx'],
       },
+      typescript: { alwaysTryTypes: true },
     },
   },
 }

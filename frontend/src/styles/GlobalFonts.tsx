@@ -1,9 +1,8 @@
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle } from 'styled-components'
 
-import GiantsBold from "./fonts/Giants-Bold.otf";
-import GiantsInline from "./fonts/Giants-Inline.otf";
-import PretendardVariable from "./fonts/PretendardVariable.ttf";
-import 가람연꽃 from "./fonts/가람연꽃.ttf";
+import GiantsBold from './fonts/Giants-Bold.otf'
+import GiantsInline from './fonts/Giants-Inline.otf'
+import PretendardVariable from './fonts/PretendardVariable.ttf'
 
 export default createGlobalStyle`
     @font-face {
@@ -20,11 +19,6 @@ export default createGlobalStyle`
         font-family: 'PretendardVariable';
         src: local('PretendardVariable'), url(${PretendardVariable}) format('truetype');
     }
-    
-    @font-face {
-        font-family: '가람연꽃';
-        src: local('가람연꽃'), url(${가람연꽃}) format('truetype');
-    }
 
 
-`;
+`

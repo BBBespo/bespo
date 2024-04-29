@@ -6,6 +6,17 @@
       "dom.iterable",
       "esnext"
     ],
+    "baseUrl": "./" ,
+    "paths": {
+      "api/*": ["src/api/*"],
+      "assets/*": ["src/assets/*"],
+      "components/*": ["src/components/*"],
+      "pages/*": ["src/pages/*"],
+      "services/*": ["src/services/*"],
+      "styles/*": ["src/styles/*"],
+      "types/*": ["src/types/*"],
+      "s/*": ["src/*"]
+    } ,
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -22,5 +33,5 @@
   },
   "include": [
     "src"
-  ]
+  ],
 }
