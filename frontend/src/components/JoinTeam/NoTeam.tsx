@@ -9,12 +9,11 @@ const DashBoardContainer = styled.div`
   justify-content: center;
   height: 80vh;
 `;
-const TextDiv = styled.div`
+const TextContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 30%;
   > h1 {
     font-size: 36px;
     font-weight: 600;
@@ -29,8 +28,8 @@ const TextDiv = styled.div`
 
 const CardContainer = styled.div`
   display: flex;
-  width: 2000px;
-  height: 550px;
+  width: 1400px;
+  height: 450px;
   justify-content: center;
 `;
 
@@ -42,20 +41,19 @@ const CardDiv = styled.div`
   border-radius: 20px;
 `;
 const CardHeadText = styled.p`
-  font-size: 36px;
+  font-size: 30px;
   font-weight: 600;
   margin-bottom: 20px;
 `;
 const CardContentText = styled.p`
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 500;
-  margin-bottom: 5%;
 `;
 const CardButtonDiv = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: end;
-  margin-top: 20px;
+  margin-top: 10px;
   width: 100%;
   > div {
     display: flex;
@@ -109,11 +107,11 @@ export default function NoTeam() {
         </ModalBackground>
       )}
       <DashBoardContainer>
-        <TextDiv>
+        <TextContainer>
           <h1>팀이 없습니다</h1>
           <h1>팀을 만들거나 합류해보세요!</h1>
           <p>Begin, Behave, Beyond</p>
-        </TextDiv>
+        </TextContainer>
         <CardContainer>
           <CardDiv
             onClick={() => {
