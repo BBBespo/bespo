@@ -1,17 +1,18 @@
 import React from 'react'
 import styled from 'styled-components'
-import Header from '../../components/Header'
-import DashBoard from '../../components/DashBoard'
+// import DashBoard from '../../components/DashBoard'
+import NoTeam from '../../components/JoinTeam/NoTeam'
 const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
+  padding: 0 5vh;
 `
 const Main = () => {
   return (
     <MainContainer>
-      <Header />
-      <DashBoard />
+      {/* <DashBoard /> */}
+      <NoTeam />
     </MainContainer>
   )
 }
