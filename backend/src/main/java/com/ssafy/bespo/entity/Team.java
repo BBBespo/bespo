@@ -33,4 +33,11 @@ public class Team extends BaseTime {
     @OneToMany(mappedBy = "team")
     private List<Memo> memos;
 
+
+    @Builder
+    public Team(String name, String image, String code){
+        this.name = name;
+        this.image = image;
+        this.code = code;
+    }
 }

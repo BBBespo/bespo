@@ -1,13 +1,20 @@
 package com.ssafy.bespo.entity;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.script.ScriptEngine;
 import java.util.List;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Member extends BaseTime {
 
     @Id
@@ -18,11 +25,16 @@ public class Member extends BaseTime {
     private String email;
     private String name;
 //    private RoleType role;
+    @Nullable
     private Integer weight;
+    @Nullable
     private Integer height;
+    @Nullable
     private int birth;
+    @Nullable
     private String tel;
     @Column(name = "back_number")
+    @Nullable
     private Integer backNumber;
 
     @ManyToOne

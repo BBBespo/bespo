@@ -1,8 +1,11 @@
 package com.ssafy.bespo.controller;
 
 import com.ssafy.bespo.controller.constants.Message;
+import com.ssafy.bespo.dto.MemberDto;
 import com.ssafy.bespo.dto.TeamDto;
 import com.ssafy.bespo.service.TeamService;
+import java.util.concurrent.locks.ReentrantLock;
+import javax.swing.event.HyperlinkEvent;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,4 +45,17 @@ public class TeamController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
+    // 팀 참가요청 보내기
+    @PostMapping("/send")
+    public ResponseEntity<Message> sendJoinTeam(@RequestBody TeamDto.sendJoinTeamReq sendJoinTeamReq){
+        Message message = new Message("팀 참가 요청 완료", teamService.sendJoinTeam(sendJoinTeamReq));
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @PostMapping("/testMember")
+    public ResponseEntity<Message> registerMemberTest(@RequestBody MemberDto.readMemberRequest readMemberRequest){
+        teamService.regitserMember(readMemberRequest);
+        Message message = new Message("테스트 회원 추가 완료");
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
 }
