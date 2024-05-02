@@ -1,9 +1,9 @@
-import React from 'react'
-import styled from 'styled-components'
-import { HiOutlineUserGroup } from 'react-icons/hi'
-import { GoBellFill } from 'react-icons/go'
-import { IoPersonSharp } from 'react-icons/io5'
-import { NavLink } from 'react-router-dom'
+import React from 'react';
+import styled from 'styled-components';
+import { HiOutlineUserGroup } from 'react-icons/hi';
+import { GoBellFill } from 'react-icons/go';
+import { IoPersonSharp } from 'react-icons/io5';
+import { NavLink } from 'react-router-dom';
 
 const HeaderContainer = styled.header`
   display: flex;
@@ -15,7 +15,7 @@ const HeaderContainer = styled.header`
   @media screen and (max-width: 900px) {
     padding: 20px 20px;
   }
-`
+`;
 
 const HeaderText = styled.h1`
   font-family: GiantsInline;
@@ -26,7 +26,7 @@ const HeaderText = styled.h1`
   @media screen and (max-width: 900px) {
     font-size: 30px;
   }
-`
+`;
 
 const HeaderManager = styled.div`
   width: 80px;
@@ -42,14 +42,14 @@ const HeaderManager = styled.div`
     height: 15px;
     margin-top: 5px;
   }
-`
+`;
 
 const HeaderManagerTextBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   transform: skew(20deg);
-`
+`;
 
 const HeaderManagerText = styled.text`
   font-family: PretendardVariable;
@@ -60,7 +60,7 @@ const HeaderManagerText = styled.text`
   @media screen and (max-width: 900px) {
     font-size: 10px;
   }
-`
+`;
 
 const NavigationBar = styled.div`
   flex: 1;
@@ -76,7 +76,7 @@ const NavigationBar = styled.div`
   @media screen and (max-width: 900px) {
     display: none;
   }
-`
+`;
 
 const NavigationBarMobile = styled.div`
   display: none;
@@ -91,7 +91,7 @@ const NavigationBarMobile = styled.div`
       margin-right: 10px;
     }
   }
-`
+`;
 
 const NavigationGap = styled.div`
   display: none;
@@ -100,7 +100,7 @@ const NavigationGap = styled.div`
     display: block;
     flex: 1;
   }
-`
+`;
 
 const NavigationButton = styled.button`
   border-radius: 50%;
@@ -110,7 +110,7 @@ const NavigationButton = styled.button`
   display: flex;
   align-items: center;
   height: 100%;
-`
+`;
 
 const NavigationText = styled(NavLink)`
   font-family: PretendardVariable;
@@ -128,7 +128,7 @@ const NavigationText = styled(NavLink)`
   @media screen and (max-width: 900px) {
     font-size: 16px;
   }
-`
+`;
 
 const HeaderButton = styled.button<{ $type?: string }>`
   width: 40px;
@@ -149,7 +149,7 @@ const HeaderButton = styled.button<{ $type?: string }>`
     margin-left: 10px;
     box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.25);
   }
-`
+`;
 
 const MyHiOutlineUserGroup = styled(HiOutlineUserGroup)`
   color: white;
@@ -158,7 +158,7 @@ const MyHiOutlineUserGroup = styled(HiOutlineUserGroup)`
   @media screen and (max-width: 900px) {
     font-size: 20px;
   }
-`
+`;
 
 const MyGoBellFill = styled(GoBellFill)`
   color: black;
@@ -167,7 +167,7 @@ const MyGoBellFill = styled(GoBellFill)`
   @media screen and (max-width: 900px) {
     font-size: 20px;
   }
-`
+`;
 
 const MyIoPersonSharp = styled(IoPersonSharp)`
   color: black;
@@ -176,7 +176,7 @@ const MyIoPersonSharp = styled(IoPersonSharp)`
   @media screen and (max-width: 900px) {
     font-size: 20px;
   }
-`
+`;
 
 const Header = () => {
   return (
@@ -199,7 +199,7 @@ const Header = () => {
             <NavigationText to="/2">일정</NavigationText>
           </NavigationButton>
           <NavigationButton>
-            <NavigationText to="/3">메모</NavigationText>
+            <NavigationText to="/memo">메모</NavigationText>
           </NavigationButton>
         </NavigationBar>
         <NavigationGap />
@@ -224,11 +224,11 @@ const Header = () => {
           <NavigationText to="/2">일정</NavigationText>
         </NavigationButton>
         <NavigationButton>
-          <NavigationText to="/3">메모</NavigationText>
+          <NavigationText to="/memo">메모</NavigationText>
         </NavigationButton>
       </NavigationBarMobile>
     </div>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
