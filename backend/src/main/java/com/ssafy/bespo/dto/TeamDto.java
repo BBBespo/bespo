@@ -1,5 +1,6 @@
 package com.ssafy.bespo.dto;
 
+import com.ssafy.bespo.Enum.AcceptType;
 import com.ssafy.bespo.Enum.MemoType;
 import com.ssafy.bespo.entity.Member;
 import java.util.List;
@@ -68,7 +69,7 @@ public class TeamDto {
     @AllArgsConstructor
     public static class sendJoinTeamReq {
         private String code;
-        private MemberDto.readMemberRequest readMemberRequest;
+        private Integer memberId;
     }
 
     @Getter
@@ -77,7 +78,19 @@ public class TeamDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class sendJoinTeamRes {
-       private MemberDto.readMemberRequest readMemberRequest;
+       private Integer memberId;
+       private String name;
+    }
+
+    @Getter
+    @Builder
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class acceptReq {
+        private String code;
+        private Integer memberId;
+        private AlarmDto.AlarmRes alarmRes;
     }
 
 }

@@ -52,6 +52,14 @@ public class TeamController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
+    // 팀 참가 수락하기
+    @PostMapping("/accept")
+    public ResponseEntity<Message> acceptTeam(@RequestBody TeamDto.acceptReq acceptReq){
+        teamService.acceptTeam(acceptReq);
+        Message message = new Message("팀 참가 수락 완료");
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
     @PostMapping("/testMember")
     public ResponseEntity<Message> registerMemberTest(@RequestBody MemberDto.readMemberRequest readMemberRequest){
         teamService.regitserMember(readMemberRequest);

@@ -33,6 +33,8 @@ public class Team extends BaseTime {
     @OneToMany(mappedBy = "team")
     private List<Memo> memos;
 
+    @OneToMany(mappedBy = "team")
+    private List<Alarm> alarms;
 
     @Builder
     public Team(String name, String image, String code){

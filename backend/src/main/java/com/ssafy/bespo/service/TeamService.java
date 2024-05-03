@@ -1,14 +1,19 @@
 package com.ssafy.bespo.service;
 
+import com.ssafy.bespo.Enum.AcceptType;
+import com.ssafy.bespo.dto.AlarmDto;
+import com.ssafy.bespo.dto.AlarmDto.AlarmRes;
 import com.ssafy.bespo.dto.MemberDto;
+import com.ssafy.bespo.dto.MemberDto.readMemberRequest;
 import com.ssafy.bespo.dto.MemoDto;
-import com.ssafy.bespo.dto.NotificationDto;
 import com.ssafy.bespo.dto.TeamDto;
+import com.ssafy.bespo.entity.Alarm;
 import com.ssafy.bespo.entity.Member;
 import com.ssafy.bespo.entity.Memo;
 import com.ssafy.bespo.entity.Team;
 import com.ssafy.bespo.exception.CustomException;
 import com.ssafy.bespo.exception.ErrorCode;
+import com.ssafy.bespo.repository.AlarmRepository;
 import com.ssafy.bespo.repository.MemberRepository;
 import com.ssafy.bespo.repository.TeamRepository;
 import jakarta.transaction.Transactional;
@@ -27,6 +32,8 @@ public class TeamService {
     private final TeamRepository teamRepository;
 
     private final MemberRepository memberRepository;
+
+    private final AlarmRepository alarmRepository;
 
     public Team createTeam(TeamDto.CreateTeamRequest teamDtoReq){
 
@@ -91,7 +98,7 @@ public class TeamService {
         // 코드를 통해 팀 찾기
         Team team = teamRepository.findByCode(sendJoinTeamReq.getCode());
         // 가입할 사람의 정보
-        Member member = memberRepository.findByMemberIdAndFlagFalse(sendJoinTeamReq.getReadMemberRequest().getMemberId());
+        Member member = memberRepository.findByMemberIdAndFlagFalse(sendJoinTeamReq.getMemberId());
         if(team == null){
             throw new CustomException(ErrorCode.No_EXIST_TEAM);
         }
@@ -100,13 +107,42 @@ public class TeamService {
         }
 
         TeamDto.sendJoinTeamRes sendJoinTeamRes =TeamDto.sendJoinTeamRes.builder()
-            .readMemberRequest(sendJoinTeamReq.getReadMemberRequest())
+            .memberId(member.getMemberId())
+            .name(member.getName())
             .build();
+
+        // 알림 리스트에 추가
+        Alarm alarm = Alarm.builder()
+            .content(member.getName())
+            .is_read(false)
+            .acceptType(AcceptType.REQUEST)
+            .build();
+
+        team.getAlarms().add(alarm);
+        alarmRepository.save(alarm);
 
         return sendJoinTeamRes;
     }
 
     // 팀 관리자가 팀에 멤버로 추가
+    public void acceptTeam(TeamDto.acceptReq acceptReq){
+        System.out.println(acceptReq.getAlarmRes().getAcceptType());
+
+        if(acceptReq.getAlarmRes().getAcceptType().equals("COMPLETE")){ // 수락완료
+            // 요청 리스트에서 제거
+
+            // 팀에 멤버 추가
+
+            // 멤버에 팀 추가
+
+        } else if(acceptReq.getAlarmRes().getAcceptType().equals("REFUSE")){ // 수락 거절
+            // 요청리스트에서 제거
+
+        } else{ // 수락대기, 수락 요청,
+
+        }
+
+    }
 
     public Team findByCode(String code){
         return teamRepository.findByCode(code);
