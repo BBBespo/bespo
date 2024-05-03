@@ -196,7 +196,7 @@ const Header = () => {
             <NavigationText to="/1">선수단</NavigationText>
           </NavigationButton>
           <NavigationButton>
-            <NavigationText to="/2">일정</NavigationText>
+            <NavigationText to="/schedule">일정</NavigationText>
           </NavigationButton>
           <NavigationButton>
             <NavigationText to="/memo">메모</NavigationText>
@@ -221,7 +221,7 @@ const Header = () => {
           <NavigationText to="/1">선수단</NavigationText>
         </NavigationButton>
         <NavigationButton>
-          <NavigationText to="/2">일정</NavigationText>
+          <NavigationText to="/schedule">일정</NavigationText>
         </NavigationButton>
         <NavigationButton>
           <NavigationText to="/memo">메모</NavigationText>
