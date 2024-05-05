@@ -30,7 +30,7 @@ public class TeamDto {
         private String code;
 
         private List<Member> memberList;
-        private List<Alarm> alarmList;
+        private AlarmDto.readAlarmResponse alarmList;
 
     }
 
@@ -81,7 +81,7 @@ public class TeamDto {
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class sendJoinTeamReq {
+    public static class sendJoinTeamRequest {
         private String code;
         private Integer memberId;
     }
@@ -91,7 +91,7 @@ public class TeamDto {
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class sendJoinTeamRes {
+    public static class sendJoinTeamResponse {
        private Integer memberId;
        private String name;
     }
@@ -101,10 +101,10 @@ public class TeamDto {
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class acceptReq {
+    public static class acceptRequest {
         private String code;
         private Integer memberId;
-        private AlarmDto.AlarmRes alarmRes;
+        private AlarmDto.readAlarmResponse alarmResponse;
     }
 
 }

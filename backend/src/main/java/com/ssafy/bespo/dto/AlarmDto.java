@@ -17,7 +17,7 @@ public class AlarmDto { // 팀가입 요청 알림 리스트
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class AlarmRes {
+    public static class readAlarmResponse {
         private Integer alarmId;
         private String content;
         private boolean is_read;

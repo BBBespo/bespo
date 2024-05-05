@@ -26,7 +26,7 @@ public class TeamController {
     // 팀 상세 조회하기
     @GetMapping
     public ResponseEntity<Message> readTeam(@RequestParam("teamId") int teamId){
-        Message message = new Message("팀 조회 성공", teamService.readTeam(teamId));
+        Message message = new Message("팀 상세 조회 성공", teamService.readTeam(teamId));
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
@@ -54,15 +54,15 @@ public class TeamController {
 
     // 팀 참가요청 보내기
     @PostMapping("/send")
-    public ResponseEntity<Message> sendJoinTeam(@RequestBody TeamDto.sendJoinTeamReq sendJoinTeamReq){
-        Message message = new Message("팀 참가 요청 완료", teamService.sendJoinTeam(sendJoinTeamReq));
+    public ResponseEntity<Message> sendJoinTeam(@RequestBody TeamDto.sendJoinTeamRequest sendJoinTeamRequest){
+        Message message = new Message("팀 참가 요청 완료", teamService.sendJoinTeam(sendJoinTeamRequest));
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     // 팀 참가 수락하기
     @PostMapping("/accept")
-    public ResponseEntity<Message> acceptTeam(@RequestBody TeamDto.acceptReq acceptReq){
-        teamService.acceptTeam(acceptReq);
+    public ResponseEntity<Message> acceptTeam(@RequestBody TeamDto.acceptRequest acceptRequest){
+        teamService.acceptTeam(acceptRequest);
         Message message = new Message("팀 참가 수락 완료");
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
