@@ -35,6 +35,21 @@ public class TeamService {
 
     private final AlarmRepository alarmRepository;
 
+    // 팀 상세 조회하기
+    public TeamDto.readTeamResponse readTeam(int teamId){
+        Team team = teamRepository.findByTeamIdAndFlagFalse(teamId);
+        TeamDto.readTeamResponse readTeamResponse = TeamDto.readTeamResponse.builder()
+            .teamId(team.getTeamId())
+            .code(team.getCode())
+            .image(team.getImage())
+            .name(team.getName())
+            .memberList(team.getMembers())
+            .alarmList(team.getAlarms())
+            .build();
+
+        return readTeamResponse;
+    }
+
     public Team createTeam(TeamDto.CreateTeamRequest teamDtoReq){
 
         // 팀 코드 생성
@@ -95,6 +110,7 @@ public class TeamService {
 
     // 팀 코드를 입력하여 관리자에게 승인 요청 보내기
     public TeamDto.sendJoinTeamRes sendJoinTeam(TeamDto.sendJoinTeamReq sendJoinTeamReq){
+        // 중복된 요청이면 처리
         // 코드를 통해 팀 찾기
         Team team = teamRepository.findByCode(sendJoinTeamReq.getCode());
         // 가입할 사람의 정보
@@ -118,9 +134,10 @@ public class TeamService {
             .acceptType(AcceptType.REQUEST)
             .build();
 
-        team.getAlarms().add(alarm);
+        team.addAlarm(alarm);
         alarmRepository.save(alarm);
-
+        System.out.println(alarm.getContent());
+        System.out.println(alarm.getAcceptType());
         return sendJoinTeamRes;
     }
 

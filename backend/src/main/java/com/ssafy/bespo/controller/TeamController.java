@@ -23,6 +23,13 @@ public class TeamController {
 
     private final TeamService teamService;
 
+    // 팀 상세 조회하기
+    @GetMapping
+    public ResponseEntity<Message> readTeam(@RequestParam("teamId") int teamId){
+        Message message = new Message("팀 조회 성공", teamService.readTeam(teamId));
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
     // 팀 생성하기
     @PostMapping
     public ResponseEntity<Message> createTeam(@RequestBody TeamDto.CreateTeamRequest createTeamRequest){

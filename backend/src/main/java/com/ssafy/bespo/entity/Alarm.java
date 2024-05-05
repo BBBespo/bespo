@@ -8,10 +8,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Builder;
+import lombok.Getter;
 
 @Entity
+@Getter
 @Builder
-public class Alarm {
+public class Alarm extends BaseTime{
 
     @Id @GeneratedValue
     private Integer alarmId;
@@ -20,7 +22,7 @@ public class Alarm {
     private boolean is_read;
     private AcceptType acceptType;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "team_id")
     private Team team;
 
