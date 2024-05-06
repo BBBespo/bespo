@@ -44,4 +44,8 @@ public class Team extends BaseTime {
     public void addAlarm(Alarm alarm){
         this.alarms.add(alarm);
     }
+
+    public void removeAlarm(Alarm alarm){
+        this.alarms.remove(alarm);
+    }
 }

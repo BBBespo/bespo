@@ -84,6 +84,7 @@ public class TeamDto {
     public static class sendJoinTeamRequest {
         private String code;
         private Integer memberId;
+        private String email;
     }
 
     @Getter
@@ -93,7 +94,7 @@ public class TeamDto {
     @AllArgsConstructor
     public static class sendJoinTeamResponse {
        private Integer memberId;
-       private String name;
+       private String email;
     }
 
     @Getter
@@ -104,7 +105,7 @@ public class TeamDto {
     public static class acceptRequest {
         private String code;
         private Integer memberId;
-        private AlarmDto.readAlarmResponse alarmResponse;
+        private AcceptType acceptType;
     }
 
 }

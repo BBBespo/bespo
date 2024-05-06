@@ -103,9 +103,13 @@ public class TeamService {
         return teamRepository.existsByName(name);
     }
 
+    public boolean checkAlarm(String email){
+        return alarmRepository.existsByEmail(email);
+    }
+
     // 팀 코드를 입력하여 관리자에게 승인 요청 보내기
     public TeamDto.sendJoinTeamResponse sendJoinTeam(TeamDto.sendJoinTeamRequest sendJoinTeamReq){
-        // 중복된 요청이면 처리
+
         // 코드를 통해 팀 찾기
         Team team = teamRepository.findByCode(sendJoinTeamReq.getCode());
         // 가입할 사람의 정보
@@ -119,12 +123,12 @@ public class TeamService {
 
         TeamDto.sendJoinTeamResponse sendJoinTeamRes =TeamDto.sendJoinTeamResponse.builder()
             .memberId(member.getMemberId())
-            .name(member.getName())
+            .email(member.getEmail())
             .build();
 
         // 알림 리스트에 추가
         Alarm alarm = Alarm.builder()
-            .content(member.getName())
+            .email(member.getEmail())
             .is_read(false)
             .acceptType(AcceptType.REQUEST)
             .team(team)
@@ -137,23 +141,41 @@ public class TeamService {
     }
 
     // 팀 관리자가 팀에 멤버로 추가
-    public void acceptTeam(TeamDto.acceptRequest acceptRequest){
-        System.out.println(acceptRequest.getAlarmResponse().getAcceptType());
-
-        if(acceptRequest.getAlarmResponse().getAcceptType().equals("COMPLETE")){ // 수락완료
-            // 요청 리스트에서 제거
-
-            // 팀에 멤버 추가
-
-            // 멤버에 팀 추가
-
-        } else if(acceptRequest.getAlarmResponse().getAcceptType().equals("REFUSE")){ // 수락 거절
-            // 요청리스트에서 제거
-
-        } else{ // 수락대기, 수락 요청,
-
+    @Transactional
+    public String acceptTeam(TeamDto.acceptRequest acceptRequest){
+        String msg = "";
+        Team team = teamRepository.findByCode(acceptRequest.getCode());
+        if(team == null){
+            throw new CustomException(ErrorCode.No_EXIST_TEAM);
         }
+        Member member = memberRepository.findByMemberIdAndFlagFalse(acceptRequest.getMemberId());
+        if(member == null){
+            throw new CustomException((ErrorCode.NO_EXIST_MEMBER));
+        }
+        Alarm alarm = alarmRepository.findByEmail(member.getEmail());
+        if(alarm == null){
+            throw new CustomException(ErrorCode.No_EXIST_ALARM);
+        }
+        if(AcceptType.COMPLETE.equals(acceptRequest.getAcceptType())){ // 수락완료
+            msg = "요청 수락완료";
+            // 요청 리스트에서 제거
+            team.removeAlarm(alarm);
+            alarmRepository.delete(alarm);
+            // 팀에 멤버 추가
+            team.addMember(member);
+            teamRepository.save(team);
+            // 멤버에 팀 추가
+            member.addTeam(team);
+            memberRepository.save(member);
 
+        } else if(acceptRequest.getAcceptType().equals("REFUSE")){ // 수락 거절
+            msg = "요청 거절";
+            // 요청리스트에서 제거
+            alarmRepository.delete(alarm);
+        } else{ // 수락대기, 수락 요청,
+            msg = "수락 대기중";
+        }
+        return msg;
     }
 
     public Team findByCode(String code){

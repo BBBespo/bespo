@@ -55,15 +55,19 @@ public class TeamController {
     // 팀 참가요청 보내기
     @PostMapping("/send")
     public ResponseEntity<Message> sendJoinTeam(@RequestBody TeamDto.sendJoinTeamRequest sendJoinTeamRequest){
-        Message message = new Message("팀 참가 요청 완료", teamService.sendJoinTeam(sendJoinTeamRequest));
+        Message message;
+        if (teamService.checkAlarm(sendJoinTeamRequest.getEmail())){
+            message = new Message("팀 참가 요청 중복");
+        } else {
+            message = new Message("팀 참가 요청 완료", teamService.sendJoinTeam(sendJoinTeamRequest));
+        }
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     // 팀 참가 수락하기
     @PostMapping("/accept")
     public ResponseEntity<Message> acceptTeam(@RequestBody TeamDto.acceptRequest acceptRequest){
-        teamService.acceptTeam(acceptRequest);
-        Message message = new Message("팀 참가 수락 완료");
+        Message message = new Message(teamService.acceptTeam(acceptRequest));
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 

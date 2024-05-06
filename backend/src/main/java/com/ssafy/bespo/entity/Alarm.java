@@ -27,7 +27,7 @@ public class Alarm extends BaseTime{
     @Id @GeneratedValue
     private Integer alarmId;
 
-    private String content;
+    private String email;
     private boolean is_read;
     private AcceptType acceptType;
 
