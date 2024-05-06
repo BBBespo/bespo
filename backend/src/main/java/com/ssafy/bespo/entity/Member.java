@@ -1,5 +1,6 @@
 package com.ssafy.bespo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -39,6 +40,7 @@ public class Member extends BaseTime {
 
     @ManyToOne
     @JoinColumn(name = "team_id")
+    @JsonIgnore
     private Team team;
 
     @OneToMany(mappedBy = "member")
@@ -56,4 +58,8 @@ public class Member extends BaseTime {
     @OneToMany(mappedBy = "member")
     private List<Memo> memos;
 
+
+    public void addTeam(Team team){
+        this.team = team;
+    }
 }

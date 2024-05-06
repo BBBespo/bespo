@@ -1,7 +1,12 @@
 package com.ssafy.bespo.dto;
 
+import com.ssafy.bespo.Enum.AcceptType;
 import com.ssafy.bespo.Enum.MemoType;
+import com.ssafy.bespo.entity.Alarm;
 import com.ssafy.bespo.entity.Member;
+import com.ssafy.bespo.entity.Memo;
+import com.ssafy.bespo.entity.Notification;
+import jakarta.persistence.OneToMany;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +20,17 @@ public class TeamDto {
 
     @Getter
     @Setter
-    public static class TeamDtoReq{
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class readTeamResponse{
+        private Integer teamId;
+        private String name;
+        private String image;
+        private String code;
+
+        private List<Member> memberList;
+        private AlarmDto.readAlarmResponse alarmList;
 
     }
 
@@ -66,9 +81,10 @@ public class TeamDto {
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class sendJoinTeamReq {
+    public static class sendJoinTeamRequest {
         private String code;
-        private MemberDto.readMemberRequest readMemberRequest;
+        private Integer memberId;
+        private String email;
     }
 
     @Getter
@@ -76,8 +92,20 @@ public class TeamDto {
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class sendJoinTeamRes {
-       private MemberDto.readMemberRequest readMemberRequest;
+    public static class sendJoinTeamResponse {
+       private Integer memberId;
+       private String email;
+    }
+
+    @Getter
+    @Builder
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class acceptRequest {
+        private String code;
+        private Integer memberId;
+        private AcceptType acceptType;
     }
 
 }

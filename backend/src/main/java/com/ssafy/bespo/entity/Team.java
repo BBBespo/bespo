@@ -1,6 +1,7 @@
 package com.ssafy.bespo.entity;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,11 +34,18 @@ public class Team extends BaseTime {
     @OneToMany(mappedBy = "team")
     private List<Memo> memos;
 
+    @OneToMany(mappedBy = "team")
+    private List<Alarm> alarms = new ArrayList<>();
 
-    @Builder
-    public Team(String name, String image, String code){
-        this.name = name;
-        this.image = image;
-        this.code = code;
+    public void addMember(Member member){
+        this.members.add(member);
+    }
+
+    public void addAlarm(Alarm alarm){
+        this.alarms.add(alarm);
+    }
+
+    public void removeAlarm(Alarm alarm){
+        this.alarms.remove(alarm);
     }
 }
