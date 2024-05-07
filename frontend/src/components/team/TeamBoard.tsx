@@ -10,11 +10,15 @@ const TeamBoardContainer = styled.div`
   padding: 0vh 5vh;
 `;
 
-const TeamBoard = () => {
+const TeamBoard = ({ onMemberSelected }: { onMemberSelected: (memberId: number) => void }) => {
+  const handleSelectMember = (memberId: number) => {
+    onMemberSelected(memberId);
+  };
+
   return (
     <TeamBoardContainer>
       <TeamInfo />
-      <MemberInfo />
+      <MemberInfo onMemberSelected={handleSelectMember} />
     </TeamBoardContainer>
   );
 };

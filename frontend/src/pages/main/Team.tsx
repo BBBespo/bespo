@@ -1,5 +1,5 @@
 import TeamBoard from '../../components/team/TeamBoard';
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 const TeamContainer = styled.div`
@@ -23,10 +23,19 @@ const UserBoard = styled.div`
 `;
 
 const Team = () => {
+  const [selectedMember, setSelectedMember] = useState<number>(0);
+
+  const handleSelectMember = (memberId: number) => {
+    setSelectedMember(memberId);
+  };
+
   return (
     <TeamContainer>
-      <TeamBoard />
-      <UserBoard />
+      <TeamBoard onMemberSelected={handleSelectMember} />
+      <UserBoard>
+        <text>{selectedMember}</text>
+        <text>user info</text>
+      </UserBoard>
     </TeamContainer>
   );
 };
