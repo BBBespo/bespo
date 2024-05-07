@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AlarmRepository extends JpaRepository<Alarm, Integer> {
 
-    Alarm findByEmail(String email);
+    Alarm findByEmailAndFlagFalse(String email);
 
-    Boolean existsByEmail(String email);
+    Boolean existsByEmailAndFlagFalse(String email);
 
 }

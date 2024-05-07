@@ -73,7 +73,7 @@ public class TeamController {
 
     @PostMapping("/testMember")
     public ResponseEntity<Message> registerMemberTest(@RequestBody MemberDto.readMemberRequest readMemberRequest){
-        teamService.regitserMember(readMemberRequest);
+        teamService.registerMember(readMemberRequest);
         Message message = new Message("테스트 회원 추가 완료");
         return new ResponseEntity<>(message, HttpStatus.OK);
     }

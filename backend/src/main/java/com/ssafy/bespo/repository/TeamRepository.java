@@ -8,9 +8,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TeamRepository extends JpaRepository<Team, Integer> {
 
-    Boolean existsByName(String name);
+    Boolean existsByNameAndFlagFalse(String name);
 
-    Team findByCode(String code);
+    Team findByCodeAndFlagFalse(String code);
 
     Team findByTeamIdAndFlagFalse(int teamId);
 

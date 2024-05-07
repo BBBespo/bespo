@@ -1,6 +1,6 @@
 package com.ssafy.bespo.Enum;
 
-public enum ScheduleType {
+public enum EventType {
 
     TRAINING, PRACTICE, MATCH, ETC
 
