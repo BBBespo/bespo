@@ -6,6 +6,7 @@ import com.ssafy.bespo.exception.CustomException;
 import com.ssafy.bespo.exception.ErrorCode;
 import com.ssafy.bespo.repository.EventRepository;
 import java.time.Month;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -27,17 +28,18 @@ public class EventService {
         return eventList;
     }
 
-    // 특정 월 일정 조회
-    public List<Event> readMonthEvent(int eventId, Month month){
+    // 특정 연월 일정 조회
+    public List<Event> readMonthEvent(int year, Month month){
 
-        // 특정 월로 일정 조회 코드
+        // 특정 연월로 일정 조회 코드
         List<Event> events = eventRepository.findAll();
 
         List<Event> eventList = new ArrayList<>();
 
         for(Event event : events){
+            int y = event.getStart().getYear();
             Month m = event.getStart().getMonth();
-            if(month.equals(m)){
+            if(y == year && month.equals(m)){
                 eventList.add(event);
             }
         }

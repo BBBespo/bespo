@@ -4,6 +4,7 @@ import com.ssafy.bespo.controller.constants.Message;
 import com.ssafy.bespo.dto.EventDto;
 import com.ssafy.bespo.service.EventService;
 import java.time.Month;
+import java.time.Year;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,23 +24,23 @@ public class EventController {
 
     // 일정 전체 조회하기
     @GetMapping
-    public ResponseEntity<Message> readSchedule(){
+    public ResponseEntity<Message> readEvent(){
         Message message = new Message("일정 전체 조회 성공", eventService.readAllEvent());
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    // 특정 월 일정 조회
-    @GetMapping("/month")
-    public ResponseEntity<Message> readMonthSchedule(@RequestParam("scheduleId") int scheduleId, @RequestParam("month")
+    // 특정 연월 일정 조회
+    @GetMapping("/detail")
+    public ResponseEntity<Message> readMonthEvent(@RequestParam("year") int year, @RequestParam("month")
         Month month){
-        Message message = new Message(month + "월 일정 조회 성공", eventService.readMonthEvent(scheduleId, month));
+        Message message = new Message(year + " " + month + " 일정 조회 성공", eventService.readMonthEvent(year, month));
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
 
     // 일정 등록하기
     @PostMapping
-    public ResponseEntity<Message> registerSchedule(@RequestBody EventDto.createEventRequest request){
+    public ResponseEntity<Message> registerEvent(@RequestBody EventDto.createEventRequest request){
         Message message = new Message("일정 등록 성공", eventService.createEvent(request));
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
