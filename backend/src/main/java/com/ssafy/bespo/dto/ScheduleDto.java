@@ -43,5 +43,14 @@ public class ScheduleDto {
         private List<String> attendees;
     }
 
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class readMonthScheduleRequest{
+        private int scheduleId;
+        private int month;
+    }
 
 }

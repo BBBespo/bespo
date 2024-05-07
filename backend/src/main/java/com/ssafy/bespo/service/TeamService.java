@@ -182,7 +182,7 @@ public class TeamService {
         return teamRepository.findByCodeAndFlagFalse(code);
     }
 
-    public void regitserMember(MemberDto.readMemberRequest readMemberRequest){
+    public void registerMember(MemberDto.readMemberRequest readMemberRequest){
         Member member = Member.builder()
             .email(readMemberRequest.getEmail())
             .name(readMemberRequest.getName())
