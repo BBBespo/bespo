@@ -1,7 +1,6 @@
 package com.ssafy.bespo.dto;
 
-import com.ssafy.bespo.Enum.ScheduleType;
-import com.ssafy.bespo.entity.Member;
+import com.ssafy.bespo.Enum.EventType;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -11,21 +10,21 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
-public class ScheduleDto {
+public class EventDto {
 
     @Getter
     @Setter
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class createScheduleRequest{
+    public static class createEventRequest{
         @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
         private LocalDateTime start;
         @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
         private LocalDateTime end;
         private String title;
         private String content;
-        private ScheduleType type;
+        private EventType type;
         private String location;
         private List<String> attendees;
     }
@@ -33,12 +32,12 @@ public class ScheduleDto {
     @Getter
     @Setter
     @Builder
-    public static class createScheduleResponse{
-        private Integer scheduleId;
+    public static class createEventResponse{
+        private Integer eventId;
         private LocalDateTime start;
         private LocalDateTime end;
         private String name;
-        private ScheduleType type;
+        private EventType type;
         private String location;
         private List<String> attendees;
     }
@@ -48,8 +47,8 @@ public class ScheduleDto {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class readMonthScheduleRequest{
-        private int scheduleId;
+    public static class readMonthEventRequest{
+        private int eventId;
         private int month;
     }
 

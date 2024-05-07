@@ -11,7 +11,7 @@ public enum ErrorCode {
     NO_EXIST_MEMBER(400, "해당하는 멤버가 없습니다."),
     No_EXIST_TEAM(400, "해당하는 팀이 없습니다."),
     No_EXIST_ALARM(400, "해당하는 알림이 없습니다."),
-    No_EXIST_SCHEDULE(400, "해당하는 일정이 없습니다.")
+    No_EXIST_EVENT(400, "해당하는 일정이 없습니다.")
     ;
 
     private final int status;
