@@ -53,9 +53,6 @@ public class Member extends BaseTime {
     private List<InjuryInfo> injuryInfos;
 
     @OneToMany(mappedBy = "member")
-    private List<Schedule> schedules;
-
-    @OneToMany(mappedBy = "member")
     private List<Memo> memos;
 
 

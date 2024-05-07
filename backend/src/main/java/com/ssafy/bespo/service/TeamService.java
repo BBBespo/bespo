@@ -100,18 +100,18 @@ public class TeamService {
 
     // 팀 이름 중복 체크
     public boolean checkName(String name){
-        return teamRepository.existsByName(name);
+        return teamRepository.existsByNameAndFlagFalse(name);
     }
 
     public boolean checkAlarm(String email){
-        return alarmRepository.existsByEmail(email);
+        return alarmRepository.existsByEmailAndFlagFalse(email);
     }
 
     // 팀 코드를 입력하여 관리자에게 승인 요청 보내기
     public TeamDto.sendJoinTeamResponse sendJoinTeam(TeamDto.sendJoinTeamRequest sendJoinTeamReq){
 
         // 코드를 통해 팀 찾기
-        Team team = teamRepository.findByCode(sendJoinTeamReq.getCode());
+        Team team = teamRepository.findByCodeAndFlagFalse(sendJoinTeamReq.getCode());
         // 가입할 사람의 정보
         Member member = memberRepository.findByMemberIdAndFlagFalse(sendJoinTeamReq.getMemberId());
         if(team == null){
@@ -144,7 +144,7 @@ public class TeamService {
     @Transactional
     public String acceptTeam(TeamDto.acceptRequest acceptRequest){
         String msg = "";
-        Team team = teamRepository.findByCode(acceptRequest.getCode());
+        Team team = teamRepository.findByCodeAndFlagFalse(acceptRequest.getCode());
         if(team == null){
             throw new CustomException(ErrorCode.No_EXIST_TEAM);
         }
@@ -152,7 +152,7 @@ public class TeamService {
         if(member == null){
             throw new CustomException((ErrorCode.NO_EXIST_MEMBER));
         }
-        Alarm alarm = alarmRepository.findByEmail(member.getEmail());
+        Alarm alarm = alarmRepository.findByEmailAndFlagFalse(member.getEmail());
         if(alarm == null){
             throw new CustomException(ErrorCode.No_EXIST_ALARM);
         }
@@ -168,7 +168,7 @@ public class TeamService {
             member.addTeam(team);
             memberRepository.save(member);
 
-        } else if(acceptRequest.getAcceptType().equals("REFUSE")){ // 수락 거절
+        } else if(AcceptType.REFUSE.equals(acceptRequest.getAcceptType())){ // 수락 거절
             msg = "요청 거절";
             // 요청리스트에서 제거
             alarmRepository.delete(alarm);
@@ -179,7 +179,7 @@ public class TeamService {
     }
 
     public Team findByCode(String code){
-        return teamRepository.findByCode(code);
+        return teamRepository.findByCodeAndFlagFalse(code);
     }
 
     public void regitserMember(MemberDto.readMemberRequest readMemberRequest){
