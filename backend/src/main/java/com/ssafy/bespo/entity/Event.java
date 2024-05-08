@@ -1,7 +1,9 @@
 package com.ssafy.bespo.entity;
 
 import com.ssafy.bespo.Enum.EventType;
+import com.ssafy.bespo.dto.EventDto;
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,4 +34,18 @@ public class Event extends BaseTime {
 
     private List<String> attendees;
 
+    public void updateEvent(EventDto.updateEventRequest request){
+        this.start = request.getStart();
+        this.end = request.getEnd();
+        this.title = request.getTitle();
+        this.content = request.getContent();
+        this.type = request.getType();
+        this.location = request.getLocation();
+        if(this.attendees == null){
+            this.attendees = new ArrayList<>();
+            this.attendees = request.getAttendees();
+        } else{
+            this.attendees = request.getAttendees();
+        }
+    }
 }

@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,5 +47,12 @@ public class EventController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
+    // 일정 수정하기
+    @PatchMapping
+    public ResponseEntity<Message> updateEvent(@RequestBody EventDto.updateEventRequest request){
+        System.out.println(request.getEventId());
+        Message message = new Message("일정 수정 성공", eventService.updateEvent(request));
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
 
 }

@@ -57,5 +57,22 @@ public class EventDto {
         private List<String> attendees;
     }
 
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class updateEventRequest{
+        private int eventId;
+        @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+        private LocalDateTime start;
+        @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+        private LocalDateTime end;
+        private String title;
+        private String content;
+        private EventType type;
+        private String location;
+        private List<String> attendees;
+    }
 
 }

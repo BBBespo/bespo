@@ -62,4 +62,19 @@ public class EventService {
         eventRepository.save(event);
         return event;
     }
+
+    // 일정 수정
+    public Event updateEvent(EventDto.updateEventRequest request){
+
+        Event event = eventRepository.findByEventIdAndFlagFalse(request.getEventId());
+        System.out.println(request.getEventId());
+        if(event == null){
+            throw new CustomException(ErrorCode.No_EXIST_EVENT);
+        }
+
+        event.updateEvent(request);
+
+        eventRepository.save(event);
+        return event;
+    }
 }
