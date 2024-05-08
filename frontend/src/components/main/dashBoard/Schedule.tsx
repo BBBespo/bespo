@@ -115,7 +115,7 @@ const Content = styled.div`
 
 const ScheduleText = styled.p<CircleProps>`
   font-size: 20px;
-  font-weight: 600;
+  font-family: PretendardSemiBold;
   justify-content: center;
   text-align: center;
   color: ${(props) => (props.active ? 'red' : props.theme.colors.gray4)};
