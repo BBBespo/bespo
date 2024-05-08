@@ -27,11 +27,11 @@ const MemberCardContainer = styled.button`
   border-bottom: 1px solid ${(props) => props.theme.colors.gray2};
 `;
 
-const MemberCardText = styled.text`
+const MemberCardText = styled.text<{ $isSelected: boolean }>`
   font-family: PretendardVariable;
   font-size: 18px;
   font-weight: 600;
-  color: ${(props) => props.theme.colors.gray4};
+  color: ${(props) => (props.$isSelected ? props.theme.colors.red : props.theme.colors.gray4)};
 
   @media screen and (max-width: 900px) {
     font-size: 10px;
@@ -40,7 +40,15 @@ const MemberCardText = styled.text`
   // todo : 선택된 멤버의 색상을 변경하는 CSS 코드 작성
 `;
 
-const MemberCard = ({ member, onClick }: { member: MemberProps; onClick: (memberId: number) => void }) => {
+const MemberCard = ({
+  member,
+  onClick,
+  isSelected,
+}: {
+  member: MemberProps;
+  onClick: (memberId: number) => void;
+  isSelected: boolean;
+}) => {
   return (
     <MemberCardContainer
       onClick={() => {
@@ -48,9 +56,9 @@ const MemberCard = ({ member, onClick }: { member: MemberProps; onClick: (member
         console.log(member.memberId + ' has selected');
       }}
     >
-      <MemberCardText>{member.name}</MemberCardText>
-      <MemberCardText>{member.isCaptain ? '주장' : ''}</MemberCardText>
-      <MemberCardText>{member.number}</MemberCardText>
+      <MemberCardText $isSelected={isSelected}>{member.name}</MemberCardText>
+      <MemberCardText $isSelected={isSelected}>{member.isCaptain ? '주장' : ''}</MemberCardText>
+      <MemberCardText $isSelected={isSelected}>{member.number}</MemberCardText>
     </MemberCardContainer>
   );
 };
@@ -63,7 +71,8 @@ interface MemberProps {
 }
 
 const MemberInfo = ({ onMemberSelected }: { onMemberSelected: (memberId: number) => void }) => {
-  const [members, setMembers] = useState<MemberProps[]>([]);
+  const [members, setMembers] = useState<MemberProps[]>([{ memberId: 0, name: '', isCaptain: false, number: 0 }]);
+  const [selectedMember, setSelectedMember] = useState<number>(0);
 
   // todo : 멤버 정보를 가져오는 API 호출
   useEffect(() => {
@@ -81,7 +90,14 @@ const MemberInfo = ({ onMemberSelected }: { onMemberSelected: (memberId: number)
       { name: '이팀원', isCaptain: false, number: 3, memberId: 11 },
       { name: '최팀원', isCaptain: false, number: 4, memberId: 12 },
     ]);
+
+    setSelectedMember(members[0].memberId);
   }, []);
+
+  const handleSelectMember = (memberId: number) => {
+    onMemberSelected(memberId); // 선택된 멤버의 memberId를 부모 컴포넌트로 전달
+    setSelectedMember(memberId); // 선택된 멤버의 memberId를 저장
+  };
 
   return (
     <MemberInfoContainer>
@@ -90,8 +106,9 @@ const MemberInfo = ({ onMemberSelected }: { onMemberSelected: (memberId: number)
           key={index}
           member={member}
           onClick={(memberId) => {
-            onMemberSelected(memberId);
+            handleSelectMember(memberId);
           }}
+          isSelected={selectedMember === member.memberId}
         />
       ))}
     </MemberInfoContainer>
