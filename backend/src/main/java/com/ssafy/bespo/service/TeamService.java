@@ -235,9 +235,10 @@ public class TeamService {
                 backNumber = member.getBackNumber();
             }
             TeamDto.playerInfoResponse response = TeamDto.playerInfoResponse.builder()
+                .memberId(member.getMemberId())
                 .name(member.getName())
                 .roleType(member.getRole())
-                .backNumber(backNumber)
+                .number(backNumber)
                 .build();
 
             playerList.add(response);
