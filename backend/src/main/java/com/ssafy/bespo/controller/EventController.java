@@ -8,6 +8,7 @@ import java.time.Year;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,9 +51,17 @@ public class EventController {
     // 일정 수정하기
     @PatchMapping
     public ResponseEntity<Message> updateEvent(@RequestBody EventDto.updateEventRequest request){
-        System.out.println(request.getEventId());
         Message message = new Message("일정 수정 성공", eventService.updateEvent(request));
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
+
+    // 일정 삭제하기
+    @DeleteMapping
+    public ResponseEntity<Message> deleteEvent(@RequestParam int eventId){
+        eventService.deleteEvent(eventId);
+        Message message = new Message("일정 삭제 성공");
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
 
 }

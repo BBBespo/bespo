@@ -67,7 +67,6 @@ public class EventService {
     public Event updateEvent(EventDto.updateEventRequest request){
 
         Event event = eventRepository.findByEventIdAndFlagFalse(request.getEventId());
-        System.out.println(request.getEventId());
         if(event == null){
             throw new CustomException(ErrorCode.No_EXIST_EVENT);
         }
@@ -76,5 +75,14 @@ public class EventService {
 
         eventRepository.save(event);
         return event;
+    }
+
+    // 일정 삭제
+    public void deleteEvent(int eventId){
+        Event event = eventRepository.findByEventIdAndFlagFalse(eventId);
+        if(event == null){
+            throw new CustomException(ErrorCode.No_EXIST_EVENT);
+        }
+        eventRepository.delete(event);
     }
 }
