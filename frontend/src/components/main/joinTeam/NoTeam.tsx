@@ -2,20 +2,22 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import createTeam from '../../assets/images/createTeam.png';
 import joinTeam from '../../assets/images/joinTeam.png';
+
 const DashBoardContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 80vh;
 `;
 const TextContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
   > h1 {
-    font-size: 36px;
+    font-size: 30px;
     font-weight: 600;
   }
   > p {
@@ -29,15 +31,16 @@ const TextContainer = styled.div`
 const CardContainer = styled.div`
   display: flex;
   width: 1400px;
-  height: 450px;
+  height: 400px;
   justify-content: center;
 `;
 
 const CardDiv = styled.div`
   width: 40%;
+  height: 400px;
   margin: 30px;
   background-color: #f3f3f3;
-  padding: 4%;
+  padding: 50px 60px;
   border-radius: 20px;
 `;
 const CardHeadText = styled.p`
@@ -53,7 +56,7 @@ const CardButtonDiv = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: end;
-  margin-top: 10px;
+  margin-top: 30px;
   width: 100%;
   > div {
     display: flex;
@@ -62,7 +65,7 @@ const CardButtonDiv = styled.div`
     width: 200px;
     height: 60px;
     background-color: ${(props) => props.theme.colors.gray5};
-    border-radius: 20px;
+    border-radius: 10px;
     font-size: 24px;
     font-weight: 500;
     color: white;
