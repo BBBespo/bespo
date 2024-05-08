@@ -7,6 +7,7 @@ import com.ssafy.bespo.service.TeamService;
 import java.util.concurrent.locks.ReentrantLock;
 import javax.swing.event.HyperlinkEvent;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -82,6 +83,13 @@ public class TeamController {
     @GetMapping("/info")
     public ResponseEntity<Message> readTeamInfo(@RequestParam("teamId") int teamId){
         Message message = new Message("팀 선수단 정보 조회 성공", teamService.readInfoTeam(teamId));
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    // 팀 선수 리스트 조회
+    @GetMapping("/players")
+    public ResponseEntity<Message> readPlayers(@RequestParam("teamId") int teamId){
+        Message message = new Message("팀 선수단 리스트 조회 성공", teamService.getPlayers(teamId));
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 

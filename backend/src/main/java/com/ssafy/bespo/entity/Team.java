@@ -1,5 +1,6 @@
 package com.ssafy.bespo.entity;
 
+import com.ssafy.bespo.Enum.RoleType;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import lombok.AllArgsConstructor;
@@ -38,7 +39,12 @@ public class Team extends BaseTime {
     private List<Alarm> alarms = new ArrayList<>();
 
     public void addMember(Member member){
-        this.members.add(member);
+        if(this.members == null){
+            this.members = new ArrayList<>();
+            this.members.add(member);
+        } else{
+            this.members.add(member);
+        }
     }
 
     public void addAlarm(Alarm alarm){

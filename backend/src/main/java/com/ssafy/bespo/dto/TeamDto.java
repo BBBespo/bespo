@@ -2,6 +2,7 @@ package com.ssafy.bespo.dto;
 
 import com.ssafy.bespo.Enum.AcceptType;
 import com.ssafy.bespo.Enum.MemoType;
+import com.ssafy.bespo.Enum.RoleType;
 import com.ssafy.bespo.entity.Alarm;
 import com.ssafy.bespo.entity.Member;
 import com.ssafy.bespo.entity.Memo;
@@ -39,15 +40,11 @@ public class TeamDto {
     @Builder
     @Setter
     @NoArgsConstructor
+    @AllArgsConstructor
     public static class CreateTeamRequest {
         private String name;
         private String image;
-
-        public CreateTeamRequest(String name, String image){
-            this.name = name;
-            this.image = image;
-        }
-
+        private int memberId;
     }
 
     @Getter
@@ -121,4 +118,14 @@ public class TeamDto {
         private String image;
     }
 
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class playerInfoResponse {
+        private String name;
+        private RoleType roleType;
+        private int backNumber;
+    }
 }
