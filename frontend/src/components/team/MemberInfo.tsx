@@ -16,6 +16,12 @@ const MemberInfoContainer = styled.div`
   &::-webkit-scrollbar {
     display: none; /* WebKit(Chrome, Safari 등)에 대한 스크롤바 숨김 */
   }
+
+  @media screen and (max-width: 900px) {
+    padding: 10px;
+    flex: 0;
+    max-height: 150px;
+  }
 `;
 
 const MemberCardContainer = styled.button`

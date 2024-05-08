@@ -8,8 +8,10 @@ const TeamContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
   width: auto;
-  height: calc(100vh - 120px);
-  padding: 2vh 5vh;
+  height: calc(100vh - 100px);
+  padding: 2rem 5rem 3rem 5rem;
+
+  gap: 2rem;
 
   @media screen and (max-width: 900px) {
     flex-direction: column;

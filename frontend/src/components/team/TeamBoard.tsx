@@ -7,7 +7,12 @@ const TeamBoardContainer = styled.div`
   display: flex;
   width: 450px;
   flex-direction: column;
-  padding: 0vh 5vh;
+  gap: 2rem;
+
+  @media screen and (max-width: 900px) {
+    width: 100%;
+    padding: 0;
+  }
 `;
 
 const TeamBoard = ({ onMemberSelected }: { onMemberSelected: (memberId: number) => void }) => {

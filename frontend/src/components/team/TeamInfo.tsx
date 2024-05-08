@@ -8,7 +8,6 @@ const TeamInfoContainer = styled.div`
   flex-direction: row;
   width: 100%;
   padding: 0px 30px;
-  margin-bottom: 20px;
   border-radius: 5px;
   height: 30%;
   box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.25);
@@ -47,6 +46,11 @@ const TeamImg = styled.div`
   height: 120px;
   border-radius: 50%;
   box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.25);
+
+  @media screen and (max-width: 900px) {
+    width: 80px;
+    height: 80px;
+  }
 `;
 
 const TeamImgSrc = styled.img`
@@ -62,6 +66,11 @@ const TeamInfoTextContent = styled.div`
   flex-direction: column;
   justify-content: space-around;
   align-items: flex-end;
+
+  @media screen and (max-width: 900px) {
+    width: 100px;
+    height: 100px;
+  }
 `;
 
 interface TeamProps {
