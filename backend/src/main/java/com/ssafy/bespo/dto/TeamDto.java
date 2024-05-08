@@ -124,8 +124,9 @@ public class TeamDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class playerInfoResponse {
+        private int memberId;
         private String name;
         private RoleType roleType;
-        private int backNumber;
+        private int number;
     }
 }
