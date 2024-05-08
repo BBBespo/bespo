@@ -46,16 +46,23 @@ const AddScheduleBtn = styled.span`
 `;
 
 const CalendarWrapper = styled.div`
-  width: 100%;
   padding-bottom: 50px;
+  width: 100%;
+
   .fc-toolbar.fc-header-toolbar .fc-prev-button,
   .fc-toolbar.fc-header-toolbar .fc-next-button {
     background-color: white;
     border: 1px solid white;
     color: black;
   }
+
   .fc-toolbar-title {
     font-size: 20px;
+  }
+  .fc-daygrid-event {
+    background-color: #ffa18e;
+    border: none;
+    margin-bottom: 5px;
   }
 `;
 
@@ -63,23 +70,34 @@ const Schedule = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const events = [
-    { title: '결승전 최종 훈련1', start: new Date() },
-    { title: '공격 및 수비 결정 테스트', start: new Date() },
+    {
+      title: '일정1',
+      start: '2024-05-07T14:00:00',
+      end: '2024-05-08T16:00:00',
+    },
+    {
+      title: '일정2',
+      start: '2024-05-07T14:00:00',
+      end: '2024-05-08T16:00:00',
+    },
+    {
+      title: '일정3',
+      start: '2024-05-07T14:00:00',
+      end: '2024-05-08T16:00:00',
+    },
   ];
 
   function renderEventContent(eventInfo: EventContentArg) {
     return (
       <div
         style={{
-          display: 'flex',
           padding: '3px',
           margin: '0px 10px 0px 10px',
-          background: '#ffa18e',
           fontSize: '12px',
+          color: 'red',
         }}
       >
-        <div style={{ marginRight: '5px' }}>{eventInfo.timeText}</div>
-        <div style={{ fontWeight: 'bold' }}>{eventInfo.event.title}</div>
+        <p>{eventInfo.event.title}</p>
       </div>
     );
   }
@@ -96,7 +114,7 @@ const Schedule = () => {
 
       {isOpen && (
         <ModalBackground>
-          <AddScheduleModal />
+          <AddScheduleModal onClose={() => setIsOpen(false)} />
         </ModalBackground>
       )}
 
@@ -105,7 +123,7 @@ const Schedule = () => {
           locale="kr"
           plugins={[dayGridPlugin]}
           initialView="dayGridMonth"
-          weekends={false}
+          weekends={true}
           events={events}
           eventContent={renderEventContent}
           headerToolbar={{
@@ -113,7 +131,7 @@ const Schedule = () => {
             center: 'title',
             right: 'next',
           }}
-          aspectRatio={1.8}
+          height={'80vh'}
         />
       </CalendarWrapper>
     </ScheduleContainer>
