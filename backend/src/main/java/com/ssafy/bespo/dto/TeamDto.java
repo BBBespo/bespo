@@ -7,6 +7,7 @@ import com.ssafy.bespo.entity.Member;
 import com.ssafy.bespo.entity.Memo;
 import com.ssafy.bespo.entity.Notification;
 import jakarta.persistence.OneToMany;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -106,6 +107,18 @@ public class TeamDto {
         private String code;
         private Integer memberId;
         private AcceptType acceptType;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class infoTeamResponse {
+        private String name;
+        private LocalDateTime createDate;
+        private int playerCount;
+        private String image;
     }
 
 }

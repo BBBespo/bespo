@@ -77,4 +77,12 @@ public class TeamController {
         Message message = new Message("테스트 회원 추가 완료");
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
+
+    // 팀 선수단 정보 api, 팀명,생성일, 팀원수, 이미지
+    @GetMapping("/info")
+    public ResponseEntity<Message> readTeamInfo(@RequestParam("teamId") int teamId){
+        Message message = new Message("팀 선수단 정보 조회 성공", teamService.readInfoTeam(teamId));
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
 }

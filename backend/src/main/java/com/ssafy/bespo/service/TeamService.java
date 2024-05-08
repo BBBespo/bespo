@@ -7,6 +7,7 @@ import com.ssafy.bespo.dto.MemberDto.readMemberRequest;
 import com.ssafy.bespo.dto.MemoDto;
 import com.ssafy.bespo.dto.TeamDto;
 import com.ssafy.bespo.entity.Alarm;
+import com.ssafy.bespo.entity.BaseTime;
 import com.ssafy.bespo.entity.Member;
 import com.ssafy.bespo.entity.Memo;
 import com.ssafy.bespo.entity.Team;
@@ -189,6 +190,24 @@ public class TeamService {
             .build();
 
         memberRepository.save(member);
+    }
+
+    // 팀 선수단 정보
+    public TeamDto.infoTeamResponse readInfoTeam(int teamId){
+        Team team = teamRepository.findByTeamIdAndFlagFalse(teamId);
+        if(team == null){
+            throw new CustomException(ErrorCode.No_EXIST_TEAM);
+        }
+        int playerCount = team.getMembers().size();
+
+        TeamDto.infoTeamResponse response = TeamDto.infoTeamResponse.builder()
+            .name(team.getName())
+            .image(team.getImage())
+            .playerCount(playerCount)
+            .createDate(team.getCreateDate())
+            .build();
+
+        return response;
     }
 
 }
