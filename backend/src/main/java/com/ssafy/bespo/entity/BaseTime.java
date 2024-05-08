@@ -1,6 +1,9 @@
 package com.ssafy.bespo.entity;
 
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.Inheritance;
 import jakarta.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
@@ -24,4 +27,7 @@ public abstract class BaseTime {
     @ColumnDefault("0")
     private boolean flag; // 삭제할 경우 true로 update
 
+    public LocalDateTime getCreateDate(){
+        return this.createdDate;
+    }
 }

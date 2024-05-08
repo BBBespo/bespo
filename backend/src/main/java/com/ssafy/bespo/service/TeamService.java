@@ -1,12 +1,14 @@
 package com.ssafy.bespo.service;
 
 import com.ssafy.bespo.Enum.AcceptType;
+import com.ssafy.bespo.Enum.RoleType;
 import com.ssafy.bespo.dto.AlarmDto;
 import com.ssafy.bespo.dto.MemberDto;
 import com.ssafy.bespo.dto.MemberDto.readMemberRequest;
 import com.ssafy.bespo.dto.MemoDto;
 import com.ssafy.bespo.dto.TeamDto;
 import com.ssafy.bespo.entity.Alarm;
+import com.ssafy.bespo.entity.BaseTime;
 import com.ssafy.bespo.entity.Member;
 import com.ssafy.bespo.entity.Memo;
 import com.ssafy.bespo.entity.Team;
@@ -45,6 +47,7 @@ public class TeamService {
         return team;
     }
 
+    // 팀 생성하기
     public Team createTeam(TeamDto.CreateTeamRequest teamDtoReq){
 
         // 팀 코드 생성
@@ -58,6 +61,9 @@ public class TeamService {
             .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
             .toString();
 
+        Member member = memberRepository.findByMemberIdAndFlagFalse(teamDtoReq.getMemberId());
+        member.updateRoleType(RoleType.Manager);
+
         // 팀 생성
         Team team = Team.builder()
             .name(teamDtoReq.getName())
@@ -65,6 +71,7 @@ public class TeamService {
             .code(randomCode)
             .build();
 
+        team.addMember(member);
         teamRepository.save(team);
 
         return team;
@@ -161,7 +168,8 @@ public class TeamService {
             // 요청 리스트에서 제거
             team.removeAlarm(alarm);
             alarmRepository.delete(alarm);
-            // 팀에 멤버 추가
+            // 팀에 멤버 추가시 권한 Player
+            member.updateRoleType(RoleType.Player);
             team.addMember(member);
             teamRepository.save(team);
             // 멤버에 팀 추가
@@ -190,5 +198,53 @@ public class TeamService {
 
         memberRepository.save(member);
     }
+
+    // 팀 선수단 정보
+    public TeamDto.infoTeamResponse readInfoTeam(int teamId){
+        Team team = teamRepository.findByTeamIdAndFlagFalse(teamId);
+        if(team == null){
+            throw new CustomException(ErrorCode.No_EXIST_TEAM);
+        }
+        int playerCount = team.getMembers().size();
+
+        TeamDto.infoTeamResponse response = TeamDto.infoTeamResponse.builder()
+            .name(team.getName())
+            .image(team.getImage())
+            .playerCount(playerCount)
+            .createDate(team.getCreateDate())
+            .build();
+
+        return response;
+    }
+
+    // 팀 선수단 리스트 조회
+    public List<TeamDto.playerInfoResponse> getPlayers(int teamId){
+        Team team = teamRepository.findByTeamIdAndFlagFalse(teamId);
+        if(team == null){
+            throw new CustomException(ErrorCode.No_EXIST_TEAM);
+        }
+
+        List<Member> memberList = team.getMembers();
+        List<TeamDto.playerInfoResponse> playerList = new ArrayList<>();
+
+        for(Member member : memberList){
+            int backNumber = 0;
+            if(member.getBackNumber() == null){
+                backNumber = 0;
+            } else{
+                backNumber = member.getBackNumber();
+            }
+            TeamDto.playerInfoResponse response = TeamDto.playerInfoResponse.builder()
+                .name(member.getName())
+                .roleType(member.getRole())
+                .backNumber(backNumber)
+                .build();
+
+            playerList.add(response);
+        }
+
+        return playerList;
+    }
+
 
 }

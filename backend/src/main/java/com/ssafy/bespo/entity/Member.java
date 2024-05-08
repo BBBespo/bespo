@@ -1,6 +1,7 @@
 package com.ssafy.bespo.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ssafy.bespo.Enum.RoleType;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -25,7 +26,7 @@ public class Member extends BaseTime {
 
     private String email;
     private String name;
-//    private RoleType role;
+    private RoleType role;
     @Nullable
     private Integer weight;
     @Nullable
@@ -58,5 +59,9 @@ public class Member extends BaseTime {
 
     public void addTeam(Team team){
         this.team = team;
+    }
+
+    public void updateRoleType(RoleType roleType){
+        this.role = roleType;
     }
 }
