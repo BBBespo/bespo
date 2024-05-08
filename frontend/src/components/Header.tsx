@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { HiOutlineUserGroup } from 'react-icons/hi';
 import { GoBellFill } from 'react-icons/go';
 import { IoPersonSharp } from 'react-icons/io5';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 const HeaderContainer = styled.header`
   display: flex;
@@ -16,6 +16,8 @@ const HeaderContainer = styled.header`
     padding: 20px 20px;
   }
 `;
+
+const HeaderTitle = styled.button``;
 
 const HeaderText = styled.h1`
   font-family: GiantsInline;
@@ -179,10 +181,19 @@ const MyIoPersonSharp = styled(IoPersonSharp)`
 `;
 
 const Header = () => {
+  const navigate = useNavigate();
   return (
     <div>
       <HeaderContainer>
-        <HeaderText>Bespo</HeaderText>
+        <HeaderTitle>
+          <HeaderText
+            onClick={() => {
+              navigate('/');
+            }}
+          >
+            Bespo
+          </HeaderText>
+        </HeaderTitle>
         <HeaderManager>
           <HeaderManagerTextBox>
             <HeaderManagerText>MANAGER</HeaderManagerText>
@@ -193,7 +204,7 @@ const Header = () => {
             <NavigationText to="/">대시보드</NavigationText>
           </NavigationButton>
           <NavigationButton>
-            <NavigationText to="/1">선수단</NavigationText>
+            <NavigationText to="/team">선수단</NavigationText>
           </NavigationButton>
           <NavigationButton>
             <NavigationText to="/schedule">일정</NavigationText>
@@ -220,7 +231,7 @@ const Header = () => {
           <NavigationText to="/">대시보드</NavigationText>
         </NavigationButton>
         <NavigationButton>
-          <NavigationText to="/1">선수단</NavigationText>
+          <NavigationText to="/team">선수단</NavigationText>
         </NavigationButton>
         <NavigationButton>
           <NavigationText to="/schedule">일정</NavigationText>
