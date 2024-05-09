@@ -2,15 +2,11 @@ package com.ssafy.bespo.service;
 
 import com.ssafy.bespo.Enum.AcceptType;
 import com.ssafy.bespo.Enum.RoleType;
-import com.ssafy.bespo.dto.AlarmDto;
 import com.ssafy.bespo.dto.MemberDto;
-import com.ssafy.bespo.dto.MemberDto.readMemberRequest;
-import com.ssafy.bespo.dto.MemoDto;
 import com.ssafy.bespo.dto.TeamDto;
+import com.ssafy.bespo.dto.TeamDto.uploadImageResponse;
 import com.ssafy.bespo.entity.Alarm;
-import com.ssafy.bespo.entity.BaseTime;
 import com.ssafy.bespo.entity.Member;
-import com.ssafy.bespo.entity.Memo;
 import com.ssafy.bespo.entity.Team;
 import com.ssafy.bespo.exception.CustomException;
 import com.ssafy.bespo.exception.ErrorCode;
@@ -20,11 +16,12 @@ import com.ssafy.bespo.repository.TeamRepository;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +32,9 @@ public class TeamService {
     private final MemberRepository memberRepository;
 
     private final AlarmRepository alarmRepository;
+
+    @Autowired
+    private S3UploaderService s3UploaderService;
 
     // 팀 상세 조회하기
     public Team readTeam(int teamId){
@@ -247,5 +247,24 @@ public class TeamService {
         return playerList;
     }
 
+    @Transactional
+    public TeamDto.uploadImageResponse uploadImage(MultipartFile image, int teamId) throws IOException {
+        Team team = teamRepository.findByTeamIdAndFlagFalse(teamId);
+        if(team == null){
+            throw new CustomException(ErrorCode.No_EXIST_TEAM);
+        }
+
+        TeamDto.uploadImageResponse uploadImageResponse = new uploadImageResponse();
+
+        if(!image.isEmpty()) {
+            String storedFileName = s3UploaderService.upload(image,"teamImage");
+            team.addImage(storedFileName);
+            uploadImageResponse = TeamDto.uploadImageResponse.builder()
+                .image(storedFileName)
+                .build();
+        }
+
+        return uploadImageResponse;
+    }
 
 }

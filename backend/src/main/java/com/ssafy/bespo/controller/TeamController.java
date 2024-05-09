@@ -3,19 +3,25 @@ package com.ssafy.bespo.controller;
 import com.ssafy.bespo.controller.constants.Message;
 import com.ssafy.bespo.dto.MemberDto;
 import com.ssafy.bespo.dto.TeamDto;
+import com.ssafy.bespo.entity.Team;
 import com.ssafy.bespo.service.TeamService;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.concurrent.locks.ReentrantLock;
 import javax.swing.event.HyperlinkEvent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
 
 @RestController
 @AllArgsConstructor
@@ -90,6 +96,13 @@ public class TeamController {
     @GetMapping("/players")
     public ResponseEntity<Message> readPlayers(@RequestParam("teamId") int teamId){
         Message message = new Message("팀 선수단 리스트 조회 성공", teamService.getPlayers(teamId));
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    // 팀 프로필 이미지 업로드
+    @PostMapping(value="/upload",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<Message> uploadImage(@RequestPart(value="image", required = false) MultipartFile image, @RequestPart TeamDto.uploadImageRequest request) throws IOException {
+        Message message = new Message(("팀 이미지 업로드 성공"), teamService.uploadImage(image, request.getTeamId()));
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 

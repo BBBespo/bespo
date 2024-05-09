@@ -129,4 +129,19 @@ public class TeamDto {
         private RoleType roleType;
         private int number;
     }
+
+    @Getter
+    @Setter
+    public static class uploadImageRequest{
+        private int teamId;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class uploadImageResponse{
+        private String image;
+    }
 }
