@@ -54,4 +54,8 @@ public class Team extends BaseTime {
     public void removeAlarm(Alarm alarm){
         this.alarms.remove(alarm);
     }
+
+    public void addImage(String image){
+        this.image = image;
+    }
 }
