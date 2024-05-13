@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import DashBoard from '../../components/main/dashBoard/DashBoard';
-// import NoTeam from '../../components/Main/joinTeam/NoTeam'
+// import DashBoard from '../../components/main/dashBoard/DashBoard';
+import NoTeam from '../../components/main/joinTeam/NoTeam';
 const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -11,8 +11,8 @@ const MainContainer = styled.div`
 const Main = () => {
   return (
     <MainContainer>
-      <DashBoard />
-      {/* <NoTeam /> */}
+      {/* <DashBoard /> */}
+      <NoTeam />
     </MainContainer>
   );
 };
