@@ -31,9 +31,10 @@ public class MemberController {
     }
 
     @GetMapping("/{accessToken}")
-    public ResponseEntity<Member> findByAccessToken(@PathVariable String accessToken) {
+    public ResponseEntity<Message> findByAccessToken(@PathVariable String accessToken) {
         int memberId = authTokensGenerator.extractMemberId(accessToken);
-        return ResponseEntity.ok(memberRepository.findById(memberId).get());
+        Message message = new Message("유저 조회 성공", memberService.readMember(memberId));
+        return ResponseEntity.ok(message);
     }
 
     @PutMapping("/update")

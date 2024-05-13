@@ -55,4 +55,22 @@ public class MemberService {
         memberRepository.save(member);
     }
 
+    public MemberDto.readMemberResponse readMember(int memberId){
+        Member member = memberRepository.findByMemberIdAndFlagFalse(memberId);
+
+        MemberDto.readMemberResponse response = MemberDto.readMemberResponse.builder()
+                .memberId(memberId)
+                .role(member.getRole())
+                .name(member.getName())
+                .tel(member.getTel())
+                .weight(member.getWeight())
+                .height(member.getHeight())
+                .email(member.getEmail())
+                .backNumber(member.getBackNumber())
+                .birth(member.getBirth())
+                .build();
+
+        return response;
+    }
+
 }
