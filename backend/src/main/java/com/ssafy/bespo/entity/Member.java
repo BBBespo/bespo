@@ -67,14 +67,12 @@ public class Member extends BaseTime {
         this.role = roleType;
     }
 
-    @Builder
     public Member(String email, String nickname, OAuthProvider oAuthProvider) {
         this.email = email;
         this.name = nickname;
         this.oAuthProvider = oAuthProvider;
     }
 
-    @Builder
     public void updateMember(String email, String name, RoleType role,
                                int weight, int height, int birth, int backNumber){
         this.email = email;
