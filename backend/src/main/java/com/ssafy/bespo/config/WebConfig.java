@@ -9,9 +9,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(org.springframework.web.servlet.config.annotation.CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000")
-                .allowedOrigins("https://bespo.co.kr")
-                .allowedOrigins("http://bespo.co.kr")
+                .allowedOriginPatterns("http://localhost:3000", "https://bespo.co.kr", "http://bespo.co.kr")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .exposedHeaders("Authorization");;
     }
