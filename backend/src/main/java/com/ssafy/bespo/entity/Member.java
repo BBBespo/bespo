@@ -1,6 +1,7 @@
 package com.ssafy.bespo.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ssafy.bespo.Enum.OAuthProvider;
 import com.ssafy.bespo.Enum.RoleType;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
@@ -56,6 +57,7 @@ public class Member extends BaseTime {
     @OneToMany(mappedBy = "member")
     private List<Memo> memos;
 
+    private OAuthProvider oAuthProvider;
 
     public void addTeam(Team team){
         this.team = team;
@@ -63,5 +65,12 @@ public class Member extends BaseTime {
 
     public void updateRoleType(RoleType roleType){
         this.role = roleType;
+    }
+
+    @Builder
+    public Member(String email, String nickname, OAuthProvider oAuthProvider) {
+        this.email = email;
+        this.name = nickname;
+        this.oAuthProvider = oAuthProvider;
     }
 }
