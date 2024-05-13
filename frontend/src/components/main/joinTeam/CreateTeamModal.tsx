@@ -3,17 +3,20 @@ import styled from 'styled-components';
 import close from '../../../assets/images/schedule/close.png';
 import teamDefaultProfile from '../../../assets/images/createTeam/teamDefaultProfile.png';
 import teamProfileEx from '../../../assets/images/createTeam/teamProfileEx.png';
+import copy from '../../../assets/images/createTeam/copy.png';
+import kakao from '../../../assets/images/createTeam/kakao.png';
+import link from '../../../assets/images/createTeam/link.png';
 
 const CreateTeamModalContainer = styled.div`
   width: 30%;
-  height: auto;
+  height: 58vh;
   padding: 4vh;
   border-radius: 5px;
   background-color: ${(props) => props.theme.colors.white};
   z-index: 100;
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: center; */
 `;
 
 const CloseButtonBox = styled.div`
@@ -34,7 +37,7 @@ const ProfileImageBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 `;
 
 const FileUploadButtonBox = styled.div`
@@ -63,15 +66,33 @@ const TeamNameInputBox = styled.div`
   margin-top: 30px;
 `;
 
-const TeamNameInput = styled.div`
+const TeamCodeInputBox = styled.div`
+  margin-top: 30px;
+  position: relative;
+`;
+
+const TeamNameInputText = styled.div`
   font-weight: bold;
   font-size: 14px;
   margin-bottom: 8px;
 `;
 
-const Input = styled.input`
+const TeamNameInput = styled.input`
   width: 100%;
   padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+
+  &:focus {
+    outline: none;
+    box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.25);
+  }
+`;
+
+const TeamCodeInput = styled.input`
+  width: 100%;
+  padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 14px;
@@ -94,9 +115,22 @@ const SubmitButton = styled.button`
   font-size: 14px;
 `;
 
+const ContentTextBox = styled.div`
+  text-align: center;
+  font-size: 14px;
+`;
+
+const IconBox = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 22px;
+`;
+
 const CreateTeamModal = ({ onClose }: { onClose: () => void }) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [teamName, setTeamName] = useState('');
+  const [isTeamCreated, setIsTeamCreated] = useState(false);
+  const [teamCode, setTeamCode] = useState('');
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -122,53 +156,108 @@ const CreateTeamModal = ({ onClose }: { onClose: () => void }) => {
       formData.append('file', teamDefaultProfile);
     }
     formData.append('otherField', teamName);
+
+    /* 팀 생성 api 호출 후 */
+    setIsTeamCreated(true);
+    setTeamCode('3yKlt3');
   };
 
   const setToTeamDefaultProfile = () => {
     setSelectedFile(null);
   };
 
+  const copyTeamCode = () => {
+    navigator.clipboard.writeText(teamCode);
+  };
+
   return (
-    <CreateTeamModalContainer>
-      <CloseButtonBox>
-        <img src={close} onClick={onClose} alt="close" style={{ width: '17px', height: '17px', cursor: 'pointer' }} />
-      </CloseButtonBox>
-      <ModalHead>
-        <p>팀 만들기</p>
-      </ModalHead>
-      {selectedFile === null && (
-        <ProfileImageBox>
-          <img src={teamDefaultProfile} style={{ width: '100px', height: '100px' }} />
-        </ProfileImageBox>
-      )}
-      {selectedFile && (
-        <ProfileImageBox>
-          <img src={teamProfileEx} style={{ width: '100px', height: '100px', borderRadius: '50px' }} />
-        </ProfileImageBox>
-      )}
+    <>
+      <CreateTeamModalContainer>
+        <CloseButtonBox>
+          <img src={close} onClick={onClose} alt="close" style={{ width: '17px', height: '17px', cursor: 'pointer' }} />
+        </CloseButtonBox>
 
-      <form onSubmit={handleSubmit}>
-        <FileUploadButtonBox>
-          <FileUploadButton>
-            <label htmlFor="fileInput" style={{ fontWeight: 'bold' }}>
-              프로필 사진 업로드
-            </label>
-          </FileUploadButton>
-          <input type="file" id="fileInput" onChange={handleFileChange} style={{ display: 'none' }} />
-        </FileUploadButtonBox>
+        {isTeamCreated && (
+          <>
+            <ModalHead>
+              <p>팀 초대 코드</p>
+            </ModalHead>
+            <ProfileImageBox>
+              <img
+                src="https://bespo.s3.ap-northeast-2.amazonaws.com/teamImage/bm.png"
+                style={{ width: '100px', height: '100px', borderRadius: '50px' }}
+              />
+            </ProfileImageBox>
+            <ContentTextBox>
+              <div>팀 만들기가 완료되었습니다.</div>
+              <div>팀원을 초대 코드로 초대해보세요.</div>
+            </ContentTextBox>
 
-        <ChangeToDefaultImageTextBox>
-          <div onClick={setToTeamDefaultProfile}>기본 이미지로 변경</div>
-        </ChangeToDefaultImageTextBox>
+            <TeamCodeInputBox>
+              <TeamCodeInput type="text" value={teamCode} readOnly />
+              <img
+                src={copy}
+                onClick={copyTeamCode}
+                alt="copy"
+                style={{
+                  position: 'absolute',
+                  top: '50%',
+                  right: '10px',
+                  transform: 'translateY(-50%)',
+                  cursor: 'pointer',
+                  width: '30px',
+                }}
+              />
+            </TeamCodeInputBox>
 
-        <TeamNameInputBox>
-          <TeamNameInput>팀 이름을 입력해주세요.*</TeamNameInput>
-          <Input type="text" value={teamName} onChange={handleOtherFieldChange} />
-        </TeamNameInputBox>
+            <IconBox>
+              <img src={kakao} alt="kakao" style={{ width: '50px', height: '50px', marginRight: '15px' }} />
+              <img src={link} alt="link" style={{ width: '50px', height: '50px' }} />
+            </IconBox>
+          </>
+        )}
 
-        <SubmitButton type="submit">팀 만들기</SubmitButton>
-      </form>
-    </CreateTeamModalContainer>
+        {!isTeamCreated && (
+          <>
+            <ModalHead>
+              <p>팀 만들기</p>
+            </ModalHead>
+            {selectedFile === null && (
+              <ProfileImageBox>
+                <img src={teamDefaultProfile} style={{ width: '100px', height: '100px' }} />
+              </ProfileImageBox>
+            )}
+            {selectedFile && (
+              <ProfileImageBox>
+                <img src={teamProfileEx} style={{ width: '100px', height: '100px', borderRadius: '50px' }} />
+              </ProfileImageBox>
+            )}
+
+            <form onSubmit={handleSubmit}>
+              <FileUploadButtonBox>
+                <FileUploadButton>
+                  <label htmlFor="fileInput" style={{ fontWeight: 'bold' }}>
+                    프로필 사진 업로드
+                  </label>
+                </FileUploadButton>
+                <input type="file" id="fileInput" onChange={handleFileChange} style={{ display: 'none' }} />
+              </FileUploadButtonBox>
+
+              <ChangeToDefaultImageTextBox>
+                <div onClick={setToTeamDefaultProfile}>기본 이미지로 변경</div>
+              </ChangeToDefaultImageTextBox>
+
+              <TeamNameInputBox>
+                <TeamNameInputText>팀 이름을 입력해주세요.*</TeamNameInputText>
+                <TeamNameInput type="text" value={teamName} onChange={handleOtherFieldChange} />
+              </TeamNameInputBox>
+
+              <SubmitButton type="submit">팀 만들기</SubmitButton>
+            </form>
+          </>
+        )}
+      </CreateTeamModalContainer>
+    </>
   );
 };
 
