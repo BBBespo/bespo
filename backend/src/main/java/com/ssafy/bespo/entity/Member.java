@@ -52,7 +52,7 @@ public class Member extends BaseTime {
     private List<Training> trainings;
 
     @OneToMany(mappedBy = "member")
-    private List<InjuryInfo> injuryInfos;
+    private List<Injury> injuryInfos;
 
     @OneToMany(mappedBy = "member")
     private List<Memo> memos;

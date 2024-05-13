@@ -59,14 +59,11 @@ public class S3UploaderService {
 
     private Optional<File> convert(MultipartFile file) throws  IOException {
         File convertFile = new File(file.getOriginalFilename());
-        System.out.println("conver:" + convertFile);
         if(convertFile.createNewFile()) {
             try (FileOutputStream fos = new FileOutputStream(convertFile)) {
                 fos.write(file.getBytes());
             }
             return Optional.of(convertFile);
-        } else{
-            removeNewFile(convertFile);  // 로컬에 생성된 File 삭제 (MultipartFile -> File 전환 하며 로컬에 파일 생성됨)
         }
         return Optional.empty();
     }
