@@ -67,7 +67,7 @@ const DatePickerBox = styled.div`
 `;
 
 const SubmitButton = styled.button`
-  background-color: #ff0000;
+  background-color: ${(props) => props.theme.colors.red};
   color: #f3f3f3;
   width: 100%;
   height: 35px;
