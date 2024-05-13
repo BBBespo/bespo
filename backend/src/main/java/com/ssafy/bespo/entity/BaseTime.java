@@ -30,4 +30,8 @@ public abstract class BaseTime {
     public LocalDateTime getCreateDate(){
         return this.createdDate;
     }
+
+    public void shallowDelete(){
+        this.flag = true;
+    }
 }
