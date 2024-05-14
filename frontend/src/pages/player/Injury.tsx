@@ -47,13 +47,22 @@ const Wrapper = styled.div`
   width: 90%;
   height: 80vh;
   display: flex;
-  flex-direction: column;
-  align-items: center;
 `;
 
 const BodyWrapper = styled.div`
   display: flex;
   width: 100%;
+  flex-direction: column;
+  align-items: center;
+
+  @media (min-width: 901px) {
+    flex-direction: row;
+    justify-content: space-between;
+
+    & > * {
+      width: 50%;
+    }
+  }
 `;
 
 const BodyHeader = styled.div`
@@ -74,12 +83,20 @@ const BodyComponentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 50%;
+
+  @media (max-width: 900px) {
+    width: 80%;
+  }
 `;
 
 const PainListWrapper = styled.div`
   position: relative;
   width: 50%;
   height: 100%;
+
+  @media (max-width: 900px) {
+    width: 80%;
+  }
 `;
 
 const PainList = styled.div`
@@ -128,6 +145,11 @@ const ModalDiv = styled.div`
   z-index: 10000000000;
   padding: 20px;
   border-radius: 10px;
+
+  @media (max-width: 900px) {
+    width: 90%;
+    height: 60%;
+  }
 `;
 
 const CloseButton = styled.img`
@@ -209,6 +231,11 @@ const SubmitButton = styled.button`
 const PainListSubmitButton = styled(SubmitButton)`
   position: absolute;
   bottom: 10%;
+
+  @media (max-width: 900px) {
+    position: relative;
+    bottom: 0;
+  }
 `;
 
 export default function Injury() {

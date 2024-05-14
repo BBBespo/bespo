@@ -10,9 +10,12 @@ const MainContainer = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
-  padding: 0 0vh;
-`;
+  padding: 0 5vh;
 
+  @media (max-width: 900px) {
+    padding: 0;
+  }
+`;
 export default function Main() {
   const [value, setValue] = useState(0);
   const navigate = useNavigate();

@@ -62,6 +62,10 @@ const DayContainer = styled.div`
   justify-content: space-between;
   width: 95%;
   margin-bottom: 60px;
+
+  @media (max-width: 900px) {
+    margin-bottom: 10px;
+  }
 `;
 
 const DayBox = styled.div`
@@ -98,6 +102,12 @@ const ScheduleContainer = styled.div`
     width: 2px;
     background-color: ${(props) => props.theme.colors.gray2};
     z-index: 5;
+
+    @media (max-width: 900px) {
+      left: 4px;
+      top: 25px;
+      bottom: 25px;
+    }
   }
 `;
 
@@ -112,6 +122,10 @@ const Content = styled.div`
   p {
     margin-right: 5px;
   }
+
+  @media (max-width: 900px) {
+    height: 50px;
+  }
 `;
 
 const ScheduleText = styled.p<CircleProps>`
@@ -120,6 +134,10 @@ const ScheduleText = styled.p<CircleProps>`
   justify-content: center;
   text-align: center;
   color: ${(props) => (props.active ? 'red' : props.theme.colors.gray4)};
+
+  @media (max-width: 900px) {
+    font-size: 18px;
+  }
 `;
 
 const Circle = styled.div<CircleProps>`
@@ -129,6 +147,12 @@ const Circle = styled.div<CircleProps>`
   border-radius: 50%;
   margin-right: 30px;
   background-color: ${(props) => (props.active ? 'red' : props.theme.colors.gray2)};
+
+  @media (max-width: 900px) {
+    width: 10px;
+    height: 10px;
+    margin-right: 20px;
+  }
 `;
 
 const Player = ({ className }: ScheduleProps) => {
