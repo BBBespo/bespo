@@ -81,8 +81,9 @@ public class MemberService {
                 .email(member.getEmail())
                 .backNumber(member.getBackNumber())
                 .birth(member.getBirth())
-                .team(member.getTeam().toReadTeam())
                 .build();
+
+        if(team != null) response.setTeam(team.toReadTeam());
 
         return response;
     }
