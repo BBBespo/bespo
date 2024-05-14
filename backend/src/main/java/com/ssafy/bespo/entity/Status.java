@@ -28,8 +28,6 @@ public class Status extends BaseTime {
 
     private int mood;
 
-    private int sleep;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     @JsonIgnore
