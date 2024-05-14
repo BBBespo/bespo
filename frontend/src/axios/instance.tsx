@@ -11,7 +11,7 @@ type Token = {
 instance.interceptors.request.use((config) => {
   const token: Token = JSON.parse(localStorage.getItem('login-state')!).state.accessToken;
   if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+    config.headers.accessToken = token;
   }
   return config;
 });

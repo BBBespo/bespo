@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import createTeam from '../../assets/images/createTeam.png';
-import joinTeam from '../../assets/images/joinTeam.png';
+import createTeam from '../../../assets/images/createTeam.png';
+import joinTeam from '../../../assets/images/joinTeam.png';
+import CreateTeamModal from './CreateTeamModal';
 
 const DashBoardContainer = styled.div`
   display: flex;
@@ -84,16 +85,16 @@ const ModalBackground = styled.div`
   align-items: center;
   z-index: 99;
 `;
-const ModalDiv = styled.div`
-  width: 50%;
-  height: 60%;
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 100;
-`;
+// const ModalDiv = styled.div`
+//   width: 50%;
+//   height: 60%;
+//   background-color: white;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   align-items: center;
+//   z-index: 100;
+// `;
 
 export default function NoTeam() {
   const [isOpen, setIsOpen] = useState(false);
@@ -101,12 +102,8 @@ export default function NoTeam() {
   return (
     <>
       {isOpen && (
-        <ModalBackground
-          onClick={() => {
-            setIsOpen(false);
-          }}
-        >
-          <ModalDiv></ModalDiv>
+        <ModalBackground>
+          <CreateTeamModal onClose={() => setIsOpen(false)} />
         </ModalBackground>
       )}
       <DashBoardContainer>

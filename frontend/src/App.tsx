@@ -8,6 +8,9 @@ import Schedule from './pages/main/Schedule';
 import Login from './pages/login/Login';
 import Team from './pages/main/Team';
 import KakaoLoginRedirection from './pages/login/KakaoLogin';
+import SignUp from './pages/signup/SignUp';
+import Condition from './pages/player/Condition';
+import Injury from './pages/player/Injury';
 
 const Wrapper = styled.div`
   font-family: Pretendard;
@@ -27,6 +30,9 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/team" element={<Team />} />
           <Route path="/kakao/callback" element={<KakaoLoginRedirection />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/condition" element={<Condition />} />
+          <Route path="/injury" element={<Injury />} />
         </Routes>
       </BrowserRouter>
     </Wrapper>

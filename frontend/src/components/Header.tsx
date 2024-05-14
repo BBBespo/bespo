@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { HiOutlineUserGroup } from 'react-icons/hi';
 import { GoBellFill } from 'react-icons/go';
@@ -53,7 +53,7 @@ const HeaderManagerTextBox = styled.div`
   transform: skew(20deg);
 `;
 
-const HeaderManagerText = styled.text`
+const HeaderManagerText = styled.div`
   font-family: PretendardVariable;
   font-size: 12px;
   color: white;
@@ -179,8 +179,17 @@ const MyIoPersonSharp = styled(IoPersonSharp)`
     font-size: 20px;
   }
 `;
-
 const Header = () => {
+  const [isLogin, setLogin] = useState(false);
+  const [hasTeam, setHasTeam] = useState(false);
+  useEffect(() => {
+    if (localStorage.getItem('login-state')) {
+      const isLogin = JSON.parse(localStorage.getItem('login-state')!).state.name;
+      const hasTeam = JSON.parse(localStorage.getItem('login-state')!).state.hasTeam;
+      if (isLogin) setLogin(true);
+      if (hasTeam) setHasTeam(true);
+    }
+  }, []);
   const navigate = useNavigate();
   return (
     <div>
@@ -199,7 +208,43 @@ const Header = () => {
             <HeaderManagerText>MANAGER</HeaderManagerText>
           </HeaderManagerTextBox>
         </HeaderManager>
-        <NavigationBar>
+        {hasTeam && (
+          <NavigationBar>
+            <NavigationButton>
+              <NavigationText to="/">대시보드</NavigationText>
+            </NavigationButton>
+            <NavigationButton>
+              <NavigationText to="/team">선수단</NavigationText>
+            </NavigationButton>
+            <NavigationButton>
+              <NavigationText to="/schedule">일정</NavigationText>
+            </NavigationButton>
+            <NavigationButton>
+              <NavigationText to="/memo">메모</NavigationText>
+            </NavigationButton>
+          </NavigationBar>
+        )}
+        <NavigationGap />
+        {hasTeam && (
+          <HeaderButton $type="red">
+            <MyHiOutlineUserGroup />
+          </HeaderButton>
+        )}
+        {isLogin && (
+          <>
+            <HeaderButton onClick={() => {}}>
+              <MyGoBellFill />
+            </HeaderButton>
+            <HeaderButton>
+              <NavLink to="/login">
+                <MyIoPersonSharp />
+              </NavLink>
+            </HeaderButton>
+          </>
+        )}
+      </HeaderContainer>
+      {hasTeam && (
+        <NavigationBarMobile>
           <NavigationButton>
             <NavigationText to="/">대시보드</NavigationText>
           </NavigationButton>
@@ -212,34 +257,8 @@ const Header = () => {
           <NavigationButton>
             <NavigationText to="/memo">메모</NavigationText>
           </NavigationButton>
-        </NavigationBar>
-        <NavigationGap />
-        <HeaderButton $type="red">
-          <MyHiOutlineUserGroup />
-        </HeaderButton>
-        <HeaderButton onClick={() => {}}>
-          <MyGoBellFill />
-        </HeaderButton>
-        <HeaderButton>
-          <NavLink to="/Login">
-            <MyIoPersonSharp />
-          </NavLink>
-        </HeaderButton>
-      </HeaderContainer>
-      <NavigationBarMobile>
-        <NavigationButton>
-          <NavigationText to="/">대시보드</NavigationText>
-        </NavigationButton>
-        <NavigationButton>
-          <NavigationText to="/team">선수단</NavigationText>
-        </NavigationButton>
-        <NavigationButton>
-          <NavigationText to="/schedule">일정</NavigationText>
-        </NavigationButton>
-        <NavigationButton>
-          <NavigationText to="/memo">메모</NavigationText>
-        </NavigationButton>
-      </NavigationBarMobile>
+        </NavigationBarMobile>
+      )}
     </div>
   );
 };

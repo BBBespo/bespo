@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Board1 from './Board1';
 import Graph from './Graph';
 import Player from './Player';
-import Schedule from './Schedule';
+import Schedule from '../Schedule';
 const DashBoardDiv = styled.div`
   height: 80vh;
   width: 100%;

@@ -3,16 +3,17 @@ import { instance } from 'src/axios/instance';
 
 type User = {
   accessToken: string;
-  nickname: string;
+  name: string;
   profile: string;
   email: string;
+  hasTeam: boolean;
+  role: string;
 };
 
 type KakaoProps = {
   code: string;
   setUser: (user: User) => void;
 };
-
 const KakaoLoginRedirectComponent = ({ code, setUser }: KakaoProps) => {
   instance
     .post('/members/kakao', {
@@ -22,19 +23,29 @@ const KakaoLoginRedirectComponent = ({ code, setUser }: KakaoProps) => {
       if (res && res.data) {
         if (res.data) {
           const accessToken = res.data.accessToken;
-          instance.get(`/members/${accessToken}`).then((res) => {
-            const user: User = {
-              accessToken: accessToken,
-              nickname: res.data.name,
-              profile: '',
-              email: res.data.email,
-            };
-            setUser(user);
-            if (user.nickname) {
-              window.location.href = '/';
-            } else {
-            }
-          });
+          instance
+            .get('/members', {
+              headers: {
+                accessToken: accessToken,
+              },
+            })
+            .then((res) => {
+              console.log(res);
+              const user: User = {
+                accessToken: accessToken,
+                name: res.data.name,
+                profile: '',
+                email: res.data.email,
+                hasTeam: res.data.team,
+                role: res.data.role,
+              };
+              setUser(user);
+              if (user.name) {
+                window.location.href = '/';
+              } else {
+                window.location.href = '/signup';
+              }
+            });
         }
       }
     })

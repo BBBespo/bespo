@@ -33,7 +33,7 @@ const MemberCardContainer = styled.button`
   border-bottom: 1px solid ${(props) => props.theme.colors.gray2};
 `;
 
-const MemberCardText = styled.text<{ $isSelected: boolean }>`
+const MemberCardText = styled.div<{ $isSelected: boolean }>`
   font-family: PretendardVariable;
   font-size: 18px;
   font-weight: 600;

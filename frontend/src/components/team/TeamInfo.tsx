@@ -19,7 +19,7 @@ const TeamInfoTextBox = styled.div`
   align-items: flex-end;
 `;
 
-const TeamInfoText = styled.text`
+const TeamInfoText = styled.div`
   font-family: PretendardVariable;
   font-size: 12px;
   font-weight: 600;
@@ -30,7 +30,7 @@ const TeamInfoText = styled.text`
   }
 `;
 
-const TeamInfoContent = styled.text`
+const TeamInfoContent = styled.div`
   font-family: PretendardVariable;
   font-size: 18 px;
   font-weight: 600;
