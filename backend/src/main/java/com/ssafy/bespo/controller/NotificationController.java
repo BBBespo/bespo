@@ -52,7 +52,7 @@ public class NotificationController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Message> deleteNotification(@RequestHeader String accessToken, @RequestParam int notificationId) {
+    public ResponseEntity<Message> deleteNotification(@RequestHeader String accessToken, @RequestHeader int notificationId) {
         notificationService.deleteNotification(accessToken, notificationId);
         Message message = new Message("공지 삭제 성공");
         return new ResponseEntity<>(message, HttpStatus.OK);
