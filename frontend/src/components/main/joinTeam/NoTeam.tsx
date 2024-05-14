@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import createTeam from '../../assets/images/createTeam.png';
-import joinTeam from '../../assets/images/joinTeam.png';
+import createTeam from '../../../assets/images/createTeam.png';
+import joinTeam from '../../../assets/images/joinTeam.png';
 
 const DashBoardContainer = styled.div`
   display: flex;

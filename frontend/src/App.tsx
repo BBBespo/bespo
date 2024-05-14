@@ -7,6 +7,9 @@ import Memo from './pages/main/Memo';
 import Schedule from './pages/main/Schedule';
 import Login from './pages/login/Login';
 import Team from './pages/main/Team';
+import NickName from './pages/signup/Nickname';
+import Condition from './pages/player/Condition';
+import Injury from './pages/player/Injury';
 
 const Wrapper = styled.div`
   font-family: Pretendard;
@@ -25,6 +28,9 @@ function App() {
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/login" element={<Login />} />
           <Route path="/team" element={<Team />} />
+          <Route path="/nickname" element={<NickName />} />
+          <Route path="/condition" element={<Condition />} />
+          <Route path="/injury" element={<Injury />} />
         </Routes>
       </BrowserRouter>
     </Wrapper>

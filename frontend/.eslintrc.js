@@ -11,6 +11,7 @@ module.exports = {
   ],
   rules: {
     'prettier/prettier': 0,
+    '@typescript-eslint/no-explicit-any': 'off',
   },
 
   settings: {
@@ -23,4 +24,4 @@ module.exports = {
       typescript: { alwaysTryTypes: true },
     },
   },
-}
+};
