@@ -21,7 +21,9 @@ public class MemoService {
     private final MemberRepository memberRepository;
     private final AuthTokensGenerator authTokensGenerator;
 
-    public boolean isAuthentic(String[] scopes, Member reader){
+    public boolean isAuthentic(String[] scopes, Member reader, Member writer){
+        if(writer.equals(reader))
+            return true;
         for(String scope : scopes)
             if(scope.equals(reader.getRole().toString()))
                 return true;
@@ -36,9 +38,11 @@ public class MemoService {
 
         Memo memo = memoRepository.findByMemoIdAndFlagFalse(memoId);
 
+        Member writer = memo.getMember();
+
         String[] scopes = memo.getScope().split(" ");
 
-        if(!isAuthentic(scopes, reader))
+        if(!isAuthentic(scopes, reader, writer))
             throw new CustomException(ErrorCode.NO_AUTHENTICATION);
 
         MemoDto.readMemoResponse response = MemoDto.readMemoResponse.builder()
