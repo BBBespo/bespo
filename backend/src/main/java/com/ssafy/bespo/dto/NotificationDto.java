@@ -38,9 +38,8 @@ public class NotificationDto {
     public static class modifyNotificationRequest {
         private Integer notificationId;
         private String title;
-        private String writer;
+        private String writerId;
         private String text;
-        private String image;
     }
 
 }

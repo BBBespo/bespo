@@ -38,6 +38,7 @@ public class NotificationService {
                 .text(request.getText())
                 .title(request.getTitle())
                 .team(member.getTeam())
+                .writerId(memberId)
                 .build();
 
         notificationRepository.save(notification);
@@ -92,6 +93,7 @@ public class NotificationService {
         Notification notification = notificationRepository.findByNotificationIdAndFlagFalse(request.getNotificationId());
         if(notification == null) throw new CustomException(ErrorCode.NO_EXIST_NOTIFICATION);
         if(notification.getWriterId() != memberId)  throw new CustomException(ErrorCode.NO_AUTHENTICATION_DIFFERENT_WRITER);
+        if(imgUrl.isEmpty()) imgUrl = notification.getImage();
         notification.updateNotification(request.getTitle(), request.getText(), imgUrl);
         notificationRepository.save(notification);
         return notification.getNotificationId();
