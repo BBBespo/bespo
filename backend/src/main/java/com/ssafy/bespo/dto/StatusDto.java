@@ -14,7 +14,6 @@ public class StatusDto {
     @Getter
     @Setter
     public static class createStatusRequest{
-        private Integer memberId;
         private readStatusRequest status;
     }
 

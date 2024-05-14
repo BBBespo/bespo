@@ -3,6 +3,8 @@ package com.ssafy.bespo.controller;
 import com.ssafy.bespo.controller.constants.Message;
 import com.ssafy.bespo.dto.MemberDto;
 import com.ssafy.bespo.dto.TeamDto;
+import com.ssafy.bespo.dto.TeamDto.acceptRequest;
+import com.ssafy.bespo.dto.TeamDto.sendJoinTeamRequest;
 import com.ssafy.bespo.entity.Team;
 import com.ssafy.bespo.jwt.AuthTokensGenerator;
 import com.ssafy.bespo.service.S3UploaderService;
@@ -60,20 +62,20 @@ public class TeamController {
 
     // 팀 참가요청 보내기
     @PostMapping("/send")
-    public ResponseEntity<Message> sendJoinTeam(@RequestBody TeamDto.sendJoinTeamRequest sendJoinTeamRequest){
+    public ResponseEntity<Message> sendJoinTeam(@RequestHeader String accessToken, @RequestBody TeamDto.sendJoinTeamRequest sendJoinTeamRequest){
         Message message;
         if (teamService.checkAlarm(sendJoinTeamRequest.getEmail())){
             message = new Message("팀 참가 요청 중복");
         } else {
-            message = new Message("팀 참가 요청 완료", teamService.sendJoinTeam(sendJoinTeamRequest));
+            message = new Message("팀 참가 요청 완료", teamService.sendJoinTeam(accessToken, sendJoinTeamRequest));
         }
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     // 팀 참가 수락하기
     @PostMapping("/accept")
-    public ResponseEntity<Message> acceptTeam(@RequestBody TeamDto.acceptRequest acceptRequest){
-        Message message = new Message(teamService.acceptTeam(acceptRequest));
+    public ResponseEntity<Message> acceptTeam(@RequestHeader String accessToken, @RequestBody TeamDto.acceptRequest acceptRequest){
+        Message message = new Message(teamService.acceptTeam(accessToken, acceptRequest));
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 

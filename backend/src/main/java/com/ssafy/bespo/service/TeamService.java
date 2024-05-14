@@ -4,12 +4,15 @@ import com.ssafy.bespo.Enum.AcceptType;
 import com.ssafy.bespo.Enum.RoleType;
 import com.ssafy.bespo.dto.MemberDto;
 import com.ssafy.bespo.dto.TeamDto;
+import com.ssafy.bespo.dto.TeamDto.acceptRequest;
+import com.ssafy.bespo.dto.TeamDto.sendJoinTeamRequest;
 import com.ssafy.bespo.dto.TeamDto.uploadImageResponse;
 import com.ssafy.bespo.entity.Alarm;
 import com.ssafy.bespo.entity.Member;
 import com.ssafy.bespo.entity.Team;
 import com.ssafy.bespo.exception.CustomException;
 import com.ssafy.bespo.exception.ErrorCode;
+import com.ssafy.bespo.jwt.AuthTokensGenerator;
 import com.ssafy.bespo.repository.AlarmRepository;
 import com.ssafy.bespo.repository.MemberRepository;
 import com.ssafy.bespo.repository.TeamRepository;
@@ -33,6 +36,7 @@ public class TeamService {
     private final MemberRepository memberRepository;
 
     private final AlarmRepository alarmRepository;
+    private final AuthTokensGenerator authTokensGenerator;
 
     @Autowired
     private S3UploaderService s3UploaderService;
@@ -116,12 +120,13 @@ public class TeamService {
     }
 
     // 팀 코드를 입력하여 관리자에게 승인 요청 보내기
-    public TeamDto.sendJoinTeamResponse sendJoinTeam(TeamDto.sendJoinTeamRequest sendJoinTeamReq){
+    public TeamDto.sendJoinTeamResponse sendJoinTeam(String accessToken, TeamDto.sendJoinTeamRequest sendJoinTeamReq){
 
         // 코드를 통해 팀 찾기
         Team team = teamRepository.findByCodeAndFlagFalse(sendJoinTeamReq.getCode());
         // 가입할 사람의 정보
-        Member member = memberRepository.findByMemberIdAndFlagFalse(sendJoinTeamReq.getMemberId());
+        int memberId = authTokensGenerator.extractMemberId(accessToken);
+        Member member = memberRepository.findByMemberIdAndFlagFalse(memberId);
         if(team == null){
             throw new CustomException(ErrorCode.No_EXIST_TEAM);
         }
@@ -150,13 +155,14 @@ public class TeamService {
 
     // 팀 관리자가 팀에 멤버로 추가
     @Transactional
-    public String acceptTeam(TeamDto.acceptRequest acceptRequest){
+    public String acceptTeam(String accessToken, TeamDto.acceptRequest acceptRequest){
         String msg = "";
         Team team = teamRepository.findByCodeAndFlagFalse(acceptRequest.getCode());
         if(team == null){
             throw new CustomException(ErrorCode.No_EXIST_TEAM);
         }
-        Member member = memberRepository.findByMemberIdAndFlagFalse(acceptRequest.getMemberId());
+        int memberId = authTokensGenerator.extractMemberId(accessToken);
+        Member member = memberRepository.findByMemberIdAndFlagFalse(memberId);
         if(member == null){
             throw new CustomException((ErrorCode.NO_EXIST_MEMBER));
         }
