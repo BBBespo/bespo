@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import createTeam from '../../../assets/images/createTeam.png';
 import joinTeam from '../../../assets/images/joinTeam.png';
 import CreateTeamModal from './CreateTeamModal';
+import JoinTeamModal from './JoinTeamModal';
 
 const DashBoardContainer = styled.div`
   display: flex;
@@ -97,13 +98,19 @@ const ModalBackground = styled.div`
 // `;
 
 export default function NoTeam() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isCreateTeamModalOpen, setIsCreateTeamModalOpen] = useState(false);
+  const [isJoinTeamModalOpen, setIsJoinTeamModalOpen] = useState(false);
 
   return (
     <>
-      {isOpen && (
+      {isCreateTeamModalOpen && (
         <ModalBackground>
-          <CreateTeamModal onClose={() => setIsOpen(false)} />
+          <CreateTeamModal onClose={() => setIsCreateTeamModalOpen(false)} />
+        </ModalBackground>
+      )}
+      {isJoinTeamModalOpen && (
+        <ModalBackground>
+          <JoinTeamModal onClose={() => setIsJoinTeamModalOpen(false)} />
         </ModalBackground>
       )}
       <DashBoardContainer>
@@ -115,7 +122,7 @@ export default function NoTeam() {
         <CardContainer>
           <CardDiv
             onClick={() => {
-              setIsOpen(true);
+              setIsCreateTeamModalOpen(true);
             }}
           >
             <CardHeadText>새로운 팀을 만들어 보세요!</CardHeadText>
@@ -129,7 +136,7 @@ export default function NoTeam() {
           </CardDiv>
           <CardDiv
             onClick={() => {
-              setIsOpen(true);
+              setIsJoinTeamModalOpen(true);
             }}
           >
             <CardHeadText>팀원으로 합류해 보세요!</CardHeadText>
