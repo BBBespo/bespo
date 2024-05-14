@@ -34,7 +34,7 @@ public class Member extends BaseTime {
     @Nullable
     private Integer height;
     @Nullable
-    private int birth;
+    private String birth;
     @Nullable
     private String tel;
     @Column(name = "back_number")
@@ -77,7 +77,7 @@ public class Member extends BaseTime {
     }
 
     public void updateMember(String email, String name, RoleType role,
-                               int weight, int height, int birth, int backNumber, String imgUrl){
+                               int weight, int height, String birth, int backNumber, String imgUrl, String tel){
         this.email = email;
         this.name = name;
         this.role = role;
@@ -86,6 +86,7 @@ public class Member extends BaseTime {
         this.birth = birth;
         this.backNumber = backNumber;
         this.imgUrl = imgUrl;
+        this.tel = tel;
     }
 
 }

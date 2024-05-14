@@ -45,7 +45,7 @@ public class MemberDto {
         private RoleType role;
         private Integer weight;
         private Integer height;
-        private int birth;
+        private String birth;
         private String tel;
         private Integer backNumber;
         private TeamDto.ReadTeam team;
@@ -64,7 +64,7 @@ public class MemberDto {
         private RoleType role;
         private Integer weight;
         private Integer height;
-        private int birth;
+        private String birth;
         private String tel;
         private Integer backNumber;
 

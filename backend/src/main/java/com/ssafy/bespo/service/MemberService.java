@@ -23,7 +23,7 @@ public class MemberService {
         int memberId = authTokensGenerator.extractMemberId(accessToken);
         Member member = memberRepository.findByMemberIdAndFlagFalse(memberId);
         member.updateMember(request.getEmail(), request.getName(), request.getRole(),
-                request.getWeight(), request.getHeight(), request.getBirth(), request.getBackNumber(), imgUrl);
+                request.getWeight(), request.getHeight(), request.getBirth(), request.getBackNumber(), imgUrl, request.getTel());
 
         memberRepository.save(member);
     }
@@ -40,7 +40,7 @@ public class MemberService {
             }
         }
         member.updateMember(request.getEmail(), request.getName(), request.getRole(),
-                request.getWeight(), request.getHeight(), request.getBirth(), request.getBackNumber(), imgUrl);
+                request.getWeight(), request.getHeight(), request.getBirth(), request.getBackNumber(), imgUrl, request.getTel());
 
         memberRepository.save(member);
 
