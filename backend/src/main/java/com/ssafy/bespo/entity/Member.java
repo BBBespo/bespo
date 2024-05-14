@@ -5,6 +5,7 @@ import com.ssafy.bespo.Enum.OAuthProvider;
 import com.ssafy.bespo.Enum.RoleType;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -52,7 +53,7 @@ public class Member extends BaseTime {
     private List<Training> trainings;
 
     @OneToMany(mappedBy = "member")
-    private List<InjuryInfo> injuryInfos;
+    private List<Injury> injurys;
 
     @OneToMany(mappedBy = "member")
     private List<Memo> memos;

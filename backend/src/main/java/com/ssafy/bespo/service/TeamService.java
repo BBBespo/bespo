@@ -15,6 +15,7 @@ import com.ssafy.bespo.repository.MemberRepository;
 import com.ssafy.bespo.repository.TeamRepository;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
