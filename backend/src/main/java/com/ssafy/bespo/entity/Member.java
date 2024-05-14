@@ -41,6 +41,8 @@ public class Member extends BaseTime {
     @Nullable
     private Integer backNumber;
 
+    private String imgUrl;
+
     @ManyToOne
     @JoinColumn(name = "team_id")
     @JsonIgnore
@@ -75,7 +77,7 @@ public class Member extends BaseTime {
     }
 
     public void updateMember(String email, String name, RoleType role,
-                               int weight, int height, int birth, int backNumber){
+                               int weight, int height, int birth, int backNumber, String imgUrl){
         this.email = email;
         this.name = name;
         this.role = role;
@@ -83,6 +85,7 @@ public class Member extends BaseTime {
         this.height = height;
         this.birth = birth;
         this.backNumber = backNumber;
+        this.imgUrl = imgUrl;
     }
 
 }

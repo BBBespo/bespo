@@ -2,7 +2,9 @@ package com.ssafy.bespo.service;
 
 import com.ssafy.bespo.Enum.RoleType;
 import com.ssafy.bespo.dto.MemberDto;
+import com.ssafy.bespo.dto.TeamDto;
 import com.ssafy.bespo.entity.Member;
+import com.ssafy.bespo.entity.Team;
 import com.ssafy.bespo.exception.CustomException;
 import com.ssafy.bespo.exception.ErrorCode;
 import com.ssafy.bespo.jwt.AuthTokensGenerator;
@@ -17,21 +19,29 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final AuthTokensGenerator authTokensGenerator;
 
-    public void changeMemberInfo(String accessToken, MemberDto.UpdateMemberRequest request) {
+    public void changeMemberInfo(String accessToken, MemberDto.UpdateMemberRequest request, String imgUrl) {
         int memberId = authTokensGenerator.extractMemberId(accessToken);
         Member member = memberRepository.findByMemberIdAndFlagFalse(memberId);
-        member.updateMember(member.getEmail(), member.getName(), member.getRole(),
-                member.getWeight(), member.getHeight(), member.getBirth(), member.getBackNumber());
+        member.updateMember(request.getEmail(), request.getName(), request.getRole(),
+                request.getWeight(), request.getHeight(), request.getBirth(), request.getBackNumber(), imgUrl);
 
         memberRepository.save(member);
     }
 
-    public MemberDto.readMemberResponse registerMemberByToken(String accessToken, MemberDto.UpdateMemberRequest request){
+    public MemberDto.readMemberResponse registerMemberByToken(String accessToken, MemberDto.UpdateMemberRequest request, String imgUrl){
         int memberId = authTokensGenerator.extractMemberId(accessToken);
         Member member = memberRepository.findByMemberIdAndFlagFalse(memberId);
-        if(member == null) throw new CustomException(ErrorCode.NO_EXIST_MEMBER);
-        member.updateMember(member.getEmail(), member.getName(), member.getRole(),
-                member.getWeight(), member.getHeight(), member.getBirth(), member.getBackNumber());
+        if(member == null) {
+            if(memberRepository.findByMemberId(memberId) == null)
+                throw new CustomException(ErrorCode.NO_EXIST_MEMBER);
+            else {
+                member = memberRepository.findByMemberId(memberId);
+                member.shallowRegister();
+            }
+        }
+        member.updateMember(request.getEmail(), request.getName(), request.getRole(),
+                request.getWeight(), request.getHeight(), request.getBirth(), request.getBackNumber(), imgUrl);
+
         memberRepository.save(member);
 
         MemberDto.readMemberResponse response = MemberDto.readMemberResponse.builder()
@@ -44,6 +54,8 @@ public class MemberService {
                 .weight(member.getWeight())
                 .name(member.getName())
                 .role(member.getRole())
+                .imgUrl(member.getImgUrl())
+                .team(member.getTeam().toReadTeam())
                 .build();
         return response;
     }
@@ -57,6 +69,7 @@ public class MemberService {
 
     public MemberDto.readMemberResponse readMember(int memberId){
         Member member = memberRepository.findByMemberIdAndFlagFalse(memberId);
+        Team team = member.getTeam();
 
         MemberDto.readMemberResponse response = MemberDto.readMemberResponse.builder()
                 .memberId(memberId)
@@ -68,6 +81,7 @@ public class MemberService {
                 .email(member.getEmail())
                 .backNumber(member.getBackNumber())
                 .birth(member.getBirth())
+                .team(member.getTeam().toReadTeam())
                 .build();
 
         return response;

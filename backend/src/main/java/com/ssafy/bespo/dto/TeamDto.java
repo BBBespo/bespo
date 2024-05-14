@@ -3,10 +3,7 @@ package com.ssafy.bespo.dto;
 import com.ssafy.bespo.Enum.AcceptType;
 import com.ssafy.bespo.Enum.MemoType;
 import com.ssafy.bespo.Enum.RoleType;
-import com.ssafy.bespo.entity.Alarm;
-import com.ssafy.bespo.entity.Member;
-import com.ssafy.bespo.entity.Memo;
-import com.ssafy.bespo.entity.Notification;
+import com.ssafy.bespo.entity.*;
 import jakarta.persistence.OneToMany;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -37,14 +34,23 @@ public class TeamDto {
     }
 
     @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ReadTeam{
+        private Integer teamId;
+        private String name;
+        private String image;
+    }
+
+    @Getter
     @Builder
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
     public static class CreateTeamRequest {
         private String name;
-        private String image;
-        private int memberId;
     }
 
     @Getter
@@ -144,4 +150,5 @@ public class TeamDto {
     public static class uploadImageResponse{
         private String image;
     }
+
 }

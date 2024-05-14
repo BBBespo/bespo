@@ -7,6 +7,7 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
+import lombok.Getter;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
@@ -15,6 +16,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
+@Getter
 public abstract class BaseTime {
 
     @CreatedDate    // 데이터 생성할 때 시간 자동 생성
@@ -34,4 +36,5 @@ public abstract class BaseTime {
     public void shallowDelete(){
         this.flag = true;
     }
+    public void shallowRegister(){ this.flag = false; }
 }

@@ -1,6 +1,7 @@
 package com.ssafy.bespo.entity;
 
 import com.ssafy.bespo.Enum.RoleType;
+import com.ssafy.bespo.dto.TeamDto;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import lombok.AllArgsConstructor;
@@ -57,5 +58,13 @@ public class Team extends BaseTime {
 
     public void addImage(String image){
         this.image = image;
+    }
+
+    public TeamDto.ReadTeam toReadTeam(){
+        return TeamDto.ReadTeam.builder()
+                .teamId(this.getTeamId())
+                .name(this.getName())
+                .image(this.getImage())
+                .build();
     }
 }

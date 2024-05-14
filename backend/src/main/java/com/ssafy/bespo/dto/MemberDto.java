@@ -48,6 +48,8 @@ public class MemberDto {
         private int birth;
         private String tel;
         private Integer backNumber;
+        private TeamDto.ReadTeam team;
+        private String imgUrl;
     }
 
     @Getter
@@ -67,5 +69,14 @@ public class MemberDto {
         private Integer backNumber;
 
     }
+
+//    @Getter
+//    @Setter
+//    @Builder
+//    @NoArgsConstructor
+//    @AllArgsConstructor
+//    public static class RegisterMemberRequest {
+//
+//    }
 
 }

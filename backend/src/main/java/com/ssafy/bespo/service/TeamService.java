@@ -49,7 +49,7 @@ public class TeamService {
     }
 
     // 팀 생성하기
-    public Team createTeam(TeamDto.CreateTeamRequest teamDtoReq){
+    public Team createTeam(TeamDto.CreateTeamRequest teamDtoReq, String imgUrl, int memberId){
 
         // 팀 코드 생성
         int leftLimits = 48;
@@ -62,13 +62,13 @@ public class TeamService {
             .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
             .toString();
 
-        Member member = memberRepository.findByMemberIdAndFlagFalse(teamDtoReq.getMemberId());
+        Member member = memberRepository.findByMemberIdAndFlagFalse(memberId);
         member.updateRoleType(RoleType.Manager);
 
         // 팀 생성
         Team team = Team.builder()
             .name(teamDtoReq.getName())
-            .image(teamDtoReq.getImage())
+            .image(imgUrl)
             .code(randomCode)
             .build();
 
