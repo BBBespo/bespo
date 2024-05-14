@@ -10,6 +10,7 @@ import Team from './pages/main/Team';
 import NickName from './pages/signup/Nickname';
 import Condition from './pages/player/Condition';
 import Injury from './pages/player/Injury';
+import Profile from './pages/profile/Profile';
 
 const Wrapper = styled.div`
   font-family: Pretendard;
@@ -31,6 +32,7 @@ function App() {
           <Route path="/nickname" element={<NickName />} />
           <Route path="/condition" element={<Condition />} />
           <Route path="/injury" element={<Injury />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </BrowserRouter>
     </Wrapper>
