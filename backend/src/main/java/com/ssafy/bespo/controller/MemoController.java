@@ -23,7 +23,6 @@ public class MemoController {
     private final S3UploaderService s3UploaderService;
     @GetMapping
     public ResponseEntity<Message> readMemo(@RequestParam int memoId, @RequestHeader String accessToken) {
-
         Message message = new Message("메모 조회 성공", memoService.getPlayerMemo(memoId, accessToken));
         return new ResponseEntity<>(message, HttpStatus.OK);
     }

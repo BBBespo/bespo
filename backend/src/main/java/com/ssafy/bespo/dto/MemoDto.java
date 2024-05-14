@@ -31,7 +31,6 @@ public class MemoDto {
         private String name;
         private String content;
         private MemoType type;
-        private String image;
         private String scope;
     }
 
