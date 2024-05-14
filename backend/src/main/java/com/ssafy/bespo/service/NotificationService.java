@@ -60,7 +60,7 @@ public class NotificationService {
                     .title(notification.getTitle())
                     .team(notification.getTeam().toReadTeam())
                     .text(notification.getText())
-                    .writer(member.getName())
+                    .writer(memberRepository.findByMemberId(notification.getWriterId()).getName())
                     .build();
             responses.add(response);
         }
