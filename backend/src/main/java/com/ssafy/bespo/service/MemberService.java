@@ -55,8 +55,10 @@ public class MemberService {
                 .name(member.getName())
                 .role(member.getRole())
                 .imgUrl(member.getImgUrl())
-                .team(member.getTeam().toReadTeam())
                 .build();
+        if(member.getTeam() != null)
+            response.setTeam(member.getTeam().toReadTeam());
+
         return response;
     }
 
