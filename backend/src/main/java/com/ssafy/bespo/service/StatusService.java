@@ -3,12 +3,14 @@ package com.ssafy.bespo.service;
 import com.ssafy.bespo.dto.InjuryDto;
 import com.ssafy.bespo.dto.InjuryDto.readInjuryPlayerResponse;
 import com.ssafy.bespo.dto.StatusDto;
+import com.ssafy.bespo.dto.StatusDto.createStatusRequest;
 import com.ssafy.bespo.entity.Injury;
 import com.ssafy.bespo.entity.Member;
 import com.ssafy.bespo.entity.Status;
 import com.ssafy.bespo.entity.Team;
 import com.ssafy.bespo.exception.CustomException;
 import com.ssafy.bespo.exception.ErrorCode;
+import com.ssafy.bespo.jwt.AuthTokensGenerator;
 import com.ssafy.bespo.repository.MemberRepository;
 import com.ssafy.bespo.repository.StatusRepository;
 import com.ssafy.bespo.repository.TeamRepository;
@@ -26,11 +28,12 @@ public class StatusService {
     private final StatusRepository statusRepository;
     private final MemberRepository memberRepository;
     private final TeamRepository teamRepository;
+    private final AuthTokensGenerator authTokensGenerator;
 
     // 컨디션 등록하기
-    public Status registerStatus(StatusDto.createStatusRequest request){
-
-        Member member = memberRepository.findByMemberIdAndFlagFalse(request.getMemberId());
+    public Status registerStatus(String accessToken, StatusDto.createStatusRequest request){
+        int memberId = authTokensGenerator.extractMemberId(accessToken);
+        Member member = memberRepository.findByMemberIdAndFlagFalse(memberId);
         if(member == null){
             throw new CustomException(ErrorCode.NO_EXIST_MEMBER);
         }

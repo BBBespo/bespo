@@ -1,12 +1,14 @@
 package com.ssafy.bespo.service;
 
 import com.ssafy.bespo.dto.InjuryDto;
+import com.ssafy.bespo.dto.InjuryDto.createInjuryRequest;
 import com.ssafy.bespo.dto.InjuryDto.readInjuryPlayerResponse;
 import com.ssafy.bespo.entity.Injury;
 import com.ssafy.bespo.entity.Member;
 import com.ssafy.bespo.entity.Team;
 import com.ssafy.bespo.exception.CustomException;
 import com.ssafy.bespo.exception.ErrorCode;
+import com.ssafy.bespo.jwt.AuthTokensGenerator;
 import com.ssafy.bespo.repository.InjuryRepository;
 import com.ssafy.bespo.repository.MemberRepository;
 import com.ssafy.bespo.repository.TeamRepository;
@@ -28,10 +30,12 @@ public class InjuryService {
     private final InjuryRepository injuryRepository;
     private final MemberRepository memberRepository;
     private final TeamRepository teamRepository;
+    private final AuthTokensGenerator authTokensGenerator;
 
     // 부상 정보 등록
-    public Injury registerInjury(InjuryDto.createInjuryRequest request){
-        Member member = memberRepository.findByMemberIdAndFlagFalse(request.getMemberId());
+    public Injury registerInjury(String accessToken, InjuryDto.createInjuryRequest request){
+        int memberId = authTokensGenerator.extractMemberId(accessToken);
+        Member member = memberRepository.findByMemberIdAndFlagFalse(memberId);
         if(member == null){
             throw new CustomException(ErrorCode.NO_EXIST_MEMBER);
         }

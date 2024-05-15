@@ -20,7 +20,6 @@ public class InjuryDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class createInjuryRequest{
-        private Integer memberId;
         private readInjuryRequest injury;
     }
 
