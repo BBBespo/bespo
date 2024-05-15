@@ -3,6 +3,7 @@ package com.ssafy.bespo.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.bespo.Enum.OAuthProvider;
 import com.ssafy.bespo.Enum.RoleType;
+import com.ssafy.bespo.dto.MemberDto;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import java.util.ArrayList;
@@ -89,4 +90,19 @@ public class Member extends BaseTime {
         this.tel = tel;
     }
 
+    public MemberDto.readMemberResponse toReadMemberResponse(){
+        MemberDto.readMemberResponse response = MemberDto.readMemberResponse.builder()
+                .email(this.email)
+                .name(this.name)
+                .role(this.role)
+                .weight(this.weight)
+                .height(this.height)
+                .birth(this.birth)
+                .backNumber(this.backNumber)
+                .imgUrl(this.imgUrl)
+                .tel(this.tel)
+                .memberId(this.memberId)
+                .build();
+        return response;
+    }
 }
