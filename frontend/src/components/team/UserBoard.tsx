@@ -44,7 +44,7 @@ const MemberContentTitleContainer = styled.div`
   margin-bottom: 10px;
 `;
 
-const MemberContentTitleText = styled.text`
+const MemberContentTitleText = styled.div`
   font-family: PretendardVariable;
   font-size: 20px;
   font-weight: 600;
@@ -73,7 +73,7 @@ const MemoCardContainer = styled.div`
   border-radius: 10px;
 `;
 
-const MemoCardTitleText = styled.text`
+const MemoCardTitleText = styled.div`
   font-family: PretendardVariable;
   font-size: 14px;
   font-weight: 600;
@@ -83,7 +83,7 @@ const MemoCardTitleText = styled.text`
   text-overflow: ellipsis; /* 너무 긴 텍스트일 경우 생략 부호로 표시 */
 `;
 
-const MemoCardDateText = styled.text`
+const MemoCardDateText = styled.div`
   font-family: PretendardVariable;
   font-size: 12px;
   font-weight: 600;
@@ -189,7 +189,7 @@ const SelectMemberContainer = styled.div`
   box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.25);
 `;
 
-const SelectMemberText = styled.text`
+const SelectMemberText = styled.div`
   font-family: PretendardVariable;
   font-size: 30px;
   font-weight: 600;
@@ -208,7 +208,7 @@ const MemberProfileImg = styled.img`
   }
 `;
 
-const MemberInfoContent = styled.text`
+const MemberInfoContent = styled.div`
   font-family: PretendardVariable;
   font-size: 18 px;
   font-weight: 600;

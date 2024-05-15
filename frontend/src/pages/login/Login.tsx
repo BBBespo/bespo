@@ -1,8 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-
-import KakaoLogin from '../../assets/icons/kakaoLogin.png';
-import { NavLink } from 'react-router-dom';
+import KakaoLogin from 'src/components/login/KakaoLogin';
 
 const Wrapper = styled.div`
   margin: 0% 5% 0% 5%;
@@ -43,6 +41,11 @@ const Content = styled.div`
 `;
 
 export default function Login() {
+  useEffect(() => {
+    if (localStorage.getItem('login-state')) {
+      localStorage.removeItem('login-state');
+    }
+  }, []);
   return (
     <Wrapper>
       <Contents>
@@ -51,16 +54,7 @@ export default function Login() {
           <p>간편하게 로그인하고</p>
           <p>다양한 서비스를 이용해보세요</p>
         </Content>
-        <img
-          src={KakaoLogin}
-          alt="kakaoLogin"
-          onClick={() =>
-            (window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}`)
-          }
-        />
-        <NavLink to="/Nickname">닉네임</NavLink>
-        <NavLink to="/Condition">컨디션</NavLink>
-        <NavLink to="/Injury">부상</NavLink>
+        <KakaoLogin></KakaoLogin>
       </Contents>
     </Wrapper>
   );

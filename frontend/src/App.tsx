@@ -7,7 +7,8 @@ import Memo from './pages/main/Memo';
 import Schedule from './pages/main/Schedule';
 import Login from './pages/login/Login';
 import Team from './pages/main/Team';
-import NickName from './pages/signup/Nickname';
+import KakaoLoginRedirection from './pages/login/KakaoLogin';
+import SignUp from './pages/signup/SignUp';
 import Condition from './pages/player/Condition';
 import Injury from './pages/player/Injury';
 import Profile from './pages/profile/Profile';
@@ -30,7 +31,8 @@ function App() {
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/login" element={<Login />} />
           <Route path="/team" element={<Team />} />
-          <Route path="/nickname" element={<NickName />} />
+          <Route path="/kakao/callback" element={<KakaoLoginRedirection />} />
+          <Route path="/signup" element={<SignUp />} />
           <Route path="/condition" element={<Condition />} />
           <Route path="/injury" element={<Injury />} />
           <Route path="/profile" element={<Profile />} />
