@@ -87,7 +87,6 @@ public class TeamDto {
     @AllArgsConstructor
     public static class sendJoinTeamRequest {
         private String code;
-        private Integer memberId;
         private String email;
     }
 
@@ -108,7 +107,6 @@ public class TeamDto {
     @AllArgsConstructor
     public static class acceptRequest {
         private String code;
-        private Integer memberId;
         private AcceptType acceptType;
     }
 
