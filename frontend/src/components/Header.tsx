@@ -257,8 +257,37 @@ const Header = () => {
           <NavigationButton>
             <NavigationText to="/memo">메모</NavigationText>
           </NavigationButton>
-        </NavigationBarMobile>
-      )}
+        </NavigationBar>
+        <NavigationGap />
+        <HeaderButton $type="red">
+          <MyHiOutlineUserGroup />
+        </HeaderButton>
+        <HeaderButton onClick={() => {}}>
+          <MyGoBellFill />
+        </HeaderButton>
+        <HeaderButton>
+          {/* <NavLink to="/Login">
+            <MyIoPersonSharp />
+          </NavLink> */}
+          <NavLink to="/profile">
+            <MyIoPersonSharp />
+          </NavLink>
+        </HeaderButton>
+      </HeaderContainer>
+      <NavigationBarMobile>
+        <NavigationButton>
+          <NavigationText to="/">대시보드</NavigationText>
+        </NavigationButton>
+        <NavigationButton>
+          <NavigationText to="/team">선수단</NavigationText>
+        </NavigationButton>
+        <NavigationButton>
+          <NavigationText to="/schedule">일정</NavigationText>
+        </NavigationButton>
+        <NavigationButton>
+          <NavigationText to="/memo">메모</NavigationText>
+        </NavigationButton>
+      </NavigationBarMobile>
     </div>
   );
 };
