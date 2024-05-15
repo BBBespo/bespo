@@ -61,7 +61,7 @@ public class MemoService {
                 .scope(memo.getScope())
                 .writerName(writer.getName())
                 .writerImgUrl(writer.getImgUrl())
-                .comment(commentRepository.findCommentsByMemoAndFlagFalseOrderByCreateDate(memo))
+                .comment(commentRepository.findCommentsByMemoAndFlagFalseOrderByCreatedDate(memo))
                 .createdAt(memo.getCreatedDate())
                 .build();
 
