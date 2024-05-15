@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import kakao from '../../assets/images/profile/kakao.png';
 import teamDefaultProfile from '../../assets/images/createTeam/teamDefaultProfile.png';
+import { useNavigate } from 'react-router-dom';
 
 const ProfileContainer = styled.div`
   padding: 5px 15px 15px 15px;
@@ -58,6 +59,7 @@ const ProfileInfoText = styled.div`
 `;
 
 export default function Profile() {
+  const navigate = useNavigate();
   const [profile, setProfile] = useState('');
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
@@ -80,7 +82,7 @@ export default function Profile() {
         <img src={profile} style={{ width: '50px', height: '50px', borderRadius: '50px', marginRight: '8px' }} />
         <p>{userName}</p>
       </ImageBox>
-      <UpdateProfileButton>프로필 수정</UpdateProfileButton>
+      <UpdateProfileButton onClick={() => navigate('/edit-profile')}>프로필 수정</UpdateProfileButton>
 
       <ProfileInfoBox>
         <ProfileInfoText>
