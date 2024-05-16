@@ -41,11 +41,11 @@ public class Member extends BaseTime {
     private String tel;
 
     @Column(name = "back_number")
-    @ColumnDefault("0")
-    private Integer backNumber;
+    @Builder.Default
+    private Integer backNumber = 0;
 
-    @ColumnDefault("https://bespo.s3.ap-northeast-2.amazonaws.com/default/member.PNG")
-    private String imgUrl;
+    @Builder.Default
+    private String imgUrl = "https://bespo.s3.ap-northeast-2.amazonaws.com/default/member.PNG";
 
     @ManyToOne
     @JoinColumn(name = "team_id")

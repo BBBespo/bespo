@@ -25,8 +25,8 @@ public class Team extends BaseTime {
     private Integer teamId;
     private String name;
 
-    @ColumnDefault("https://bespo.s3.ap-northeast-2.amazonaws.com/default/team.PNG")
-    private String image;
+    @Builder.Default
+    private String image = "https://bespo.s3.ap-northeast-2.amazonaws.com/default/team.PNG";
 
     private String code;
 
