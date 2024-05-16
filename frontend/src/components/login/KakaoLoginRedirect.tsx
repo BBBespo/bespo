@@ -30,17 +30,17 @@ const KakaoLoginRedirectComponent = ({ code, setUser }: KakaoProps) => {
               },
             })
             .then((res) => {
-              console.log(res);
+              console.log(res.data);
               const user: User = {
                 accessToken: accessToken,
-                name: res.data.name,
-                profile: '',
-                email: res.data.email,
-                hasTeam: res.data.team,
-                role: res.data.role,
+                name: res.data.data.name,
+                profile: res.data.data.imgUrl,
+                email: res.data.data.email,
+                hasTeam: res.data.data.team !== null,
+                role: res.data.data.role,
               };
               setUser(user);
-              if (user.name) {
+              if (res.data.data.tel) {
                 window.location.href = '/';
               } else {
                 window.location.href = '/signup';

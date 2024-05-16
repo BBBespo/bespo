@@ -29,7 +29,7 @@ export default function Main() {
       else if (!hasTeam) setValue(1);
       else if (role == 'Player') setValue(2);
     } else {
-      navigate('/login');
+      // navigate('/login');
     }
   }, []);
   return (
