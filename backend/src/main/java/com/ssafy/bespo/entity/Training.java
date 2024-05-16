@@ -1,5 +1,6 @@
 package com.ssafy.bespo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.bespo.dto.MemoDto;
 import com.ssafy.bespo.dto.TrainingDto;
 import jakarta.persistence.*;
@@ -29,6 +30,7 @@ public class Training extends BaseTime {
     private String time;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "member_id")
     private Member member;
 

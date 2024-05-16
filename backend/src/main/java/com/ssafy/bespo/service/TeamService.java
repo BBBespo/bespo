@@ -3,6 +3,7 @@ package com.ssafy.bespo.service;
 import com.ssafy.bespo.Enum.AcceptType;
 import com.ssafy.bespo.Enum.RoleType;
 import com.ssafy.bespo.dto.MemberDto;
+import com.ssafy.bespo.dto.MemberDto.readMemberRequest;
 import com.ssafy.bespo.dto.TeamDto;
 import com.ssafy.bespo.dto.TeamDto.acceptRequest;
 import com.ssafy.bespo.dto.TeamDto.sendJoinTeamRequest;
@@ -42,14 +43,28 @@ public class TeamService {
     private S3UploaderService s3UploaderService;
 
     // 팀 상세 조회하기
-    public Team readTeam(int teamId){
+    public TeamDto.readTeamInfoResponse readTeam(String accessToken, int teamId){
         Team team = teamRepository.findByTeamIdAndFlagFalse(teamId);
+
+        int memberId = authTokensGenerator.extractMemberId(accessToken);
+        Member member = memberRepository.findByMemberIdAndFlagFalse(memberId);
 
         if(team == null){
             throw new CustomException(ErrorCode.No_EXIST_TEAM);
         }
 
-        return team;
+        if(member.getTeam() != team) throw new CustomException(ErrorCode.NO_AUTHENTICATION_FOR_EVENT);
+
+        TeamDto.readTeamInfoResponse response = TeamDto.readTeamInfoResponse.builder()
+            .createdDate(team.getCreatedDate())
+            .modifiedDate(team.getModifiedDate())
+            .teamId(team.getTeamId())
+            .name(team.getName())
+            .code(team.getCode())
+            .members(team.getMembers())
+            .build();
+
+        return response;
     }
 
     // 팀 생성하기
@@ -67,6 +82,9 @@ public class TeamService {
             .toString();
 
         Member member = memberRepository.findByMemberIdAndFlagFalse(memberId);
+        if(member.getTeam() != null){
+
+        }
         member.updateRoleType(RoleType.Manager);
 
         if(imgUrl.equals(""))
@@ -81,6 +99,8 @@ public class TeamService {
 
         team.addMember(member);
         teamRepository.save(team);
+        member.addTeam(team);
+        memberRepository.save(member);
 
         return team;
     }
@@ -109,7 +129,6 @@ public class TeamService {
         TeamDto.generateTeamCodeResponse generateTeamCodeResponse = TeamDto.generateTeamCodeResponse.builder()
                 .code(randomCode)
                 .build();
-        System.out.println(generateTeamCodeResponse.getCode());
         return generateTeamCodeResponse;
     }
 
