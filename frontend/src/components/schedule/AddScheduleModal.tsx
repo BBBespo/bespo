@@ -4,6 +4,8 @@ import DatePicker, { ReactDatePickerProps } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import search from '../../assets/images/schedule/search.png';
 import close from '../../assets/images/schedule/close.png';
+import { instance } from 'src/axios/instance';
+// import { AxiosResponse } from 'axios';
 
 const AddScheduleModalContainer = styled.div`
   width: 35%;
@@ -103,7 +105,7 @@ const CloseButtonBox = styled.div`
   justify-content: end;
 `;
 
-const AddScheduleModal = ({ onClose }: { onClose: () => void }) => {
+const AddScheduleModal = ({ onClose, getEventsList }: { onClose: () => void; getEventsList: () => void }) => {
   const [scheduleType, setScheduleType] = useState('훈련');
   const [scheduleName, setScheduleName] = useState('');
   const [startDate, setStartDate] = useState(new Date());
@@ -135,14 +137,19 @@ const AddScheduleModal = ({ onClose }: { onClose: () => void }) => {
   };
 
   const handleSubmitBtnClick = () => {
-    console.log(scheduleType);
-    console.log(scheduleName);
-    console.log(startDate);
-    console.log(startTime);
-    console.log(endTime);
-    console.log(description);
-    console.log(location);
-    console.log(receiverList);
+    const requestBody = {
+      start: '2024-05-18T12:00:00',
+      end: '2024-05-20T12:00:00',
+      title: scheduleName,
+      content: description,
+      type: scheduleType,
+      location: location,
+      attendees: ['차승윤', '박태양'],
+    };
+    instance.post('/events', requestBody).then(() => {
+      onClose();
+      getEventsList();
+    });
   };
 
   return (
@@ -155,16 +162,16 @@ const AddScheduleModal = ({ onClose }: { onClose: () => void }) => {
       </ModalHead>
 
       <ButtonGroup>
-        <Button clicked={scheduleType === '훈련'} onClick={() => handleButtonClick('훈련')}>
+        <Button clicked={scheduleType === 'TRAINING'} onClick={() => handleButtonClick('TRAINING')}>
           훈련
         </Button>
-        <Button clicked={scheduleType === '연습 경기'} onClick={() => handleButtonClick('연습 경기')}>
+        <Button clicked={scheduleType === 'PRACTICE'} onClick={() => handleButtonClick('PRACTICE')}>
           연습 경기
         </Button>
-        <Button clicked={scheduleType === '경기'} onClick={() => handleButtonClick('경기')}>
+        <Button clicked={scheduleType === 'MATCH'} onClick={() => handleButtonClick('MATCH')}>
           경기
         </Button>
-        <Button clicked={scheduleType === '기타'} onClick={() => handleButtonClick('기타')}>
+        <Button clicked={scheduleType === 'ETC'} onClick={() => handleButtonClick('ETC')}>
           기타
         </Button>
       </ButtonGroup>
