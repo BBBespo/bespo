@@ -33,12 +33,15 @@ public class Team extends BaseTime {
     private List<Member> members;
 
     @OneToMany(mappedBy = "team")
+    @JsonIgnore
     private List<Notification> notifications;
 
     @OneToMany(mappedBy = "team")
+    @JsonIgnore
     private List<Memo> memos;
 
     @OneToMany(mappedBy = "team")
+    @JsonIgnore
     private List<Alarm> alarms = new ArrayList<>();
 
     public void addMember(Member member){

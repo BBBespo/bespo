@@ -35,9 +35,9 @@ public class EventController {
 
     // 특정 연월 일정 조회
     @GetMapping("/detail")
-    public ResponseEntity<Message> readMonthEvent(@RequestParam("year") int year, @RequestParam("month")
+    public ResponseEntity<Message> readMonthEvent(@RequestHeader String accessToken, @RequestParam("year") int year, @RequestParam("month")
         Month month){
-        Message message = new Message(year + " " + month + " 일정 조회 성공", eventService.readMonthEvent(year, month));
+        Message message = new Message(year + " " + month + " 일정 조회 성공", eventService.readMonthEvent(accessToken, year, month));
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
@@ -51,15 +51,15 @@ public class EventController {
 
     // 일정 수정하기
     @PatchMapping
-    public ResponseEntity<Message> updateEvent(@RequestBody EventDto.updateEventRequest request){
-        Message message = new Message("일정 수정 성공", eventService.updateEvent(request));
+    public ResponseEntity<Message> updateEvent(@RequestHeader String accessToken, @RequestBody EventDto.updateEventRequest request){
+        Message message = new Message("일정 수정 성공", eventService.updateEvent(accessToken, request));
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     // 일정 삭제하기
     @DeleteMapping
-    public ResponseEntity<Message> deleteEvent(@RequestParam int eventId){
-        eventService.deleteEvent(eventId);
+    public ResponseEntity<Message> deleteEvent(@RequestHeader String accessToken, @RequestParam int eventId){
+        eventService.deleteEvent(accessToken, eventId);
         Message message = new Message("일정 삭제 성공");
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
