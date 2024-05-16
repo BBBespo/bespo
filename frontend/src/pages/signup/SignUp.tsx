@@ -5,6 +5,7 @@ import defaultProfile from '../../assets/images/defaultProfile.png';
 import valueDelete from '../../assets/icons/valueDelete.svg';
 import DatePicker, { ReactDatePickerProps } from 'react-datepicker';
 import { instance } from 'src/axios/instance';
+import userStore from 'src/store/userStore';
 import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.div`
@@ -23,7 +24,7 @@ const Contents = styled.div`
 
 const Content = styled.div`
   display: flex;
-  font-size: 16px;
+  font-size: 18px;
   color: ${(props) => props.theme.colors.black};
   & > p {
     margin: 0px 0;
@@ -64,14 +65,14 @@ const ChangeToDefaultImageTextBox = styled.div`
 const InputWrapper = styled.div`
   position: relative;
   height: auto;
-  margin-bottom: 2rem;
+  margin: 1rem 0 2.5rem 0;
   width: 100%;
 `;
 
 const Input = styled.input<{ hasValue: boolean }>`
   font-family: Pretendard;
   width: 100%;
-  font-size: 14px;
+  font-size: 18px;
   height: 40px;
   border-top: none;
   border-right: none;
@@ -111,7 +112,6 @@ const CustomDatePicker: React.FC<ReactDatePickerProps> = ({ customInput, ...prop
 
 export default function SignUp() {
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
   const [tel, setTel] = useState('');
   const [weight, setWeight] = useState('');
   const [height, setHeight] = useState('');
@@ -119,15 +119,24 @@ export default function SignUp() {
   const [profile, setProfile] = useState<File | null>(null);
   const [selectedFile, setSelectedFile] = useState<string | ArrayBuffer | null>(defaultProfile);
   const imageRef = useRef<HTMLInputElement>(null);
+  const { setUser } = userStore();
   const navigate = useNavigate();
+  type User = {
+    accessToken: string;
+    name: string;
+    profile: string;
+    email: string;
+    hasTeam: boolean;
+    role: string;
+  };
   const requestBody = new FormData();
   const jsonSignUpData = JSON.stringify({
-    email: email,
     name: name,
     weight: weight,
     height: height,
     birth: birth,
     tel: tel,
+    backNumber: 0,
   });
   const info = new Blob([jsonSignUpData], { type: 'application/json' });
   requestBody.append('request', info);
@@ -139,7 +148,20 @@ export default function SignUp() {
           'content-type': 'multipart/form-data',
         },
       })
-      .then(() => {
+      .then((res) => {
+        console.log(res.data);
+        if (localStorage.getItem('login-state')) {
+          const accessToken = JSON.parse(localStorage.getItem('login-state')!).state.accessToken;
+          const user: User = {
+            accessToken: accessToken,
+            name: res.data.data.name,
+            profile: res.data.data.imgUrl,
+            email: res.data.data.email,
+            hasTeam: res.data.data.team !== null,
+            role: res.data.data.role,
+          };
+          setUser(user);
+        }
         navigate('/');
       });
   };
@@ -148,9 +170,6 @@ export default function SignUp() {
     switch (e.currentTarget.name) {
       case 'name':
         setName(e.currentTarget.value);
-        break;
-      case 'email':
-        setEmail(e.currentTarget.value);
         break;
       case 'tel':
         setTel(e.currentTarget.value);
@@ -182,7 +201,6 @@ export default function SignUp() {
     }
   };
   const hasValueName = name.trim() !== '';
-  const hasValueEmail = email.trim() !== '';
   const hasValueTel = tel.trim() !== '';
   const hasValueWeight = weight.trim() !== '';
   const hasValueHeight = height.trim() !== '';
@@ -213,19 +231,6 @@ export default function SignUp() {
           {hasValueName && <DeleteButton src={valueDelete} alt="값 삭제 버튼" onClick={() => setName('')} />}
         </InputWrapper>
         <Content>
-          <p>이메일을 입력해주세요</p>
-        </Content>
-        <InputWrapper>
-          <Input
-            name="email"
-            hasValue={hasValueEmail}
-            placeholder="이메일 입력"
-            value={email}
-            onChange={onChange}
-          ></Input>
-          {hasValueEmail && <DeleteButton src={valueDelete} alt="값 삭제 버튼" onClick={() => setEmail('')} />}
-        </InputWrapper>
-        <Content>
           <p>전화번호를 입력해주세요</p>
         </Content>
         <InputWrapper>
@@ -244,6 +249,7 @@ export default function SignUp() {
         <InputWrapper>
           <Input
             name="weight"
+            type="number"
             hasValue={hasValueWeight}
             placeholder="몸무게 입력"
             value={weight}
@@ -256,6 +262,7 @@ export default function SignUp() {
         </Content>
         <InputWrapper>
           <Input
+            type="number"
             name="height"
             hasValue={hasValueHeight}
             placeholder="신장 입력"
@@ -265,9 +272,9 @@ export default function SignUp() {
           {hasValueHeight && <DeleteButton src={valueDelete} alt="값 삭제 버튼" onClick={() => setHeight('')} />}
         </InputWrapper>
         <SubmitButton
-          hasValue={hasValueName && hasValueEmail && hasValueTel && hasValueWeight && hasValueHeight}
+          hasValue={hasValueName && hasValueTel && hasValueWeight && hasValueHeight}
           onClick={onSubmit}
-          disabled={!(hasValueName && hasValueEmail && hasValueTel && hasValueWeight && hasValueHeight)}
+          disabled={!(hasValueName && hasValueTel && hasValueWeight && hasValueHeight)}
         >
           저장하기
         </SubmitButton>

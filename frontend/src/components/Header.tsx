@@ -180,8 +180,8 @@ const MyIoPersonSharp = styled(IoPersonSharp)`
   }
 `;
 const Header = () => {
-  const [isLogin, setLogin] = useState(true);
-  const [hasTeam, setHasTeam] = useState(true);
+  const [isLogin, setLogin] = useState(false);
+  const [hasTeam, setHasTeam] = useState(false);
   useEffect(() => {
     if (localStorage.getItem('login-state')) {
       const isLogin = JSON.parse(localStorage.getItem('login-state')!).state.name;

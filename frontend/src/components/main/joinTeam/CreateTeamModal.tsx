@@ -7,6 +7,9 @@ import copy from '../../../assets/images/createTeam/copy.png';
 import kakao from '../../../assets/images/createTeam/kakao.png';
 import link from '../../../assets/images/createTeam/link.png';
 
+import { instance } from 'src/axios/instance';
+import { AxiosResponse } from 'axios';
+
 const CreateTeamModalContainer = styled.div`
   width: 30%;
   height: 58vh;
@@ -131,6 +134,12 @@ const CreateTeamModal = ({ onClose }: { onClose: () => void }) => {
   const [teamName, setTeamName] = useState('');
   const [isTeamCreated, setIsTeamCreated] = useState(false);
   const [teamCode, setTeamCode] = useState('');
+  const jsonSignUpData = JSON.stringify({
+    name: teamName,
+  });
+  const requestBody = new FormData();
+  const teamname = new Blob([jsonSignUpData], { type: 'application/json' });
+  requestBody.append('request', teamname);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -152,10 +161,27 @@ const CreateTeamModal = ({ onClose }: { onClose: () => void }) => {
     const formData = new FormData();
     if (selectedFile) {
       formData.append('file', selectedFile);
+      requestBody.append('image', selectedFile);
     } else {
       formData.append('file', teamDefaultProfile);
+      requestBody.append('image', teamDefaultProfile);
     }
     formData.append('otherField', teamName);
+
+    instance
+      .post('/teams', requestBody, {
+        headers: {
+          'content-type': 'multipart/form-data',
+        },
+      })
+      .catch((error) => {
+        console.log(error.message);
+        throw new Error(error.message);
+      })
+      .then((res: AxiosResponse) => {
+        console.log('팀 생성 성공');
+        console.log(res);
+      });
 
     /* 팀 생성 api 호출 후 */
     setIsTeamCreated(true);

@@ -31,9 +31,10 @@ instance.interceptors.response.use(
           localStorage.setItem('login-state', JSON.stringify(jsonZustandData));
           window.location.reload();
         }
-      } else {
-        window.location.href = `${process.env.REACT_APP_DOMAIN}/login`;
       }
+      // else {
+      //   window.location.href = `${process.env.REACT_APP_DOMAIN}/login`;
+      // }
     }
   },
 );
