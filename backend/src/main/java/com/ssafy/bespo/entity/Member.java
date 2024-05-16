@@ -31,10 +31,10 @@ public class Member extends BaseTime {
     private String email;
     private String name;
     private RoleType role;
-    @Nullable
-    private Integer weight;
-    @Nullable
-    private Integer height;
+    @Builder.Default
+    private Integer weight = 0;
+    @Builder.Default
+    private Integer height = 0;
     @Nullable
     private String birth;
     @Nullable
@@ -80,9 +80,8 @@ public class Member extends BaseTime {
         this.oAuthProvider = oAuthProvider;
     }
 
-    public void updateMember(String email, String name, RoleType role,
+    public void updateMember(String name, RoleType role,
                                int weight, int height, String birth, int backNumber, String imgUrl, String tel){
-        this.email = email;
         this.name = name;
         this.role = role;
         this.weight = weight;

@@ -59,7 +59,6 @@ public class MemberDto {
     @AllArgsConstructor
     public static class UpdateMemberRequest {
 
-        private String email;
         private String name;
         private RoleType role;
         private Integer weight;
