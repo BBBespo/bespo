@@ -11,6 +11,6 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
 
     Event findByEventIdAndFlagFalse(int eventId);
 
-    List<Event> findAllByTeamAndFlagFalseOrderByCreatedDateDesc(Team team);
+    List<Event> findAllByTeamAndFlagFalse(Team team);
 
 }

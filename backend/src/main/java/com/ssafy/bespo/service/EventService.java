@@ -2,6 +2,7 @@ package com.ssafy.bespo.service;
 
 import com.ssafy.bespo.dto.EventDto;
 import com.ssafy.bespo.dto.EventDto.createEventRequest;
+import com.ssafy.bespo.dto.EventDto.updateEventRequest;
 import com.ssafy.bespo.dto.NotificationDto;
 import com.ssafy.bespo.entity.Event;
 import com.ssafy.bespo.entity.Member;
@@ -36,7 +37,7 @@ public class EventService {
         if(member == null) throw new CustomException(ErrorCode.NO_EXIST_MEMBER);
         List<EventDto.readEventResponse> responses = new ArrayList<>();
 
-        List<Event> events = eventRepository.findAllByTeamAndFlagFalseOrderByCreatedDateDesc(member.getTeam());
+        List<Event> events = eventRepository.findAllByTeamAndFlagFalse(member.getTeam());
         if(events == null){
             throw new CustomException(ErrorCode.No_EXIST_EVENT);
         }
@@ -57,14 +58,18 @@ public class EventService {
     }
 
     // 특정 연월 일정 조회
-    public List<Event> readMonthEvent(int year, Month month){
+    public List<Event> readMonthEvent(String accessToken, int year, Month month){
+        int memberId = authTokensGenerator.extractMemberId(accessToken);
+        Member member = memberRepository.findByMemberIdAndFlagFalse(memberId);
+        if(member == null) throw new CustomException(ErrorCode.NO_EXIST_MEMBER);
 
         // 특정 연월로 일정 조회 코드
-        List<Event> events = eventRepository.findAll();
+        List<Event> events = eventRepository.findAllByTeamAndFlagFalse(member.getTeam());
 
         List<Event> eventList = new ArrayList<>();
 
         for(Event event : events){
+            if(member.getTeam() != event.getTeam())  throw new CustomException(ErrorCode.NO_AUTHENTICATION_FOR_EVENT);
             int y = event.getStart().getYear();
             Month m = event.getStart().getMonth();
             if(y == year && month.equals(m)){
@@ -100,12 +105,17 @@ public class EventService {
     }
 
     // 일정 수정
-    public Event updateEvent(EventDto.updateEventRequest request){
+    public Event updateEvent(String accessToken, EventDto.updateEventRequest request){
+        int memberId = authTokensGenerator.extractMemberId(accessToken);
+        Member member = memberRepository.findByMemberIdAndFlagFalse(memberId);
+        if(member == null) throw new CustomException(ErrorCode.NO_EXIST_MEMBER);
 
         Event event = eventRepository.findByEventIdAndFlagFalse(request.getEventId());
+
         if(event == null){
             throw new CustomException(ErrorCode.No_EXIST_EVENT);
         }
+        if(member.getTeam() != event.getTeam())  throw new CustomException(ErrorCode.NO_AUTHENTICATION_FOR_EVENT);
 
         event.updateEvent(request);
 
@@ -114,11 +124,17 @@ public class EventService {
     }
 
     // 일정 삭제
-    public void deleteEvent(int eventId){
+    public void deleteEvent(String accessToken, int eventId){
+        int memberId = authTokensGenerator.extractMemberId(accessToken);
+        Member member = memberRepository.findByMemberIdAndFlagFalse(memberId);
+        if(member == null) throw new CustomException(ErrorCode.NO_EXIST_MEMBER);
+
         Event event = eventRepository.findByEventIdAndFlagFalse(eventId);
         if(event == null){
             throw new CustomException(ErrorCode.No_EXIST_EVENT);
         }
+        if(member.getTeam() != event.getTeam())  throw new CustomException(ErrorCode.NO_AUTHENTICATION_FOR_EVENT);
+
         eventRepository.delete(event);
     }
 }
