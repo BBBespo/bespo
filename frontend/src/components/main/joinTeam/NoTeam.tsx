@@ -1,22 +1,31 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import createTeam from '../../assets/images/createTeam.png';
-import joinTeam from '../../assets/images/joinTeam.png';
+import createTeam from '../../../assets/images/createTeam.png';
+import joinTeam from '../../../assets/images/joinTeam.png';
+import CreateTeamModal from './CreateTeamModal';
+import JoinTeamModal from './JoinTeamModal';
+
 const DashBoardContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 80vh;
 `;
+
 const TextContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
   > h1 {
-    font-size: 36px;
+    font-size: 30px;
     font-weight: 600;
+
+    @media (max-width: 1400px) {
+      font-size: 25px;
+    }
   }
   > p {
     margin-top: 20px;
@@ -29,31 +38,53 @@ const TextContainer = styled.div`
 const CardContainer = styled.div`
   display: flex;
   width: 1400px;
-  height: 450px;
+  height: 400px;
   justify-content: center;
+
+  @media (max-width: 1400px) {
+    width: 100%;
+    flex-wrap: wrap;
+  }
 `;
 
 const CardDiv = styled.div`
   width: 40%;
+  height: 400px;
   margin: 30px;
   background-color: #f3f3f3;
-  padding: 4%;
+  padding: 50px 60px;
   border-radius: 20px;
+
+  @media (max-width: 1400px) {
+    width: 90%;
+    height: 320px;
+    padding: 30px 30px;
+    margin: 10px;
+  }
 `;
 const CardHeadText = styled.p`
   font-size: 30px;
   font-weight: 600;
   margin-bottom: 20px;
+
+  @media (max-width: 1400px) {
+    font-size: 25px;
+    margin-bottom: 10px;
+  }
 `;
 const CardContentText = styled.p`
   font-size: 20px;
   font-weight: 500;
+
+  @media (max-width: 1400px) {
+    font-size: 20px;
+  }
 `;
 const CardButtonDiv = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: end;
-  margin-top: 10px;
+  margin-top: 30px;
   width: 100%;
   > div {
     display: flex;
@@ -62,11 +93,22 @@ const CardButtonDiv = styled.div`
     width: 200px;
     height: 60px;
     background-color: ${(props) => props.theme.colors.gray5};
-    border-radius: 20px;
+    border-radius: 10px;
     font-size: 24px;
     font-weight: 500;
     color: white;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+    @media (max-width: 1400px) {
+      width: 200px;
+      font-size: 20px;
+    }
+  }
+
+  > img {
+    @media (max-width: 1400px) {
+      width: 200px;
+    }
   }
 `;
 const ModalBackground = styled.div`
@@ -81,29 +123,31 @@ const ModalBackground = styled.div`
   align-items: center;
   z-index: 99;
 `;
-const ModalDiv = styled.div`
-  width: 50%;
-  height: 60%;
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 100;
-`;
+// const ModalDiv = styled.div`
+//   width: 50%;
+//   height: 60%;
+//   background-color: white;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   align-items: center;
+//   z-index: 100;
+// `;
 
 export default function NoTeam() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isCreateTeamModalOpen, setIsCreateTeamModalOpen] = useState(false);
+  const [isJoinTeamModalOpen, setIsJoinTeamModalOpen] = useState(false);
 
   return (
     <>
-      {isOpen && (
-        <ModalBackground
-          onClick={() => {
-            setIsOpen(false);
-          }}
-        >
-          <ModalDiv></ModalDiv>
+      {isCreateTeamModalOpen && (
+        <ModalBackground>
+          <CreateTeamModal onClose={() => setIsCreateTeamModalOpen(false)} />
+        </ModalBackground>
+      )}
+      {isJoinTeamModalOpen && (
+        <ModalBackground>
+          <JoinTeamModal onClose={() => setIsJoinTeamModalOpen(false)} />
         </ModalBackground>
       )}
       <DashBoardContainer>
@@ -115,7 +159,7 @@ export default function NoTeam() {
         <CardContainer>
           <CardDiv
             onClick={() => {
-              setIsOpen(true);
+              setIsCreateTeamModalOpen(true);
             }}
           >
             <CardHeadText>새로운 팀을 만들어 보세요!</CardHeadText>
@@ -129,7 +173,7 @@ export default function NoTeam() {
           </CardDiv>
           <CardDiv
             onClick={() => {
-              setIsOpen(true);
+              setIsJoinTeamModalOpen(true);
             }}
           >
             <CardHeadText>팀원으로 합류해 보세요!</CardHeadText>

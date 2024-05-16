@@ -67,7 +67,7 @@ const DatePickerBox = styled.div`
 `;
 
 const SubmitButton = styled.button`
-  background-color: #ff0000;
+  background-color: ${(props) => props.theme.colors.red};
   color: #f3f3f3;
   width: 100%;
   height: 35px;
@@ -98,7 +98,12 @@ const Receiver = styled.div`
   font-size: 12px;
 `;
 
-const AddScheduleModal = () => {
+const CloseButtonBox = styled.div`
+  display: flex;
+  justify-content: end;
+`;
+
+const AddScheduleModal = ({ onClose }: { onClose: () => void }) => {
   const [scheduleType, setScheduleType] = useState('훈련');
   const [scheduleName, setScheduleName] = useState('');
   const [startDate, setStartDate] = useState(new Date());
@@ -142,6 +147,9 @@ const AddScheduleModal = () => {
 
   return (
     <AddScheduleModalContainer>
+      <CloseButtonBox>
+        <img src={close} onClick={onClose} alt="close" style={{ width: '17px', height: '17px', cursor: 'pointer' }} />
+      </CloseButtonBox>
       <ModalHead>
         <p>일정 추가하기</p>
       </ModalHead>
