@@ -84,6 +84,7 @@ public class MemberService {
                 .weight(member.getWeight())
                 .height(member.getHeight())
                 .email(member.getEmail())
+                .imgUrl(member.getImgUrl())
                 .backNumber(member.getBackNumber())
                 .birth(member.getBirth())
                 .build();

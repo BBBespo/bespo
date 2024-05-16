@@ -43,7 +43,7 @@ public class TeamController {
         int memberId = authTokensGenerator.extractMemberId(accessToken);
         String imgUrl;
         if(image == null)
-            imgUrl = "";
+            imgUrl = "https://bespo.s3.ap-northeast-2.amazonaws.com/default/team.PNG";
         imgUrl = s3UploaderService.upload(image, "team");
         Message message;
 
