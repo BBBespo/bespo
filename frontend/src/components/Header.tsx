@@ -180,8 +180,8 @@ const MyIoPersonSharp = styled(IoPersonSharp)`
   }
 `;
 const Header = () => {
-  const [isLogin, setLogin] = useState(false);
-  const [hasTeam, setHasTeam] = useState(false);
+  const [isLogin, setLogin] = useState(true);
+  const [hasTeam, setHasTeam] = useState(true);
   useEffect(() => {
     if (localStorage.getItem('login-state')) {
       const isLogin = JSON.parse(localStorage.getItem('login-state')!).state.name;
@@ -236,7 +236,7 @@ const Header = () => {
               <MyGoBellFill />
             </HeaderButton>
             <HeaderButton>
-              <NavLink to="/login">
+              <NavLink to="/profile">
                 <MyIoPersonSharp />
               </NavLink>
             </HeaderButton>
@@ -257,37 +257,8 @@ const Header = () => {
           <NavigationButton>
             <NavigationText to="/memo">메모</NavigationText>
           </NavigationButton>
-        </NavigationBar>
-        <NavigationGap />
-        <HeaderButton $type="red">
-          <MyHiOutlineUserGroup />
-        </HeaderButton>
-        <HeaderButton onClick={() => {}}>
-          <MyGoBellFill />
-        </HeaderButton>
-        <HeaderButton>
-          {/* <NavLink to="/Login">
-            <MyIoPersonSharp />
-          </NavLink> */}
-          <NavLink to="/profile">
-            <MyIoPersonSharp />
-          </NavLink>
-        </HeaderButton>
-      </HeaderContainer>
-      <NavigationBarMobile>
-        <NavigationButton>
-          <NavigationText to="/">대시보드</NavigationText>
-        </NavigationButton>
-        <NavigationButton>
-          <NavigationText to="/team">선수단</NavigationText>
-        </NavigationButton>
-        <NavigationButton>
-          <NavigationText to="/schedule">일정</NavigationText>
-        </NavigationButton>
-        <NavigationButton>
-          <NavigationText to="/memo">메모</NavigationText>
-        </NavigationButton>
-      </NavigationBarMobile>
+        </NavigationBarMobile>
+      )}
     </div>
   );
 };
