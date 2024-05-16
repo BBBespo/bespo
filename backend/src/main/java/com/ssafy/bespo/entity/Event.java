@@ -1,5 +1,6 @@
 package com.ssafy.bespo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.bespo.Enum.EventType;
 import com.ssafy.bespo.dto.EventDto;
 import jakarta.persistence.*;
@@ -36,6 +37,7 @@ public class Event extends BaseTime {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
+    @JsonIgnore
     private Team team;
 
     public void updateEvent(EventDto.updateEventRequest request){

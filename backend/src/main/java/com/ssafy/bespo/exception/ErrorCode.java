@@ -18,7 +18,8 @@ public enum ErrorCode {
     NO_AUTHENTICATION_FOR_NOTIFICATION(401, "공지사항 권한이 없습니다."),
     NO_EXIST_NOTIFICATION(400, "조회한 공지사항 항목이 없습니다."),
     NO_AUTHENTICATION_DIFFERENT_WRITER(401, "수정 및 삭제 권한이 없습니다. 작성자와 수정자가 다릅니다."),
-    NO_EXIST_MEMO(401, "해당하는 메모가 없습니다.")
+    NO_EXIST_MEMO(401, "해당하는 메모가 없습니다."),
+    NO_AUTHENTICATION_FOR_EVENT(401, "일정조회 권한이 없습니다."),
     ;
 
     private final int status;
