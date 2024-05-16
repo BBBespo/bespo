@@ -10,6 +10,7 @@ const DashBoardContainer = styled.div`
   align-items: center;
   justify-content: center;
 `;
+
 const TextContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -20,6 +21,10 @@ const TextContainer = styled.div`
   > h1 {
     font-size: 30px;
     font-weight: 600;
+
+    @media (max-width: 1400px) {
+      font-size: 25px;
+    }
   }
   > p {
     margin-top: 20px;
@@ -34,6 +39,11 @@ const CardContainer = styled.div`
   width: 1400px;
   height: 400px;
   justify-content: center;
+
+  @media (max-width: 1400px) {
+    width: 100%;
+    flex-wrap: wrap;
+  }
 `;
 
 const CardDiv = styled.div`
@@ -43,15 +53,31 @@ const CardDiv = styled.div`
   background-color: #f3f3f3;
   padding: 50px 60px;
   border-radius: 20px;
+
+  @media (max-width: 1400px) {
+    width: 90%;
+    height: 320px;
+    padding: 30px 30px;
+    margin: 10px;
+  }
 `;
 const CardHeadText = styled.p`
   font-size: 30px;
   font-weight: 600;
   margin-bottom: 20px;
+
+  @media (max-width: 1400px) {
+    font-size: 25px;
+    margin-bottom: 10px;
+  }
 `;
 const CardContentText = styled.p`
   font-size: 20px;
   font-weight: 500;
+
+  @media (max-width: 1400px) {
+    font-size: 20px;
+  }
 `;
 const CardButtonDiv = styled.div`
   display: flex;
@@ -71,6 +97,17 @@ const CardButtonDiv = styled.div`
     font-weight: 500;
     color: white;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+    @media (max-width: 1400px) {
+      width: 200px;
+      font-size: 20px;
+    }
+  }
+
+  > img {
+    @media (max-width: 1400px) {
+      width: 200px;
+    }
   }
 `;
 const ModalBackground = styled.div`

@@ -14,7 +14,7 @@ interface CircleProps {
 
 const Wrapper = styled.div`
   border-radius: 20px;
-  width: 90%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
