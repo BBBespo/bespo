@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { instance } from 'src/axios/instance';
+import { AxiosResponse } from 'axios';
 
 const EditProfileContainer = styled.div`
   padding: 5px 15px 15px 15px;
@@ -60,16 +62,24 @@ export default function EditProfile() {
   const [name, setName] = useState('');
   const [birthDate, setBirthDate] = useState('');
   const [phone, setPhone] = useState('');
-  const [backNumber, setBackNumber] = useState('');
+  const [backNumber, setBackNumber] = useState(0);
   const [position, setPosition] = useState('');
+  const [email, setEmail] = useState('');
+  const [weight, setWeight] = useState(0);
+  const [height, setHeight] = useState(0);
 
   useEffect(() => {
-    setProfile('https://bespo.s3.ap-northeast-2.amazonaws.com/teamImage/bm.png');
-    setName('박태양');
-    setBirthDate('1111-11-11');
-    setPhone('010-1234-5677');
-    setBackNumber('1');
-    setPosition('공격수');
+    instance.get('/members').then((res: AxiosResponse) => {
+      setProfile(res.data.data.imgUrl);
+      setName(res.data.data.name);
+      setBirthDate(res.data.data.birth);
+      setPhone(res.data.data.tel);
+      setBackNumber(res.data.data.backNumber);
+      setPosition(res.data.data.role);
+      setEmail(res.data.data.email);
+      setWeight(res.data.data.weight);
+      setHeight(res.data.data.height);
+    });
   }, []);
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,7 +95,8 @@ export default function EditProfile() {
   };
 
   const handleBackNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setBackNumber(event.target.value);
+    const value = parseInt(event.target.value);
+    setBackNumber(value);
   };
 
   const handlePositionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -93,8 +104,29 @@ export default function EditProfile() {
   };
 
   const handleEditButton = () => {
-    console.log('edit button clicked');
-    navigate('/profile');
+    const requestBody = new FormData();
+    const jsonEditData = JSON.stringify({
+      email: email,
+      name: name,
+      role: position,
+      weight: weight,
+      height: height,
+      birth: birthDate,
+      tel: phone === null ? '' : phone,
+      backNumber: backNumber,
+    });
+    const data = new Blob([jsonEditData], { type: 'application/json' });
+    requestBody.append('request', data);
+
+    instance
+      .put('/members/update', requestBody, {
+        headers: {
+          'content-type': 'multipart/form-data',
+        },
+      })
+      .then(() => {
+        navigate('/profile');
+      });
   };
 
   return (
@@ -138,12 +170,12 @@ export default function EditProfile() {
         <InputText>
           <p>등번호</p>
         </InputText>
-        <Input type="text" value={backNumber} onChange={handleBackNumberChange} />
+        <Input type="number" value={backNumber} onChange={handleBackNumberChange} />
       </InputBox>
 
       <InputBox>
         <InputText>
-          <p>포지션</p>
+          <p>역할</p>
         </InputText>
         <Input type="text" value={position} onChange={handlePositionChange} />
       </InputBox>
