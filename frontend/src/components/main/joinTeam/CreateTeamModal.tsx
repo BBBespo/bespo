@@ -134,12 +134,6 @@ const CreateTeamModal = ({ onClose }: { onClose: () => void }) => {
   const [teamName, setTeamName] = useState('');
   const [isTeamCreated, setIsTeamCreated] = useState(false);
   const [teamCode, setTeamCode] = useState('');
-  const jsonSignUpData = JSON.stringify({
-    name: teamName,
-  });
-  const requestBody = new FormData();
-  const teamname = new Blob([jsonSignUpData], { type: 'application/json' });
-  requestBody.append('request', teamname);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -157,6 +151,17 @@ const CreateTeamModal = ({ onClose }: { onClose: () => void }) => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    const jsonSignUpData = JSON.stringify({
+      name: teamName,
+    });
+
+    console.log('팀이름', jsonSignUpData);
+
+    const teamname = new Blob([jsonSignUpData], { type: 'application/json' });
+    const requestBody = new FormData();
+
+    requestBody.append('request', teamname);
 
     const formData = new FormData();
     if (selectedFile) {
