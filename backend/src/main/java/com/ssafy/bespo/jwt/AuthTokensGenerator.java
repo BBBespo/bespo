@@ -28,7 +28,6 @@ public class AuthTokensGenerator {
     }
 
     public int extractMemberId(String accessToken) {
-        System.out.println(accessToken);
         return Integer.parseInt(jwtTokenProvider.extractSubject(accessToken));
     }
 }

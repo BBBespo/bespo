@@ -107,6 +107,7 @@ public class TeamDto {
     @AllArgsConstructor
     public static class acceptRequest {
         private String code;
+        private int memberId;
         private AcceptType acceptType;
     }
 

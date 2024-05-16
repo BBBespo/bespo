@@ -34,6 +34,10 @@ public class Event extends BaseTime {
 
     private List<String> attendees;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_id")
+    private Team team;
+
     public void updateEvent(EventDto.updateEventRequest request){
         this.start = request.getStart();
         this.end = request.getEnd();
