@@ -32,8 +32,8 @@ public class TeamController {
 
     // 팀 상세 조회하기
     @GetMapping
-    public ResponseEntity<Message> readTeam(@RequestParam("teamId") int teamId){
-        Message message = new Message("팀 상세 조회 성공", teamService.readTeam(teamId));
+    public ResponseEntity<Message> readTeam(@RequestHeader String accessToken, @RequestParam("teamId") int teamId){
+        Message message = new Message("팀 상세 조회 성공", teamService.readTeam(accessToken, teamId));
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 

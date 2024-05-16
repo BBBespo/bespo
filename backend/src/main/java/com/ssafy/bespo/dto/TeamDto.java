@@ -150,4 +150,17 @@ public class TeamDto {
         private String image;
     }
 
+    @Getter
+    @Builder
+    @Setter
+    public static class readTeamInfoResponse {
+        private LocalDateTime createdDate;
+        private LocalDateTime modifiedDate;
+        private Integer teamId;
+        private String name;
+        private String image;
+        private String code;
+        private List<Member> members;
+    }
+
 }
