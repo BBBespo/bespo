@@ -236,7 +236,7 @@ const Header = () => {
               <MyGoBellFill />
             </HeaderButton>
             <HeaderButton>
-              <NavLink to="/login">
+              <NavLink to="/profile">
                 <MyIoPersonSharp />
               </NavLink>
             </HeaderButton>

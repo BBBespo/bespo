@@ -10,14 +10,16 @@ const DashBoardDiv = styled.div`
   display: grid;
   grid-template-areas:
     'notice   stress   schedule'
-    'memo     stress   schedule'
     'injury   condition schedule';
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 2fr;
+  grid-template-rows: 1fr 1fr;
   gap: 20px;
 
   > .notice {
     grid-area: notice;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
   }
   > .stress {
     grid-area: stress;
@@ -34,15 +36,23 @@ const DashBoardDiv = styled.div`
   > .condition {
     grid-area: condition;
   }
+
+  @media (max-width: 900px) {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+  }
 `;
 
 export default function DashBoard() {
   return (
     <DashBoardDiv>
-      <Board1 className="notice" boardName="공지사항"></Board1>
+      <div className="notice">
+        <Board1 boardName="공지사항"></Board1>
+        <Board1 boardName="최신메모"></Board1>
+      </div>
       <Graph className="stress">Stress</Graph>
       <Schedule className="schedule">Schedule</Schedule>
-      <Board1 className="memo" boardName="최신메모"></Board1>
       <Player className="injury" boardName="부상선수">
         Injury
       </Player>
