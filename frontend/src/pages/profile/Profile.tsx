@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import kakao from '../../assets/images/profile/kakao.png';
 import teamDefaultProfile from '../../assets/images/createTeam/teamDefaultProfile.png';
 import { useNavigate } from 'react-router-dom';
+import { instance } from 'src/axios/instance';
+import { AxiosResponse } from 'axios';
 
 const ProfileContainer = styled.div`
   padding: 5px 15px 15px 15px;
@@ -66,10 +68,12 @@ export default function Profile() {
   const [teamName, setTeamName] = useState('');
 
   useEffect(() => {
-    setProfile('https://bespo.s3.ap-northeast-2.amazonaws.com/teamImage/bm.png');
-    setUserName('박태양');
-    setEmail('sun@kakao.com');
-    setTeamName('짜이원짜이');
+    instance.get('/members').then((res: AxiosResponse) => {
+      setProfile(res.data.data.imgUrl);
+      setUserName(res.data.data.name);
+      setEmail(res.data.data.email);
+      setTeamName(res.data.data.team);
+    });
   }, []);
 
   return (
