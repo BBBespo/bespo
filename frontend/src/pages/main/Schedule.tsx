@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import AddScheduleModal from '../../components/schedule/AddScheduleModal';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { EventContentArg } from '@fullcalendar/core';
+import { instance } from 'src/axios/instance';
+import { AxiosResponse } from 'axios';
 
 const ScheduleContainer = styled.div`
   display: flex;
@@ -68,24 +70,35 @@ const CalendarWrapper = styled.div`
 
 const Schedule = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [events, setEvents] = useState([]);
 
-  const events = [
-    {
-      title: '일정1',
-      start: '2024-05-07T14:00:00',
-      end: '2024-05-08T16:00:00',
-    },
-    {
-      title: '일정2',
-      start: '2024-05-07T14:00:00',
-      end: '2024-05-08T16:00:00',
-    },
-    {
-      title: '일정3',
-      start: '2024-05-07T14:00:00',
-      end: '2024-05-08T16:00:00',
-    },
-  ];
+  const getEventsList = () => {
+    instance.get('/events').then((res: AxiosResponse) => {
+      setEvents(res.data.data);
+    });
+  };
+
+  useEffect(() => {
+    getEventsList();
+  }, []);
+
+  // const events = [
+  //   {
+  //     title: '일정1',
+  //     start: '2024-05-07T14:00:00',
+  //     end: '2024-05-08T16:00:00',
+  //   },
+  //   {
+  //     title: '일정2',
+  //     start: '2024-05-07T14:00:00',
+  //     end: '2024-05-08T16:00:00',
+  //   },
+  //   {
+  //     title: '일정3',
+  //     start: '2024-05-07T14:00:00',
+  //     end: '2024-05-08T16:00:00',
+  //   },
+  // ];
 
   function renderEventContent(eventInfo: EventContentArg) {
     return (
@@ -114,7 +127,7 @@ const Schedule = () => {
 
       {isOpen && (
         <ModalBackground>
-          <AddScheduleModal onClose={() => setIsOpen(false)} />
+          <AddScheduleModal getEventsList={getEventsList} onClose={() => setIsOpen(false)} />
         </ModalBackground>
       )}
 
