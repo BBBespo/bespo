@@ -11,9 +11,10 @@ const MemoContainer = styled.div`
 const Memo = () => {
   return (
     <MemoContainer>
-      <Category />
-      <Category />
-      <Category />
+      <Category memoType="WORRY" categoryName="고민" />
+      <Category memoType="TRAINING" categoryName="훈련" />
+      <Category memoType="INJURY" categoryName="부상" />
+      <Category memoType="ETC" categoryName="기타" />
     </MemoContainer>
   );
 };
