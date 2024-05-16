@@ -12,6 +12,8 @@ import com.ssafy.bespo.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -22,6 +24,7 @@ public class MemberService {
     public void changeMemberInfo(String accessToken, MemberDto.UpdateMemberRequest request, String imgUrl) {
         int memberId = authTokensGenerator.extractMemberId(accessToken);
         Member member = memberRepository.findByMemberIdAndFlagFalse(memberId);
+
         member.updateMember(request.getName(), request.getRole(), request.getWeight(), request.getHeight(),
                 request.getBirth(), request.getBackNumber(), imgUrl, request.getTel());
 

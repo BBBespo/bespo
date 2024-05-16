@@ -41,7 +41,10 @@ public class TeamController {
     @PostMapping
     public ResponseEntity<Message> createTeam(@RequestHeader String accessToken, @RequestPart TeamDto.CreateTeamRequest request, @RequestPart MultipartFile image) throws IOException {
         int memberId = authTokensGenerator.extractMemberId(accessToken);
-        String imgUrl = s3UploaderService.upload(image, "team");
+        String imgUrl;
+        if(image == null)
+            imgUrl = "";
+        imgUrl = s3UploaderService.upload(image, "team");
         Message message;
 
         if(teamService.checkName(request.getName())){

@@ -36,7 +36,10 @@ public class NotificationController {
 
     @PostMapping
     public ResponseEntity<Message> registerNotification(@RequestHeader String accessToken, @RequestPart(required = false) MultipartFile image, @RequestPart NotificationDto.writeNotificationRequest request) throws IOException {
-        String url = s3UploaderService.upload(image, "notification");
+        String url = "";
+        if(image != null)
+            url = s3UploaderService.upload(image, "notification");
+
         int notificationId = notificationService.writeNotification(accessToken, url, request);
         Message message = new Message("공지 등록 성공", notificationId);
         return new ResponseEntity<>(message, HttpStatus.OK);

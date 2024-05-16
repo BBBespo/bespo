@@ -44,7 +44,10 @@ public class MemberController {
 
     @PutMapping(value = "/update", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Message> updateMember(@RequestHeader String accessToken, @RequestPart MemberDto.UpdateMemberRequest request, @RequestPart(required = false) MultipartFile image) throws IOException {
-        String url = s3UploaderService.upload(image, "member");
+        String url = "";
+        if(image != null)
+            url = s3UploaderService.upload(image, "member");
+        else url = "https://bespo.s3.ap-northeast-2.amazonaws.com/default/member.PNG";
         memberService.changeMemberInfo(accessToken, request, url);
         Message message = new Message("유저 정보 수정 완료");
         return ResponseEntity.ok(message);
@@ -53,7 +56,10 @@ public class MemberController {
 
     @PostMapping(value = "/signup", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Message> registerMember(@RequestHeader String accessToken, @RequestPart MemberDto.UpdateMemberRequest request, @RequestPart(required = false) MultipartFile image) throws IOException {
-        String url = s3UploaderService.upload(image, "member");
+        String url = "";
+        if(image != null)
+            url = s3UploaderService.upload(image, "member");
+        else url = "https://bespo.s3.ap-northeast-2.amazonaws.com/default/member.PNG";
         Message message = new Message("유저 정보 등록 완료", memberService.registerMemberByToken(accessToken, request, url));
         return ResponseEntity.ok(message);
     }
