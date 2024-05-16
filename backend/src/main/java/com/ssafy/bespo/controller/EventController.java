@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,8 +28,8 @@ public class EventController {
 
     // 일정 전체 조회하기
     @GetMapping
-    public ResponseEntity<Message> readEvent(){
-        Message message = new Message("일정 전체 조회 성공", eventService.readAllEvent());
+    public ResponseEntity<Message> readEvent(@RequestHeader String accessToken){
+        Message message = new Message("일정 전체 조회 성공", eventService.readAllEvent(accessToken));
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
@@ -43,8 +44,8 @@ public class EventController {
 
     // 일정 등록하기
     @PostMapping
-    public ResponseEntity<Message> registerEvent(@RequestBody EventDto.createEventRequest request){
-        Message message = new Message("일정 등록 성공", eventService.createEvent(request));
+    public ResponseEntity<Message> registerEvent(@RequestHeader String accessToken, @RequestBody EventDto.createEventRequest request){
+        Message message = new Message("일정 등록 성공", eventService.createEvent(accessToken, request));
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 

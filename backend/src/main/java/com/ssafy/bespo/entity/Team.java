@@ -1,5 +1,6 @@
 package com.ssafy.bespo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.bespo.Enum.RoleType;
 import com.ssafy.bespo.dto.TeamDto;
 import jakarta.persistence.*;
@@ -28,6 +29,7 @@ public class Team extends BaseTime {
     private String code;
 
     @OneToMany(mappedBy = "team")
+    @JsonIgnore
     private List<Member> members;
 
     @OneToMany(mappedBy = "team")

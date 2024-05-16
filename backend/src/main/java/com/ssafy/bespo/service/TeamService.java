@@ -161,8 +161,9 @@ public class TeamService {
         if(team == null){
             throw new CustomException(ErrorCode.No_EXIST_TEAM);
         }
-        int memberId = authTokensGenerator.extractMemberId(accessToken);
-        Member member = memberRepository.findByMemberIdAndFlagFalse(memberId);
+//        int memberId = authTokensGenerator.extractMemberId(accessToken);
+        
+        Member member = memberRepository.findByMemberIdAndFlagFalse(acceptRequest.getMemberId());
         if(member == null){
             throw new CustomException((ErrorCode.NO_EXIST_MEMBER));
         }
