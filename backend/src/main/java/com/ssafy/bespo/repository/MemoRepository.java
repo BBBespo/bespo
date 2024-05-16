@@ -13,8 +13,7 @@ import java.util.List;
 public interface MemoRepository extends JpaRepository<Memo, Integer> {
 
     Memo findByMemoIdAndFlagFalse(int memoId);
-
     List<Memo> findByTeamAndTypeAndFlagFalse(Team team, MemoType type);
-
+    List<Memo> findByTeamAndTypeAndScopeContainingAndFlagFalse(Team team, MemoType type, String scope);
 
 }

@@ -1,15 +1,22 @@
 package com.ssafy.bespo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-public class InjuryInfo extends BaseTime {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Injury extends BaseTime {
 
     @Id @GeneratedValue
-    @Column(name = "injury_info_id")
-    private Integer injuryInfoId;
+    @Column(name = "injury_id")
+    private Integer injuryId;
 
     @Column(name = "injury_area")
     private String injuryArea;
@@ -25,6 +32,7 @@ public class InjuryInfo extends BaseTime {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
+    @JsonIgnore
     private Member member;
 
 }
