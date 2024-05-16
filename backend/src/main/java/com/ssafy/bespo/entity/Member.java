@@ -14,6 +14,7 @@ import lombok.Getter;
 import javax.script.ScriptEngine;
 import java.util.List;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Getter
@@ -30,19 +31,25 @@ public class Member extends BaseTime {
     private String email;
     private String name;
     private RoleType role;
-    @Nullable
-    private Integer weight;
-    @Nullable
-    private Integer height;
+    @Builder.Default
+    @ColumnDefault("0")
+    private Integer weight = 0;
+    @Builder.Default
+    @ColumnDefault("0")
+    private Integer height = 0;
     @Nullable
     private String birth;
     @Nullable
     private String tel;
-    @Column(name = "back_number")
-    @Nullable
-    private Integer backNumber;
 
-    private String imgUrl;
+    @Column(name = "back_number")
+    @ColumnDefault("0")
+    @Builder.Default
+    private Integer backNumber = 0;
+
+    @Builder.Default
+    @ColumnDefault("https://bespo.s3.ap-northeast-2.amazonaws.com/default/member.PNG")
+    private String imgUrl = "https://bespo.s3.ap-northeast-2.amazonaws.com/default/member.PNG";
 
     @ManyToOne
     @JoinColumn(name = "team_id")
@@ -77,9 +84,8 @@ public class Member extends BaseTime {
         this.oAuthProvider = oAuthProvider;
     }
 
-    public void updateMember(String email, String name, RoleType role,
+    public void updateMember(String name, RoleType role,
                                int weight, int height, String birth, int backNumber, String imgUrl, String tel){
-        this.email = email;
         this.name = name;
         this.role = role;
         this.weight = weight;

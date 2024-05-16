@@ -12,6 +12,8 @@ import com.ssafy.bespo.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -22,8 +24,9 @@ public class MemberService {
     public void changeMemberInfo(String accessToken, MemberDto.UpdateMemberRequest request, String imgUrl) {
         int memberId = authTokensGenerator.extractMemberId(accessToken);
         Member member = memberRepository.findByMemberIdAndFlagFalse(memberId);
-        member.updateMember(request.getEmail(), request.getName(), request.getRole(),
-                request.getWeight(), request.getHeight(), request.getBirth(), request.getBackNumber(), imgUrl, request.getTel());
+
+        member.updateMember(request.getName(), request.getRole(), request.getWeight(), request.getHeight(),
+                request.getBirth(), request.getBackNumber(), imgUrl, request.getTel());
 
         memberRepository.save(member);
     }
@@ -39,8 +42,8 @@ public class MemberService {
                 member.shallowRegister();
             }
         }
-        member.updateMember(request.getEmail(), request.getName(), request.getRole(),
-                request.getWeight(), request.getHeight(), request.getBirth(), request.getBackNumber(), imgUrl, request.getTel());
+        member.updateMember(request.getName(), request.getRole(), request.getWeight(), request.getHeight(),
+                request.getBirth(), request.getBackNumber(), imgUrl, request.getTel());
 
         memberRepository.save(member);
 
@@ -81,6 +84,7 @@ public class MemberService {
                 .weight(member.getWeight())
                 .height(member.getHeight())
                 .email(member.getEmail())
+                .imgUrl(member.getImgUrl())
                 .backNumber(member.getBackNumber())
                 .birth(member.getBirth())
                 .build();

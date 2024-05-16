@@ -69,6 +69,9 @@ public class TeamService {
         Member member = memberRepository.findByMemberIdAndFlagFalse(memberId);
         member.updateRoleType(RoleType.Manager);
 
+        if(imgUrl.equals(""))
+            imgUrl = "https://bespo.s3.ap-northeast-2.amazonaws.com/default/team.PNG";
+
         // 팀 생성
         Team team = Team.builder()
             .name(teamDtoReq.getName())

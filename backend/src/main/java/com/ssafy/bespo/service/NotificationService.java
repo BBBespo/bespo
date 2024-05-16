@@ -34,12 +34,14 @@ public class NotificationService {
             throw new CustomException(ErrorCode.NO_AUTHENTICATION_FOR_NOTIFICATION);
 
         Notification notification = Notification.builder()
-                .image(imgUrl)
                 .text(request.getText())
                 .title(request.getTitle())
                 .team(member.getTeam())
                 .writerId(memberId)
                 .build();
+
+        if(imgUrl != null)
+
 
         notificationRepository.save(notification);
         return notification.getNotificationId();

@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.antlr.v4.runtime.misc.NotNull;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.List;
 
@@ -24,7 +25,10 @@ public class Team extends BaseTime {
     @Column(name = "team_id")
     private Integer teamId;
     private String name;
-    private String image;
+
+    @Builder.Default
+    @ColumnDefault("https://bespo.s3.ap-northeast-2.amazonaws.com/default/team.PNG")
+    private String image = "https://bespo.s3.ap-northeast-2.amazonaws.com/default/team.PNG";
 
     private String code;
 
