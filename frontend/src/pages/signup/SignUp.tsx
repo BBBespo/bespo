@@ -5,6 +5,7 @@ import defaultProfile from '../../assets/images/defaultProfile.png';
 import valueDelete from '../../assets/icons/valueDelete.svg';
 import DatePicker, { ReactDatePickerProps } from 'react-datepicker';
 import { instance } from 'src/axios/instance';
+import { AxiosResponse } from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.div`
@@ -139,7 +140,8 @@ export default function SignUp() {
           'content-type': 'multipart/form-data',
         },
       })
-      .then(() => {
+      .then((res: AxiosResponse) => {
+        console.log(res);
         navigate('/');
       });
   };
