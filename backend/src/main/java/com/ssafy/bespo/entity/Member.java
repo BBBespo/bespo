@@ -14,6 +14,7 @@ import lombok.Getter;
 import javax.script.ScriptEngine;
 import java.util.List;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Getter
@@ -38,10 +39,12 @@ public class Member extends BaseTime {
     private String birth;
     @Nullable
     private String tel;
+
     @Column(name = "back_number")
-    @Nullable
+    @ColumnDefault("0")
     private Integer backNumber;
 
+    @ColumnDefault("https://bespo.s3.ap-northeast-2.amazonaws.com/default/member.PNG")
     private String imgUrl;
 
     @ManyToOne
