@@ -1,5 +1,6 @@
 package com.ssafy.bespo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.bespo.Enum.MemoType;
 import com.ssafy.bespo.Enum.RoleType;
 import com.ssafy.bespo.dto.MemoDto;
@@ -32,6 +33,7 @@ public class Memo extends BaseTime {
     private String scope;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "member_id")
     private Member member;
 
@@ -39,6 +41,7 @@ public class Memo extends BaseTime {
     private List<Comment> comments;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "team_id")
     private Team team;
 
