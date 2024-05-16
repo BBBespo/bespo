@@ -60,6 +60,7 @@ public class TeamService {
             .modifiedDate(team.getModifiedDate())
             .teamId(team.getTeamId())
             .name(team.getName())
+            .image(team.getImage())
             .code(team.getCode())
             .members(team.getMembers())
             .build();
