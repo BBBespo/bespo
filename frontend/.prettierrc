@@ -1,0 +1,11 @@
+{
+  "singleQuote": true,
+  "parser": "typescript",
+  "useTabs": false,
+  "semi": true,
+  "tabWidth": 2,
+  "trailingComma": "all",
+  "printWidth": 120,
+  "arrowParens": "always"
+  
+}
