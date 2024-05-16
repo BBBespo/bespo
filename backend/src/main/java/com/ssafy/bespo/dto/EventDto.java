@@ -47,6 +47,22 @@ public class EventDto {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
+    public static class readEventResponse{
+        private Integer eventId;
+        private LocalDateTime start;
+        private LocalDateTime end;
+        private String title;
+        private String content;
+        private EventType type;
+        private String location;
+        private List<String> attendees;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class readYearMonthEventResponse{
         private Integer eventId;
         private LocalDateTime start;

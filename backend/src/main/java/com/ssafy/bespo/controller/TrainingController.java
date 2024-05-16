@@ -1,11 +1,11 @@
 package com.ssafy.bespo.controller;
 
+import com.ssafy.bespo.Enum.MemoType;
 import com.ssafy.bespo.controller.constants.Message;
-import com.ssafy.bespo.dto.InjuryDto;
 import com.ssafy.bespo.dto.StatusDto;
-import com.ssafy.bespo.dto.StatusDto.createStatusRequest;
-import com.ssafy.bespo.service.InjuryService;
-import com.ssafy.bespo.service.StatusService;
+import com.ssafy.bespo.dto.TrainingDto;
+import com.ssafy.bespo.service.MemoService;
+import com.ssafy.bespo.service.TrainingService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,23 +19,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/status")
-public class StatusController {
+@RequestMapping("/api/training")
+public class TrainingController {
 
-    private final StatusService statusService;
+    private final TrainingService trainingService;
 
-    // 컨디션 정보 등록하기
     @PostMapping
-    public ResponseEntity<Message> registerStatus(@RequestHeader String accessToken, @RequestBody StatusDto.createStatusRequest request){
-        Message message = new Message("컨디션 정보 등록 완료", statusService.registerStatus(accessToken, request));
+    public ResponseEntity<Message> registerStatus(@RequestHeader String accessToken, @RequestBody TrainingDto.writeTrainingRequest request){
+        Message message = new Message("운동 정보 등록 완료", trainingService.registerTraining(accessToken, request));
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    // 대시보드 컨디션 선수 리스트 조회
     @GetMapping
-    public ResponseEntity<Message> readStatus(@RequestParam("teamId") int teamId){
-        Message message = new Message("대시보드 컨디션 관리가 필요한 선수 리스트 조회 완료", statusService.readPlayerList(teamId));
+    public ResponseEntity<Message> readTraingin(@RequestHeader String accessToken) {
+        Message message = new Message("운동 기록 조회 완료", trainingService.readTraining(accessToken));
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
-
 }
