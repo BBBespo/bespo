@@ -24,31 +24,32 @@ import org.hibernate.annotations.ColumnDefault;
 public class Member extends BaseTime {
 
     @Id
-    @Column(name = "member_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer memberId;
 
     private String email;
+
     private String name;
+
     private RoleType role;
+
     @Builder.Default
-    @ColumnDefault("0")
     private Integer weight = 0;
+
     @Builder.Default
-    @ColumnDefault("0")
     private Integer height = 0;
+
     @Nullable
     private String birth;
+
     @Nullable
     private String tel;
 
-    @Column(name = "back_number")
-    @ColumnDefault("0")
+    @Column
     @Builder.Default
     private Integer backNumber = 0;
 
     @Builder.Default
-    @ColumnDefault("https://bespo.s3.ap-northeast-2.amazonaws.com/default/member.PNG")
     private String imgUrl = "https://bespo.s3.ap-northeast-2.amazonaws.com/default/member.PNG";
 
     @ManyToOne
