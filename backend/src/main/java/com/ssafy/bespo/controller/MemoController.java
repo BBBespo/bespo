@@ -56,31 +56,4 @@ public class MemoController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<Message> writeMemo(@RequestHeader String accessToken, @RequestPart MemoDto.writeMemoRequest request, @RequestPart(required = false) MultipartFile image) throws IOException {
-        String imgUrl = s3UploaderService.upload(image, "memo");
-        Message message = new Message("메모 작성 성공", memoService.registerMemo(accessToken, request, imgUrl));
-        return new ResponseEntity<>(message, HttpStatus.OK);
-    }
-
-    @GetMapping
-    public ResponseEntity<Message> readMemos(@RequestHeader String accessToken, @RequestParam MemoType memoType) {
-        Message message = new Message("메모 목록 조회 완료", memoService.readMemos(accessToken, memoType));
-        return new ResponseEntity<>(message, HttpStatus.OK);
-    }
-
-    @PostMapping("/comment")
-    public ResponseEntity<Message> writeComment(@RequestHeader String accessToken, @RequestBody CommentDto.WriteComment request) {
-        Message message = new Message("댓글 작성 완료", memoService.registerComment(accessToken, request));
-        return new ResponseEntity<>(message, HttpStatus.OK);
-    }
-
-    @DeleteMapping()
-    public ResponseEntity<Message> deleteMemo(@RequestHeader String accessToken, @RequestHeader int memoId){
-        memoService.deleteMemo(accessToken, memoId);
-        Message message = new Message("메모 삭제 완료");
-        return new ResponseEntity<>(message, HttpStatus.OK);
-    }
-
-
 }
