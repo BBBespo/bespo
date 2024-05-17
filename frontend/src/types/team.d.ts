@@ -4,7 +4,29 @@ export interface TeamProps {
   createDate: string;
   memberCount: number;
 }
-
+export type Memo = {
+  createdDate: string;
+  modifiedDate: string;
+  flag: boolean;
+  memoId: number;
+  name: string;
+  content: string;
+  type: string;
+  scope: string;
+  comments: any[];
+  createDate: string;
+};
+export type Injury = {
+  createdDate: string;
+  modifiedDate: string;
+  flag: boolean;
+  injuryId: number;
+  injuryArea: string;
+  injuryLevel: number;
+  injuryCause: string;
+  contact: boolean;
+  createDate: string;
+};
 export type Member = {
   createdDate: string;
   modifiedDate: string;
@@ -22,8 +44,8 @@ export type Member = {
   imgUrl: string;
   statuses: any[];
   trainings: any[];
-  injurys: any[];
-  memos: any[];
+  injurys: Injury[];
+  memos: Memo[];
   oauthProvider: string;
   createDate: string;
 };
