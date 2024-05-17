@@ -114,7 +114,7 @@ export default function Profile() {
           <p>팀코드</p>
         </ProfileInfoText>
         <ProfileInfoContentBox>
-          <p>{JSON.parse(localStorage.getItem('login-state')!).state.teamCode}</p>
+          <p>{JSON.parse(localStorage.getItem('login-state')!).state.team.code}</p>
         </ProfileInfoContentBox>
       </ProfileInfoBox>
     </ProfileContainer>
