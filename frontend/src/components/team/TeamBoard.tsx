@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import TeamInfo from './TeamInfo';
 import MemberInfo from './MemberInfo';
-
+import { Member, TeamProps } from '../../types/team';
 const TeamBoardContainer = styled.div`
   display: flex;
   width: 450px;
@@ -14,34 +14,7 @@ const TeamBoardContainer = styled.div`
     padding: 0;
   }
 `;
-interface TeamProps {
-  teamImg: string;
-  teamName: string;
-  createDate: string;
-  memberCount: number;
-}
 
-type Member = {
-  createdDate: string;
-  modifiedDate: string;
-  flag: boolean;
-  memberId: number;
-  email: string;
-  name: string;
-  role: string;
-  weight: number;
-  height: number;
-  birth: string;
-  tel: string;
-  backNumber: number;
-  imgUrl: string;
-  statuses: any[];
-  trainings: any[];
-  injurys: any[];
-  memos: any[];
-  oauthProvider: string;
-  createDate: string;
-};
 const TeamBoard = ({
   team,
   members,

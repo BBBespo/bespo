@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { instance } from '../../axios/instance';
 import formatDateString from '../../utils/formatData';
+import { Member, TeamProps } from '../../types/team';
 
 const TeamContainer = styled.div`
   display: flex;
@@ -20,34 +21,7 @@ const TeamContainer = styled.div`
     height: auto;
   }
 `;
-interface TeamProps {
-  teamImg: string;
-  teamName: string;
-  createDate: string;
-  memberCount: number;
-}
 
-type Member = {
-  createdDate: string;
-  modifiedDate: string;
-  flag: boolean;
-  memberId: number;
-  email: string;
-  name: string;
-  role: string;
-  weight: number;
-  height: number;
-  birth: string;
-  tel: string;
-  backNumber: number;
-  imgUrl: string;
-  statuses: any[];
-  trainings: any[];
-  injurys: any[];
-  memos: any[];
-  oauthProvider: string;
-  createDate: string;
-};
 const Team = () => {
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [team, setTeam] = useState<TeamProps>({
@@ -76,7 +50,24 @@ const Team = () => {
           createDate: formatDateString(res.data.data.createdDate),
           memberCount: res.data.data.members.length,
         };
-        setMembers(res.data.data.members);
+        const updatedMembers = res.data.data.members
+          .map((member: Member) => {
+            const roleName =
+              member.role === 'Captain'
+                ? '주장'
+                : member.role === 'Coach'
+                  ? '감독'
+                  : member.role === 'Manager'
+                    ? '매니저'
+                    : '선수';
+            return { ...member, roleName: roleName };
+          })
+          .sort((a: Member, b: Member) => {
+            const order = ['감독', '매니저', '주장', '선수'];
+            return order.indexOf(a.roleName) - order.indexOf(b.roleName);
+          });
+
+        setMembers(updatedMembers);
         setTeam(data);
       });
     }

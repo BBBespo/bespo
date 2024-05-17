@@ -2,6 +2,7 @@ import formatDateString from '../../utils/formatData';
 import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
+import { Member } from '../../types/team';
 
 const UserBoardContainer = styled.div`
   display: flex;
@@ -270,33 +271,14 @@ interface MemberProps {
   img: string;
   email: string;
   name: string;
+  roleName: string;
   weight: number;
   height: number;
   birth: string;
   tel: string;
   backNumber: number;
 }
-type Member = {
-  createdDate: string;
-  modifiedDate: string;
-  flag: boolean;
-  memberId: number;
-  email: string;
-  name: string;
-  role: string;
-  weight: number;
-  height: number;
-  birth: string;
-  tel: string;
-  backNumber: number;
-  imgUrl: string;
-  statuses: any[];
-  trainings: any[];
-  injurys: any[];
-  memos: any[];
-  oauthProvider: string;
-  createDate: string;
-};
+
 const MemberDetail = ({ selectedMember }: { selectedMember: Member }) => {
   const [member, setMember] = useState<MemberProps>();
 
@@ -306,7 +288,8 @@ const MemberDetail = ({ selectedMember }: { selectedMember: Member }) => {
       memberId: selectedMember.memberId,
       img: selectedMember.imgUrl,
       email: selectedMember.email,
-      name: '선수 ' + selectedMember.name,
+      name: selectedMember.roleName + ' ' + selectedMember.name,
+      roleName: selectedMember.roleName,
       weight: selectedMember.weight,
       height: selectedMember.height,
       birth: formatDateString(selectedMember.birth),
@@ -337,10 +320,6 @@ const MemberDetail = ({ selectedMember }: { selectedMember: Member }) => {
 };
 
 const UserBoard = ({ selectedMember }: { selectedMember: Member | null }) => {
-  useEffect(() => {
-    console.log(selectedMember?.memberId);
-  }, [selectedMember]);
-
   if (selectedMember === null) {
     return (
       <SelectMemberContainer>
@@ -351,7 +330,9 @@ const UserBoard = ({ selectedMember }: { selectedMember: Member | null }) => {
     return (
       <UserBoardContainer>
         <MemberDetail selectedMember={selectedMember} />
-        <MemberContent selectedMember={selectedMember} />
+        {(selectedMember.roleName === '주장' || selectedMember.roleName === '선수') && (
+          <MemberContent selectedMember={selectedMember} />
+        )}
       </UserBoardContainer>
     );
   }

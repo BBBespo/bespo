@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-
+import { Member } from '../../types/team';
 const MemberInfoContainer = styled.div`
   display: flex;
   justify-content: flex-start;
@@ -63,33 +63,12 @@ const MemberCard = ({
       }}
     >
       <MemberCardText $isSelected={isSelected}>{member.name}</MemberCardText>
-      <MemberCardText $isSelected={isSelected}>{member.role == 'Manager' ? '주장' : ''}</MemberCardText>
+      <MemberCardText $isSelected={isSelected}>{member.roleName}</MemberCardText>
       <MemberCardText $isSelected={isSelected}>{member.backNumber}</MemberCardText>
     </MemberCardContainer>
   );
 };
 
-type Member = {
-  createdDate: string;
-  modifiedDate: string;
-  flag: boolean;
-  memberId: number;
-  email: string;
-  name: string;
-  role: string;
-  weight: number;
-  height: number;
-  birth: string;
-  tel: string;
-  backNumber: number;
-  imgUrl: string;
-  statuses: any[];
-  trainings: any[];
-  injurys: any[];
-  memos: any[];
-  oauthProvider: string;
-  createDate: string;
-};
 const MemberInfo = ({
   members,
   onMemberSelected,
