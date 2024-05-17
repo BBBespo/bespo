@@ -62,7 +62,7 @@ const Board1 = ({ boardName, className }: Board1Props) => {
 
   useEffect(() => {
     instance
-      .get(`/${className}`)
+      .get(`/memos?memoType=ALL`)
       .then((res: AxiosResponse) => {
         console.log(res.data);
         setBoards(res.data.data);

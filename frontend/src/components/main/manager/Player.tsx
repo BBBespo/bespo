@@ -54,8 +54,8 @@ const MoreText = styled.p`
 // `;
 
 const NonePlayerPic = styled.div`
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   margin-right: 20px;
   background-color: red;
@@ -90,7 +90,7 @@ const Player = ({ boardName, className }: Board1Props) => {
         <MoreText>더보기</MoreText>
       </Header>
 
-      {data.map((board, index) => (
+      {data.slice(0, 3).map((board, index) => (
         <Content key={index}>
           <NonePlayerPic></NonePlayerPic>
           <ContentText>
