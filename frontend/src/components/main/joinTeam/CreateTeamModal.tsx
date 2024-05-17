@@ -188,6 +188,7 @@ const CreateTeamModal = ({ onClose }: { onClose: () => void }) => {
         throw new Error(error.message);
       })
       .then((res: AxiosResponse) => {
+        console.log(res);
         console.log('팀 생성 성공');
         console.log('팀이름', res.data.data.name);
         console.log('팀Id', res.data.data.teamId);
