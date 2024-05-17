@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import TeamInfo from './TeamInfo';
 import MemberInfo from './MemberInfo';
-
+import { Member, TeamProps } from '../../types/team';
 const TeamBoardContainer = styled.div`
   display: flex;
   width: 450px;
@@ -15,15 +15,23 @@ const TeamBoardContainer = styled.div`
   }
 `;
 
-const TeamBoard = ({ onMemberSelected }: { onMemberSelected: (memberId: number) => void }) => {
+const TeamBoard = ({
+  team,
+  members,
+  onMemberSelected,
+}: {
+  team: TeamProps;
+  members: Array<Member>;
+  onMemberSelected: (memberId: number) => void;
+}) => {
   const handleSelectMember = (memberId: number) => {
     onMemberSelected(memberId);
   };
 
   return (
     <TeamBoardContainer>
-      <TeamInfo />
-      <MemberInfo onMemberSelected={handleSelectMember} />
+      <TeamInfo team={team} />
+      <MemberInfo members={members} onMemberSelected={handleSelectMember} />
     </TeamBoardContainer>
   );
 };

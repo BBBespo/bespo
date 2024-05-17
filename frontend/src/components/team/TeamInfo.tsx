@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import React from 'react';
 
 const TeamInfoContainer = styled.div`
   display: flex;
@@ -79,25 +79,10 @@ interface TeamProps {
   createDate: string;
   memberCount: number;
 }
-
-const TeamInfo = () => {
-  const [team, setTeam] = useState<TeamProps>({
-    teamImg: '',
-    teamName: '',
-    createDate: '',
-    memberCount: 0,
-  });
-
-  // todo: 팀 정보 가져오기
-  useEffect(() => {
-    setTeam({
-      teamImg:
-        'https://i.namu.wiki/i/ZdXBsG1Inn2jTKBgGukwHGI4usnnoW6j1YJoY74hg5dcRfrLxRKkW9-CDsBrmXdbyO64ad1etZMbkOiaGErlZg.png',
-      teamName: 'FC 짜이완짜이',
-      createDate: '24.04.12',
-      memberCount: 45,
-    });
-  }, []);
+interface TeamInfoProps {
+  team: TeamProps;
+}
+const TeamInfo = ({ team }: TeamInfoProps) => {
   return (
     <TeamInfoContainer>
       <TeamImg>
