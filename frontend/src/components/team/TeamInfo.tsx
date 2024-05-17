@@ -78,7 +78,6 @@ interface TeamProps {
   teamName: string;
   createDate: string;
   memberCount: number;
-  merbers: Array<any>;
 }
 interface TeamInfoProps {
   team: TeamProps;

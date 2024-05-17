@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import TeamInfo from './TeamInfo';
 import MemberInfo from './MemberInfo';
-import { instance } from '../../axios/instance';
-import formatDateString from '../../utils/formatData';
 
 const TeamBoardContainer = styled.div`
   display: flex;
@@ -21,40 +19,46 @@ interface TeamProps {
   teamName: string;
   createDate: string;
   memberCount: number;
-  merbers: Array<any>;
 }
-const TeamBoard = ({ onMemberSelected }: { onMemberSelected: (memberId: number) => void }) => {
-  const [team, setTeam] = useState<TeamProps>({
-    teamImg: '',
-    teamName: '',
-    createDate: '',
-    memberCount: 0,
-    merbers: [],
-  });
+
+type Member = {
+  createdDate: string;
+  modifiedDate: string;
+  flag: boolean;
+  memberId: number;
+  email: string;
+  name: string;
+  role: string;
+  weight: number;
+  height: number;
+  birth: string;
+  tel: string;
+  backNumber: number;
+  imgUrl: string;
+  statuses: any[];
+  trainings: any[];
+  injurys: any[];
+  memos: any[];
+  oauthProvider: string;
+  createDate: string;
+};
+const TeamBoard = ({
+  team,
+  members,
+  onMemberSelected,
+}: {
+  team: TeamProps;
+  members: Array<Member>;
+  onMemberSelected: (memberId: number) => void;
+}) => {
   const handleSelectMember = (memberId: number) => {
     onMemberSelected(memberId);
   };
-  useEffect(() => {
-    if (localStorage.getItem('login-state')) {
-      const teamId = JSON.parse(localStorage.getItem('login-state')!).state.team.teamId;
-      instance.get(`teams?teamId=${teamId}`).then((res) => {
-        const data = {
-          teamImg: res.data.data.image,
-          teamName: res.data.data.name,
-          createDate: formatDateString(res.data.data.createdDate),
-          memberCount: res.data.data.members.length,
-          merbers: res.data.data.members,
-        };
-        console.log('팀 조회 성공', data);
-        setTeam(data);
-      });
-    }
-  }, []);
 
   return (
     <TeamBoardContainer>
       <TeamInfo team={team} />
-      <MemberInfo onMemberSelected={handleSelectMember} />
+      <MemberInfo members={members} onMemberSelected={handleSelectMember} />
     </TeamBoardContainer>
   );
 };
