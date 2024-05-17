@@ -1,6 +1,7 @@
 package com.ssafy.bespo.service;
 
 import com.ssafy.bespo.Enum.MemoType;
+import com.ssafy.bespo.Enum.RoleType;
 import com.ssafy.bespo.dto.CommentDto;
 import com.ssafy.bespo.dto.MemoDto;
 import com.ssafy.bespo.entity.Comment;
@@ -57,7 +58,6 @@ public class MemoService {
                 .type(memo.getType())
                 .name(memo.getName())
                 .content(memo.getContent())
-                .image(memo.getImage())
                 .scope(memo.getScope())
                 .writerName(writer.getName())
                 .writerImgUrl(writer.getImgUrl())
@@ -69,7 +69,7 @@ public class MemoService {
     }
 
 
-    public int registerMemo(String accessToken, MemoDto.writeMemoRequest request, String imgUrl){
+    public int registerMemo(String accessToken, MemoDto.writeMemoRequest request){
         int memberId = authTokensGenerator.extractMemberId(accessToken);
         Member member = memberRepository.findByMemberIdAndFlagFalse(memberId);
         if(member == null) throw new CustomException(ErrorCode.NO_EXIST_MEMBER);
@@ -81,7 +81,6 @@ public class MemoService {
                 .scope(request.getScope())
                 .name(request.getName())
                 .content(request.getContent())
-                .image(imgUrl)
                 .build();
 
         memoRepository.save(memo);
@@ -96,7 +95,17 @@ public class MemoService {
 
         List<MemoDto.readMemosResponse> responses = new ArrayList<>();
 
-        List<Memo> memos = memoRepository.findByTeamAndTypeAndScopeContainingAndFlagFalse(member.getTeam(), memoType, String.valueOf(member.getRole()));
+        List<Memo> memos;
+        if(memoType == MemoType.ALL) {
+            if(member.getRole() == RoleType.Player)
+                throw new CustomException(ErrorCode.NO_AUTHENTICATION);
+            else
+                memos = memoRepository.findByTeamAndScopeContainingAndFlagFalseOrderByCreatedDate(member.getTeam(), String.valueOf(member.getRole()));
+        }
+        else if (memoType == MemoType.MY)
+            memos = memoRepository.findByMemberAndFlagFalseOrderByCreatedDate(member);
+        else
+            memos = memoRepository.findByTeamAndTypeAndScopeContainingAndFlagFalseOrderByCreatedDate(member.getTeam(), memoType, String.valueOf(member.getRole()));
 
         for(Memo memo : memos){
             responses.add(memo.toReadMemosResponse());

@@ -1,6 +1,7 @@
 package com.ssafy.bespo.repository;
 
 import com.ssafy.bespo.entity.Injury;
+import com.ssafy.bespo.entity.Member;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,4 +19,6 @@ public interface InjuryRepository extends JpaRepository<Injury, Integer> {
         + " WHERE i.member_id = :memberId"
         + " ORDER BY i.created_date DESC limit 1", nativeQuery = true)
     Timestamp findByMemberIdOrderByDateDesc(@Param("memberId") int memberId);
+
+    List<Injury> findByMemberAndFlagFalse(Member member);
 }

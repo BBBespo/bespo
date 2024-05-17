@@ -1,5 +1,6 @@
 package com.ssafy.bespo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.bespo.dto.TeamDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -26,6 +27,7 @@ public class Notification extends BaseTime {
     private String image;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "team_id")
     private Team team;
 

@@ -1,7 +1,11 @@
 package com.ssafy.bespo.repository;
 
+import com.ssafy.bespo.entity.Injury;
+import com.ssafy.bespo.entity.Member;
+import com.ssafy.bespo.entity.Memo;
 import com.ssafy.bespo.entity.Status;
 import java.sql.Timestamp;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,4 +19,5 @@ public interface StatusRepository extends JpaRepository<Status, Integer> {
         + " ORDER BY s.created_date DESC limit 1", nativeQuery = true)
     Timestamp findByMemberIdOrderByDateDesc(@Param("memberId") int memberId);
 
+    List<Status> findByMemberAndFlagFalse(Member member);
 }
