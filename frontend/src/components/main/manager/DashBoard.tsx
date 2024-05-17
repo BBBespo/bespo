@@ -4,6 +4,7 @@ import Board1 from './Board1';
 import Board2 from './Board2';
 import Graph from './Graph';
 import Player from './Player';
+import Player2 from './Player2';
 import Schedule from '../Schedule';
 const DashBoardDiv = styled.div`
   height: 80vh;
@@ -57,9 +58,9 @@ export default function DashBoard() {
       <Player className="injury" boardName="부상선수">
         Injury
       </Player>
-      <Player className="condition" boardName="컨디션 관리가 필요한 선수">
+      <Player2 className="condition" boardName="컨디션 관리가 필요한 선수">
         Condition
-      </Player>
+      </Player2>
     </DashBoardDiv>
   );
 }

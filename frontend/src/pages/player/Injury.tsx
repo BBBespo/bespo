@@ -6,6 +6,8 @@ import Edit from '../../assets/icons/Edit_light.png';
 import Delete from '../../assets/icons/Close_round_light.png';
 import InjurySlider from '../../components/InjurySlider';
 
+import { useNavigate } from 'react-router-dom';
+
 const BodyMapping: Record<string, string> = {
   head: '머리',
   chest: '가슴',
@@ -240,7 +242,7 @@ const PainListSubmitButton = styled(SubmitButton)`
 
 export default function Injury() {
   const [sliderValue, setSliderValue] = useState(0);
-
+  const navigate = useNavigate();
   const handleSliderChange = (value: any) => {
     setSliderValue(value);
   };
@@ -358,7 +360,13 @@ export default function Injury() {
                 ),
             )}
 
-            <PainListSubmitButton>제출하기</PainListSubmitButton>
+            <PainListSubmitButton
+              onClick={() => {
+                navigate('/');
+              }}
+            >
+              제출하기
+            </PainListSubmitButton>
           </PainListWrapper>
         </BodyWrapper>
       </Wrapper>
