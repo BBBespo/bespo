@@ -254,7 +254,17 @@ public class TeamService {
         if(member == null)  throw new CustomException(ErrorCode.NO_EXIST_MEMBER);
         if(member.getRole() == RoleType.Player) throw new CustomException(ErrorCode.NO_AUTHENTICATION);
 
-//        Alarm alarm = alarmRepository.
+        List<Alarm> alarms = alarmRepository.findByTeamAndFlagFalse(member.getTeam());
+
+        for(Alarm alarm : alarms){
+            AlarmDto.readAlarmResponse response = AlarmDto.readAlarmResponse.builder()
+                    .alarmId(alarm.getAlarmId())
+                    .is_read(alarm.is_read())
+                    .acceptType(alarm.getAcceptType())
+                    .email(alarm.getEmail())
+                    .build();
+            responses.add(response);
+        }
 
         return responses;
     }

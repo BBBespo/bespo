@@ -21,6 +21,7 @@ public enum ErrorCode {
     NO_EXIST_MEMO(401, "해당하는 메모가 없습니다."),
     NO_AUTHENTICATION_FOR_EVENT(401, "일정조회 권한이 없습니다."),
     NO_AUTHENTICATION_FOR_TEAM(401, "팀조회 권한이 없습니다."),
+    WRONG_TEAM_NAME(401,"팀 참가 요청 중복")
     ;
 
     private final int status;
