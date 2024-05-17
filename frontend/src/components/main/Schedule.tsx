@@ -9,7 +9,8 @@ interface ScheduleProps {
 }
 
 interface CircleProps {
-  active: boolean;
+  active?: boolean;
+  past?: boolean;
 }
 
 interface DateProps {
@@ -150,7 +151,7 @@ const ScheduleText = styled.p<CircleProps>`
   font-family: PretendardSemiBold;
   justify-content: center;
   text-align: center;
-  color: ${(props) => (props.active ? 'red' : props.theme.colors.gray4)};
+  color: ${(props) => (props.past ? props.theme.colors.gray2 : props.active ? 'red' : props.theme.colors.gray4)};
 
   @media (max-width: 900px) {
     font-size: 18px;
@@ -207,6 +208,11 @@ const Player = ({ className }: ScheduleProps) => {
     return nowStr >= starttime && nowStr <= endtime;
   };
 
+  const checkIfPast = (starttime: string, endtime: string) => {
+    const nowStr = getCurrentTime();
+    return nowStr >= endtime;
+  };
+
   return (
     <Wrapper className={className}>
       <Header>
@@ -231,7 +237,10 @@ const Player = ({ className }: ScheduleProps) => {
         {data.map((board, index) => (
           <Content key={index}>
             <Circle active={checkIfCurrent(board.starttime, board.endtime)} />
-            <ScheduleText active={checkIfCurrent(board.starttime, board.endtime)}>
+            <ScheduleText
+              active={checkIfCurrent(board.starttime, board.endtime)}
+              past={checkIfPast(board.starttime, board.endtime)}
+            >
               {board.starttime} {board.title}
             </ScheduleText>
           </Content>
