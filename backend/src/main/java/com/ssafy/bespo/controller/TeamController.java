@@ -51,7 +51,7 @@ public class TeamController {
         Message message;
 
         if(teamService.checkName(request.getName())){
-            message = new Message("팀 이름 중복");
+            throw new CustomException(ErrorCode.WRONG_TEAM_NAME);
         } else{
             message = new Message("팀 생성 완료", teamService.createTeam(request, imgUrl, memberId));
         }
@@ -86,8 +86,8 @@ public class TeamController {
 
     // 팀 참가 수락하기
     @PostMapping("/accept")
-    public ResponseEntity<Message> acceptTeam(@RequestHeader String accessToken, @RequestBody TeamDto.acceptRequest acceptRequest){
-        Message message = new Message(teamService.acceptTeam(accessToken, acceptRequest));
+    public ResponseEntity<Message> acceptTeam(@RequestHeader String accessToken, @RequestParam int alarmId){
+        Message message = new Message(teamService.acceptTeam(accessToken, alarmId));
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 

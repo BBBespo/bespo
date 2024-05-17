@@ -195,42 +195,42 @@ public class TeamService {
 
     // 팀 관리자가 팀에 멤버로 추가
     @Transactional
-    public String acceptTeam(String accessToken, TeamDto.acceptRequest acceptRequest){
+    public String acceptTeam(String accessToken, int alarmId){
         String msg = "";
-        Team team = teamRepository.findByCodeAndFlagFalse(acceptRequest.getCode());
-        if(team == null){
-            throw new CustomException(ErrorCode.No_EXIST_TEAM);
-        }
-//        int memberId = authTokensGenerator.extractMemberId(accessToken);
-        
-        Member member = memberRepository.findByMemberIdAndFlagFalse(acceptRequest.getMemberId());
-        if(member == null){
-            throw new CustomException((ErrorCode.NO_EXIST_MEMBER));
-        }
-        Alarm alarm = alarmRepository.findByEmailAndFlagFalse(member.getEmail());
-        if(alarm == null){
-            throw new CustomException(ErrorCode.No_EXIST_ALARM);
-        }
-        if(AcceptType.COMPLETE.equals(acceptRequest.getAcceptType())){ // 수락완료
-            msg = "요청 수락완료";
-            // 요청 리스트에서 제거
-            team.removeAlarm(alarm);
-            alarmRepository.delete(alarm);
-            // 팀에 멤버 추가시 권한 Player
-            member.updateRoleType(RoleType.Player);
-            team.addMember(member);
-            teamRepository.save(team);
-            // 멤버에 팀 추가
-            member.addTeam(team);
-            memberRepository.save(member);
-
-        } else if(AcceptType.REFUSE.equals(acceptRequest.getAcceptType())){ // 수락 거절
-            msg = "요청 거절";
-            // 요청리스트에서 제거
-            alarmRepository.delete(alarm);
-        } else{ // 수락대기, 수락 요청,
-            msg = "수락 대기중";
-        }
+//        Team team = teamRepository.findByCodeAndFlagFalse(acceptRequest.getCode());
+//        if(team == null){
+//            throw new CustomException(ErrorCode.No_EXIST_TEAM);
+//        }
+////        int memberId = authTokensGenerator.extractMemberId(accessToken);
+//
+//        Member member = memberRepository.findByMemberIdAndFlagFalse(acceptRequest.getMemberId());
+//        if(member == null){
+//            throw new CustomException((ErrorCode.NO_EXIST_MEMBER));
+//        }
+//        Alarm alarm = alarmRepository.findByEmailAndFlagFalse(member.getEmail());
+//        if(alarm == null){
+//            throw new CustomException(ErrorCode.No_EXIST_ALARM);
+//        }
+//        if(AcceptType.COMPLETE.equals(acceptRequest.getAcceptType())){ // 수락완료
+//            msg = "요청 수락완료";
+//            // 요청 리스트에서 제거
+//            team.removeAlarm(alarm);
+//            alarmRepository.delete(alarm);
+//            // 팀에 멤버 추가시 권한 Player
+//            member.updateRoleType(RoleType.Player);
+//            team.addMember(member);
+//            teamRepository.save(team);
+//            // 멤버에 팀 추가
+//            member.addTeam(team);
+//            memberRepository.save(member);
+//
+//        } else if(AcceptType.REFUSE.equals(acceptRequest.getAcceptType())){ // 수락 거절
+//            msg = "요청 거절";
+//            // 요청리스트에서 제거
+//            alarmRepository.delete(alarm);
+//        } else{ // 수락대기, 수락 요청,
+//            msg = "수락 대기중";
+//        }
         return msg;
     }
 
