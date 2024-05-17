@@ -2,12 +2,17 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 type User = {
-  accessToken: string | null;
-  name: string | null;
-  profile: string | null;
-  email: string | null;
+  accessToken: string;
+  name: string;
+  profile: string;
+  email: string;
   hasTeam: boolean;
-  role: string | null;
+  role: string;
+  team: {
+    teamId: number;
+    name: string;
+    image: string;
+  } | null;
 };
 
 interface Store {
@@ -17,6 +22,11 @@ interface Store {
   email: string | null;
   hasTeam: boolean | false;
   role: string | null;
+  team: {
+    teamId: number;
+    name: string;
+    image: string;
+  } | null;
   setUser: (user: User) => void;
 }
 
@@ -29,6 +39,7 @@ const useStore = create(
       email: null,
       hasTeam: false,
       role: null,
+      team: null,
       // hasTeam: true,
       // role: 'player',
       setUser: (user: User) => {
@@ -38,6 +49,7 @@ const useStore = create(
         set({ email: user.email });
         set({ hasTeam: user.hasTeam });
         set({ role: user.role });
+        set({ team: user.team });
       },
     }),
     {

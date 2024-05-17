@@ -160,22 +160,20 @@ const CreateTeamModal = ({ onClose }: { onClose: () => void }) => {
     console.log('팀이름', jsonSignUpData);
 
     const teamname = new Blob([jsonSignUpData], { type: 'application/json' });
-    const requestBody = new FormData();
-
-    requestBody.append('request', teamname);
-
     const formData = new FormData();
+
+    formData.append('request', teamname);
+
     if (selectedFile) {
-      formData.append('file', selectedFile);
-      requestBody.append('image', selectedFile);
+      console.log('selectedFile', selectedFile);
+      formData.append('image', selectedFile);
     } else {
-      formData.append('file', teamDefaultProfile);
-      requestBody.append('image', teamDefaultProfile);
+      const teamDefaultProfileB = new Blob([teamDefaultProfile], { type: 'image/png' });
+      formData.append('image', teamDefaultProfileB);
     }
-    formData.append('otherField', teamName);
 
     instance
-      .post('/teams', requestBody, {
+      .post('/teams', formData, {
         headers: {
           'content-type': 'multipart/form-data',
         },
@@ -186,7 +184,9 @@ const CreateTeamModal = ({ onClose }: { onClose: () => void }) => {
       })
       .then((res: AxiosResponse) => {
         console.log('팀 생성 성공');
-        console.log(res);
+        console.log('팀이름', res.data.data.name);
+        console.log('팀Id', res.data.data.teamId);
+        console.log('팀code');
       });
 
     /* 팀 생성 api 호출 후 */
