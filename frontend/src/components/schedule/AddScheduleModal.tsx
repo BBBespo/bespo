@@ -106,7 +106,7 @@ const CloseButtonBox = styled.div`
 `;
 
 const AddScheduleModal = ({ onClose, getEventsList }: { onClose: () => void; getEventsList: () => void }) => {
-  const [scheduleType, setScheduleType] = useState('훈련');
+  const [scheduleType, setScheduleType] = useState('TRAINING');
   const [scheduleName, setScheduleName] = useState('');
   const [startDate, setStartDate] = useState(new Date());
   const [startTime, setStartTime] = useState(new Date());
