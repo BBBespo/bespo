@@ -137,6 +137,7 @@ const ModalBackground = styled.div`
 export default function NoTeam() {
   const [isCreateTeamModalOpen, setIsCreateTeamModalOpen] = useState(false);
   const [isJoinTeamModalOpen, setIsJoinTeamModalOpen] = useState(false);
+  // const [hasTeam, setHasTeam] = useState(false);
 
   return (
     <>

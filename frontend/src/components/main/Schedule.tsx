@@ -12,6 +12,10 @@ interface CircleProps {
   active: boolean;
 }
 
+interface DateProps {
+  isToday: boolean;
+}
+
 const Wrapper = styled.div`
   border-radius: 20px;
   width: 100%;
@@ -61,7 +65,7 @@ const DayContainer = styled.div`
   display: flex;
   justify-content: space-between;
   width: 95%;
-  margin-bottom: 60px;
+  margin-bottom: 10px;
 
   @media (max-width: 900px) {
     margin-bottom: 10px;
@@ -82,9 +86,22 @@ const DayText = styled.p`
   margin-bottom: 20px;
 `;
 
-const DateText = styled.p`
+const DateCircle = styled.div<DateProps>`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: ${(props) => (props.isToday ? 'red' : 'transparent')};
+  color: ${(props) => (props.isToday ? 'white' : props.theme.colors.gray4)};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  font-weight: 600;
+`;
+
+const DateText = styled.p<DateProps>`
   font-size: 22px;
-  color: ${(props) => props.theme.colors.gray2};
+  color: ${(props) => (props.isToday ? 'white' : props.theme.colors.gray4)};
   font-weight: 600;
 `;
 
@@ -171,6 +188,7 @@ const Player = ({ className }: ScheduleProps) => {
       dayList.push({
         day: date.getDate(),
         weekDay: weekDays[date.getDay()],
+        isToday: i === 0,
       });
     }
 
@@ -202,7 +220,9 @@ const Player = ({ className }: ScheduleProps) => {
         {dayList.map((week, index) => (
           <DayBox key={index}>
             <DayText>{week.weekDay}</DayText>
-            <DateText>{week.day}</DateText>
+            <DateCircle isToday={week.isToday}>
+              <DateText isToday={week.isToday}>{week.day}</DateText>
+            </DateCircle>
           </DayBox>
         ))}
       </DayContainer>
