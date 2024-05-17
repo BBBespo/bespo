@@ -12,6 +12,7 @@ type User = {
     teamId: number;
     name: string;
     image: string;
+    code: string;
   } | null;
 };
 
@@ -26,7 +27,10 @@ interface Store {
     teamId: number;
     name: string;
     image: string;
+    code: string;
   } | null;
+  teamCode: string | null;
+  setUserTeamCode: (teamCode: string) => void;
   setUser: (user: User) => void;
 }
 
@@ -40,6 +44,7 @@ const useStore = create(
       hasTeam: false,
       role: null,
       team: null,
+      teamCode: null,
       // hasTeam: true,
       // role: 'player',
       setUser: (user: User) => {
@@ -50,6 +55,9 @@ const useStore = create(
         set({ hasTeam: user.hasTeam });
         set({ role: user.role });
         set({ team: user.team });
+      },
+      setUserTeamCode: (teamCode: string) => {
+        set({ teamCode: teamCode });
       },
     }),
     {

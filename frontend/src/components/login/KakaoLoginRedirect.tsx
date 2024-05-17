@@ -12,6 +12,7 @@ type User = {
     teamId: number;
     name: string;
     image: string;
+    code: string;
   } | null;
 };
 type KakaoProps = {
