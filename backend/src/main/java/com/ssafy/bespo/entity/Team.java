@@ -72,6 +72,7 @@ public class Team extends BaseTime {
                 .teamId(this.getTeamId())
                 .name(this.getName())
                 .image(this.getImage())
+                .code(this.getCode())
                 .build();
     }
 

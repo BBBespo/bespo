@@ -42,6 +42,7 @@ public class TeamDto {
         private Integer teamId;
         private String name;
         private String image;
+        private String code;
     }
 
     @Getter

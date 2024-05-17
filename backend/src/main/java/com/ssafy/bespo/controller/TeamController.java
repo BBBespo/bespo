@@ -7,6 +7,8 @@ import com.ssafy.bespo.dto.TeamDto.acceptRequest;
 import com.ssafy.bespo.dto.TeamDto.sendJoinTeamRequest;
 import com.ssafy.bespo.entity.Member;
 import com.ssafy.bespo.entity.Team;
+import com.ssafy.bespo.exception.CustomException;
+import com.ssafy.bespo.exception.ErrorCode;
 import com.ssafy.bespo.jwt.AuthTokensGenerator;
 import com.ssafy.bespo.service.S3UploaderService;
 import com.ssafy.bespo.service.TeamService;
@@ -49,7 +51,7 @@ public class TeamController {
         Message message;
 
         if(teamService.checkName(request.getName())){
-            message = new Message("팀 이름 중복");
+            throw new CustomException(ErrorCode.WRONG_TEAM_NAME);
         } else{
             message = new Message("팀 생성 완료", teamService.createTeam(request, imgUrl, memberId));
         }
@@ -69,17 +71,24 @@ public class TeamController {
     public ResponseEntity<Message> sendJoinTeam(@RequestHeader String accessToken, @RequestBody TeamDto.sendJoinTeamRequest sendJoinTeamRequest){
         Message message;
         if (teamService.checkAlarm(sendJoinTeamRequest.getEmail())){
-            message = new Message("팀 참가 요청 중복");
+            throw new CustomException(ErrorCode.WRONG_TEAM_NAME);
         } else {
             message = new Message("팀 참가 요청 완료", teamService.sendJoinTeam(accessToken, sendJoinTeamRequest));
         }
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
+    @GetMapping("/accept")
+    public ResponseEntity<Message> acceptTeam(@RequestHeader String accessToken){
+        Message message = new Message("팀 참가 대기 목록 조회 성공", teamService.readAlarmList(accessToken));
+        return new ResponseEntity<>(message,HttpStatus.OK);
+    }
+
     // 팀 참가 수락하기
     @PostMapping("/accept")
-    public ResponseEntity<Message> acceptTeam(@RequestHeader String accessToken, @RequestBody TeamDto.acceptRequest acceptRequest){
-        Message message = new Message(teamService.acceptTeam(accessToken, acceptRequest));
+    public ResponseEntity<Message> acceptTeam(@RequestHeader String accessToken, @RequestParam int alarmId){
+        teamService.acceptTeam(accessToken, alarmId);
+        Message message = new Message("팀 참가 요청이 수락되었습니다.");
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
