@@ -17,4 +17,6 @@ public interface AlarmRepository extends JpaRepository<Alarm, Integer> {
 
     List<Alarm> findByTeamAndFlagFalse(Team team);
 
+    Alarm findByAlarmIdAndFlagFalse(Integer alarmId);
+
 }
