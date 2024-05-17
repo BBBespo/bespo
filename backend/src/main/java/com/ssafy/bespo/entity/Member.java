@@ -112,4 +112,8 @@ public class Member extends BaseTime {
                 .build();
         return response;
     }
+
+    public void deleteTeam(){
+        this.team = null;
+    }
 }

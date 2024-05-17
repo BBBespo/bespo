@@ -9,14 +9,24 @@ import com.ssafy.bespo.dto.TeamDto.acceptRequest;
 import com.ssafy.bespo.dto.TeamDto.sendJoinTeamRequest;
 import com.ssafy.bespo.dto.TeamDto.uploadImageResponse;
 import com.ssafy.bespo.entity.Alarm;
+import com.ssafy.bespo.entity.Injury;
 import com.ssafy.bespo.entity.Member;
+import com.ssafy.bespo.entity.Memo;
+import com.ssafy.bespo.entity.Notification;
+import com.ssafy.bespo.entity.Status;
 import com.ssafy.bespo.entity.Team;
+import com.ssafy.bespo.entity.Training;
 import com.ssafy.bespo.exception.CustomException;
 import com.ssafy.bespo.exception.ErrorCode;
 import com.ssafy.bespo.jwt.AuthTokensGenerator;
 import com.ssafy.bespo.repository.AlarmRepository;
+import com.ssafy.bespo.repository.InjuryRepository;
 import com.ssafy.bespo.repository.MemberRepository;
+import com.ssafy.bespo.repository.MemoRepository;
+import com.ssafy.bespo.repository.NotificationRepository;
+import com.ssafy.bespo.repository.StatusRepository;
 import com.ssafy.bespo.repository.TeamRepository;
+import com.ssafy.bespo.repository.TrainingRepository;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,6 +48,12 @@ public class TeamService {
 
     private final AlarmRepository alarmRepository;
     private final AuthTokensGenerator authTokensGenerator;
+
+    private final InjuryRepository injuryRepository;
+    private final MemoRepository memoRepository;
+    private final NotificationRepository notificationRepository;
+    private final TrainingRepository trainingRepository;
+    private final StatusRepository statusRepository;
 
     @Autowired
     private S3UploaderService s3UploaderService;
@@ -296,6 +312,34 @@ public class TeamService {
         }
 
         return uploadImageResponse;
+    }
+
+    // 팀 나가기
+    public void outTeam(String accessToken, int teamId){
+        int memberId = authTokensGenerator.extractMemberId(accessToken);
+        Member member = memberRepository.findByMemberIdAndFlagFalse(memberId);
+        if(member == null){
+            throw new CustomException(ErrorCode.NO_EXIST_MEMBER);
+        }
+        Team team = teamRepository.findByTeamIdAndFlagFalse(teamId);
+
+        // 팀에서 멤버 제거
+        team.removeMember(member);
+        teamRepository.save(team);
+        // 멤버에서 팀id 제거
+        member.deleteTeam();
+        memberRepository.save(member);
+
+        // 부상, 컨디션, 메모 리스트 제거
+        List<Injury> injuryList = injuryRepository.findByMemberAndFlagFalse(member);
+        injuryRepository.deleteAll(injuryList);
+        List<Status> statusList = statusRepository.findByMemberAndFlagFalse(member);
+        statusRepository.deleteAll(statusList);
+        List<Memo> memoList = memoRepository.findByMemberAndFlagFalse(member);
+        memoRepository.deleteAll(memoList);
+        List<Training> trainingList = trainingRepository.findByMemberAndFlagFalse(member);
+        trainingRepository.deleteAll(trainingList);
+
     }
 
 }
