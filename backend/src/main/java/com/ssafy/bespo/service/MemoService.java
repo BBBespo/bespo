@@ -96,7 +96,13 @@ public class MemoService {
 
         List<MemoDto.readMemosResponse> responses = new ArrayList<>();
 
-        List<Memo> memos = memoRepository.findByTeamAndTypeAndScopeContainingAndFlagFalse(member.getTeam(), memoType, String.valueOf(member.getRole()));
+        List<Memo> memos;
+        if(memoType == MemoType.ALL)
+            memos = memoRepository.findByTeamAndScopeContainingAndFlagFalseOrderByCreatedDate(member.getTeam(), String.valueOf(member.getRole()));
+        else if (memoType == MemoType.MY)
+            memos = memoRepository.findByMemberAndFlagFalseOrderByCreatedDate(member);
+        else
+            memos = memoRepository.findByTeamAndTypeAndScopeContainingAndFlagFalseOrderByCreatedDate(member.getTeam(), memoType, String.valueOf(member.getRole()));
 
         for(Memo memo : memos){
             responses.add(memo.toReadMemosResponse());

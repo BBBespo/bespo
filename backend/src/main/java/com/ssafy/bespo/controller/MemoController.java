@@ -57,5 +57,4 @@ public class MemoController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-
 }
