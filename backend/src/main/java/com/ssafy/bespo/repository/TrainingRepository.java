@@ -1,5 +1,6 @@
 package com.ssafy.bespo.repository;
 
+import com.ssafy.bespo.entity.Injury;
 import com.ssafy.bespo.entity.Member;
 import com.ssafy.bespo.entity.Training;
 import java.util.List;
@@ -15,4 +16,5 @@ public interface TrainingRepository extends JpaRepository<Training, Integer> {
         + " WHERE t.member_id = :memberId", nativeQuery = true)
     List<Training> findByMemberIdAndFlagFalse(@Param("memberId") int memberId);
 
+    List<Training> findByMemberAndFlagFalse(Member member);
 }

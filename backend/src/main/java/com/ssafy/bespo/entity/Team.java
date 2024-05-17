@@ -27,7 +27,6 @@ public class Team extends BaseTime {
     private String name;
 
     @Builder.Default
-    @ColumnDefault("https://bespo.s3.ap-northeast-2.amazonaws.com/default/team.PNG")
     private String image = "https://bespo.s3.ap-northeast-2.amazonaws.com/default/team.PNG";
 
     private String code;
@@ -45,7 +44,6 @@ public class Team extends BaseTime {
     private List<Memo> memos;
 
     @OneToMany(mappedBy = "team")
-    @JsonIgnore
     private List<Alarm> alarms = new ArrayList<>();
 
     public void addMember(Member member){
@@ -75,5 +73,9 @@ public class Team extends BaseTime {
                 .name(this.getName())
                 .image(this.getImage())
                 .build();
+    }
+
+    public void removeMember(Member member){
+        this.members.remove(member);
     }
 }

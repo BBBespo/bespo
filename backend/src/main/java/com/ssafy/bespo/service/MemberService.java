@@ -24,6 +24,9 @@ public class MemberService {
     public void changeMemberInfo(String accessToken, MemberDto.UpdateMemberRequest request, String imgUrl) {
         int memberId = authTokensGenerator.extractMemberId(accessToken);
         Member member = memberRepository.findByMemberIdAndFlagFalse(memberId);
+        if(member == null) throw new CustomException(ErrorCode.NO_EXIST_MEMBER);
+
+        if(imgUrl.isEmpty())   imgUrl = member.getImgUrl();
 
         member.updateMember(request.getName(), request.getRole(), request.getWeight(), request.getHeight(),
                 request.getBirth(), request.getBackNumber(), imgUrl, request.getTel());

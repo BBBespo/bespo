@@ -1,5 +1,6 @@
 package com.ssafy.bespo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.bespo.Enum.MemoType;
 import com.ssafy.bespo.Enum.RoleType;
 import com.ssafy.bespo.dto.MemoDto;
@@ -27,11 +28,10 @@ public class Memo extends BaseTime {
 
     private MemoType type;
 
-    private String image;
-
     private String scope;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "member_id")
     private Member member;
 
@@ -39,6 +39,7 @@ public class Memo extends BaseTime {
     private List<Comment> comments;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "team_id")
     private Team team;
 
@@ -48,7 +49,6 @@ public class Memo extends BaseTime {
                 .name(this.name)
                 .content(this.content)
                 .type(this.type)
-                .image(this.image)
                 .scope(this.scope)
                 .writerName(member.getName())
                 .writerImgUrl(member.getImgUrl())
