@@ -36,9 +36,11 @@ public class Team extends BaseTime {
     private List<Member> members;
 
     @OneToMany(mappedBy = "team")
+    @JsonIgnore
     private List<Notification> notifications;
 
     @OneToMany(mappedBy = "team")
+    @JsonIgnore
     private List<Memo> memos;
 
     @OneToMany(mappedBy = "team")
