@@ -65,26 +65,25 @@ const SubmitButton = styled.button`
   font-size: 14px;
 `;
 
-const requestBody = JSON.stringify({
-  code: 'YNGmt6',
-  email: 'ssafy@email',
-});
-
-const handleSubmitButton = () => {
-  instance
-    .post('/teams/join', requestBody)
-    .then((res) => {
-      console.log('팀 참가 요청 완료');
-      console.log(res);
-    })
-    .catch((err) => {
-      console.log('팀 참가 요청 실패');
-      console.log(err);
-    });
-};
-
 const JoinTeamModal = ({ onClose }: { onClose: () => void }) => {
   const [teamCode, setTeamCode] = useState('');
+  const email = JSON.parse(localStorage.getItem('login-state')!).state.email;
+  const handleSubmitButton = () => {
+    const requestBody = {
+      code: teamCode,
+      email: email,
+    };
+    instance
+      .post('/teams/send', requestBody)
+      .then((res) => {
+        console.log('팀 참가 요청 완료');
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log('팀 참가 요청 실패');
+        console.log(err);
+      });
+  };
 
   return (
     <JoinTeamModalContainer>
