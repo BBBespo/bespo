@@ -7,6 +7,7 @@ import Delete from '../../assets/icons/Close_round_light.png';
 import InjurySlider from '../../components/InjurySlider';
 
 import { useNavigate } from 'react-router-dom';
+import { instance } from '../../axios/instance';
 
 const BodyMapping: Record<string, string> = {
   head: '머리',
@@ -323,6 +324,17 @@ export default function Injury() {
             <SubmitButton
               onClick={() => {
                 console.log('통증정보', bodypart, sliderValue, contact, modalText);
+                const data = {
+                  injury: {
+                    injuryArea: bodypart,
+                    injuryLevel: sliderValue,
+                    injuryCause: modalText,
+                    isContact: contact,
+                  },
+                };
+                instance.post('/injury', data).then((res) => {
+                  console.log('통증등록성공', res);
+                });
                 setPainListDetail([...painListDetail, `${bodypart}: ${sliderValue}, ${contact}, ${modalText}`]);
                 setBodypart('');
                 setSliderValue(0);

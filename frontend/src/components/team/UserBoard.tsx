@@ -95,10 +95,30 @@ const MemoCard = ({ memo }: { memo: Memo }) => {
     </MemoCardContainer>
   );
 };
+const BodyMapping: Record<string, string> = {
+  head: '머리',
+  chest: '가슴',
+  stomach: '복부',
+  leftShoulder: '오른쪽 어깨',
+  rightShoulder: '왼쪽 어깨',
+  leftArm: '오른쪽 팔',
+  rightArm: '왼쪽 팔',
+  leftHand: '오른쪽 손',
+  rightHand: '왼쪽 손',
+  leftLeg: '오른쪽 다리',
+  rightLeg: '왼쪽 다리',
+  leftFoot: '오른쪽 발',
+  rightFoot: '왼쪽 발',
+};
+
+const GetBodyMapping = (name: string) => {
+  const iconName = BodyMapping[name];
+  return iconName ? iconName : 'unkwnon part';
+};
 const InjuryCard = ({ injury }: { injury: Injury }) => {
   return (
     <MemoCardContainer>
-      <MemoCardTitleText>{injury.injuryCause}</MemoCardTitleText>
+      <MemoCardTitleText>{GetBodyMapping(injury.injuryArea)}</MemoCardTitleText>
       <MemoCardDateText>{formatDateString(injury.createdDate)}</MemoCardDateText>
     </MemoCardContainer>
   );
