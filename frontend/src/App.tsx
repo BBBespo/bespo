@@ -13,6 +13,8 @@ import Condition from './pages/player/Condition';
 import Injury from './pages/player/Injury';
 import Profile from './pages/profile/Profile';
 import EditProfile from './pages/profile/EditProfile';
+import MemoList from './pages/player/MemoList';
+import WriteMemo from './pages/player/WriteMemo';
 
 const Wrapper = styled.div`
   font-family: Pretendard;
@@ -37,6 +39,8 @@ function App() {
           <Route path="/injury" element={<Injury />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/edit-profile" element={<EditProfile />} />
+          <Route path="/memo-list" element={<MemoList />} />
+          <Route path="/write-memo" element={<WriteMemo />} />
         </Routes>
       </BrowserRouter>
     </Wrapper>
