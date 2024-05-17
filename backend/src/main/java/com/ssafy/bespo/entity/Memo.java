@@ -28,8 +28,6 @@ public class Memo extends BaseTime {
 
     private MemoType type;
 
-    private String image;
-
     private String scope;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -51,7 +49,6 @@ public class Memo extends BaseTime {
                 .name(this.name)
                 .content(this.content)
                 .type(this.type)
-                .image(this.image)
                 .scope(this.scope)
                 .writerName(member.getName())
                 .writerImgUrl(member.getImgUrl())

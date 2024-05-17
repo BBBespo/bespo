@@ -32,9 +32,8 @@ public class MemoController {
     }
 
     @PostMapping
-    public ResponseEntity<Message> writeMemo(@RequestHeader String accessToken, @RequestPart MemoDto.writeMemoRequest request, @RequestPart(required = false) MultipartFile image) throws IOException {
-        String imgUrl = s3UploaderService.upload(image, "memo");
-        Message message = new Message("메모 작성 성공", memoService.registerMemo(accessToken, request, imgUrl));
+    public ResponseEntity<Message> writeMemo(@RequestHeader String accessToken, @RequestBody MemoDto.writeMemoRequest request) {
+        Message message = new Message("메모 작성 성공", memoService.registerMemo(accessToken, request));
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
