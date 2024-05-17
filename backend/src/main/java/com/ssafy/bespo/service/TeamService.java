@@ -2,6 +2,7 @@ package com.ssafy.bespo.service;
 
 import com.ssafy.bespo.Enum.AcceptType;
 import com.ssafy.bespo.Enum.RoleType;
+import com.ssafy.bespo.dto.AlarmDto;
 import com.ssafy.bespo.dto.MemberDto;
 import com.ssafy.bespo.dto.MemberDto.readMemberRequest;
 import com.ssafy.bespo.dto.TeamDto;
@@ -244,6 +245,18 @@ public class TeamService {
             .build();
 
         memberRepository.save(member);
+    }
+
+    public List<AlarmDto.readAlarmResponse> readAlarmList(String accessToken){
+        List<AlarmDto.readAlarmResponse> responses = new ArrayList<>();
+
+        Member member = memberRepository.findByMemberId(authTokensGenerator.extractMemberId(accessToken));
+        if(member == null)  throw new CustomException(ErrorCode.NO_EXIST_MEMBER);
+        if(member.getRole() == RoleType.Player) throw new CustomException(ErrorCode.NO_AUTHENTICATION);
+
+//        Alarm alarm = alarmRepository.
+
+        return responses;
     }
 
     // 팀 선수단 정보
