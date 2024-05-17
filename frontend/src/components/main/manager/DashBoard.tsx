@@ -50,7 +50,7 @@ export default function DashBoard() {
   return (
     <DashBoardDiv>
       <div className="noticewrap">
-        <Board1 boardName="공지사항" className="notice"></Board1>
+        <Board1 boardName="공지사항" className="notices"></Board1>
         <Board2 boardName="최신메모" className="memo"></Board2>
       </div>
       <Graph boardName="주간 운동부하 팀 합계" className="stress"></Graph>

@@ -2,7 +2,7 @@ import formatDateString from '../../utils/formatData';
 import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import { Member } from '../../types/team';
+import { Member, Memo, Injury } from '../../types/team';
 
 const UserBoardContainer = styled.div`
   display: flex;
@@ -60,18 +60,13 @@ const MemberContentDetailText = styled(NavLink)`
   text-decoration: underline;
 `;
 
-interface MemoCardProps {
-  id: number;
-  title: string;
-  date: string;
-}
-
 const MemoCardContainer = styled.div`
   display: flex;
   flex-direction: column;
   background-color: ${(props) => props.theme.colors.gray0};
   padding: 10px;
   margin-bottom: 15px;
+  gap: 3px;
   border-radius: 10px;
 `;
 
@@ -92,42 +87,44 @@ const MemoCardDateText = styled.div`
   color: ${(props) => props.theme.colors.gray3};
 `;
 
-const MemoCard = ({ memo }: { memo: MemoCardProps }) => {
+const MemoCard = ({ memo }: { memo: Memo }) => {
   return (
     <MemoCardContainer>
-      <MemoCardTitleText>{memo.title}</MemoCardTitleText>
-      <MemoCardDateText>{memo.date}</MemoCardDateText>
+      <MemoCardTitleText>{memo.name}</MemoCardTitleText>
+      <MemoCardDateText>{formatDateString(memo.modifiedDate)}</MemoCardDateText>
+    </MemoCardContainer>
+  );
+};
+const BodyMapping: Record<string, string> = {
+  head: '머리',
+  chest: '가슴',
+  stomach: '복부',
+  leftShoulder: '오른쪽 어깨',
+  rightShoulder: '왼쪽 어깨',
+  leftArm: '오른쪽 팔',
+  rightArm: '왼쪽 팔',
+  leftHand: '오른쪽 손',
+  rightHand: '왼쪽 손',
+  leftLeg: '오른쪽 다리',
+  rightLeg: '왼쪽 다리',
+  leftFoot: '오른쪽 발',
+  rightFoot: '왼쪽 발',
+};
+
+const GetBodyMapping = (name: string) => {
+  const iconName = BodyMapping[name];
+  return iconName ? iconName : 'unkwnon part';
+};
+const InjuryCard = ({ injury }: { injury: Injury }) => {
+  return (
+    <MemoCardContainer>
+      <MemoCardTitleText>{GetBodyMapping(injury.injuryArea)}</MemoCardTitleText>
+      <MemoCardDateText>{formatDateString(injury.createdDate)}</MemoCardDateText>
     </MemoCardContainer>
   );
 };
 
 const MemberContent = ({ selectedMember }: { selectedMember: Member }) => {
-  const [injury, setInjury] = useState<MemoCardProps[]>([]);
-  const [memo, setMemo] = useState<MemoCardProps[]>([]);
-
-  useEffect(() => {
-    // todo : 특정 멤버의 통증, 부상 정보를 가져오는 API 호출
-    setInjury([
-      {
-        id: 1,
-        title: selectedMember + '번 선수 허리 통증 긴글 테스트 긴글 테스트 긴글 테스트 긴글 테스트',
-        date: '2021-09-01',
-      },
-      { id: 2, title: selectedMember + '번 선수 무릎 통증', date: '2021-09-01' },
-      { id: 3, title: selectedMember + '번 선수 발목 통증', date: '2021-09-01' },
-      { id: 4, title: selectedMember + '번 선수 허리 통증', date: '2021-09-01' },
-      { id: 5, title: selectedMember + '번 선수 무릎 통증', date: '2021-09-01' },
-    ]);
-    // todo : 특정 멤버의 메모 정보를 가져오는 API 호출
-    setMemo([
-      { id: 1, title: selectedMember + '번 선수 고민', date: '2021-09-01' },
-      { id: 2, title: selectedMember + '번 선수 고민', date: '2021-09-01' },
-      { id: 3, title: selectedMember + '번 선수 고민', date: '2021-09-01' },
-      { id: 4, title: selectedMember + '번 선수 고민', date: '2021-09-01' },
-      { id: 5, title: selectedMember + '번 선수 고민', date: '2021-09-01' },
-    ]);
-  }, [selectedMember]);
-
   return (
     <MemberContentContainer>
       <MemberMemoContainer>
@@ -136,8 +133,8 @@ const MemberContent = ({ selectedMember }: { selectedMember: Member }) => {
           <MemberContentDetailText to="/injury">더보기</MemberContentDetailText>
         </MemberContentTitleContainer>
         <MemberMemoContentContainer>
-          {injury.map((memo, index) => (
-            <MemoCard key={index} memo={memo} />
+          {selectedMember.injurys.map((injury, index) => (
+            <InjuryCard key={index} injury={injury} />
           ))}
         </MemberMemoContentContainer>
       </MemberMemoContainer>
@@ -147,7 +144,7 @@ const MemberContent = ({ selectedMember }: { selectedMember: Member }) => {
           <MemberContentDetailText to="/memo">더보기</MemberContentDetailText>
         </MemberContentTitleContainer>
         <MemberMemoContentContainer>
-          {memo.map((memo, index) => (
+          {selectedMember.memos.map((memo, index) => (
             <MemoCard key={index} memo={memo} />
           ))}
         </MemberMemoContentContainer>
@@ -293,7 +290,7 @@ const MemberDetail = ({ selectedMember }: { selectedMember: Member }) => {
       weight: selectedMember.weight,
       height: selectedMember.height,
       birth: formatDateString(selectedMember.birth),
-      tel: '010' + selectedMember.tel,
+      tel: selectedMember.tel,
       backNumber: selectedMember.backNumber,
     });
   }, [selectedMember]);

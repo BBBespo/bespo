@@ -61,6 +61,10 @@ const CardDiv = styled.div`
     padding: 30px 30px;
     margin: 10px;
   }
+  @media (max-width: 1200px) {
+    width: 100%;
+    height: 250px;
+  }
 `;
 const CardHeadText = styled.p`
   font-size: 30px;
@@ -103,11 +107,18 @@ const CardButtonDiv = styled.div`
       width: 200px;
       font-size: 20px;
     }
+    @media (max-width: 1200px) {
+      height: 50px;
+      margin-bottom: 20px;
+    }
   }
 
   > img {
     @media (max-width: 1400px) {
       width: 200px;
+    }
+    @media (max-width: 1200px) {
+      width: 150px;
     }
   }
 `;
