@@ -15,6 +15,7 @@ import Profile from './pages/profile/Profile';
 import EditProfile from './pages/profile/EditProfile';
 import MemoList from './pages/player/MemoList';
 import WriteMemo from './pages/player/WriteMemo';
+import MemoDetail from './pages/player/MemoDetail';
 
 const Wrapper = styled.div`
   font-family: Pretendard;
@@ -40,6 +41,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/edit-profile" element={<EditProfile />} />
           <Route path="/memo-list" element={<MemoList />} />
+          <Route path="/memo/:id" element={<MemoDetail />} />
           <Route path="/write-memo" element={<WriteMemo />} />
         </Routes>
       </BrowserRouter>

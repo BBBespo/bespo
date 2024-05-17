@@ -56,7 +56,7 @@ const MemoCommentBox = styled.div`
   align-items: center;
 `;
 
-export default function Profile() {
+export default function MemoList() {
   const navigate = useNavigate();
   const [list, setList] = useState<List[]>([]);
 
@@ -84,6 +84,10 @@ export default function Profile() {
       });
   }, []);
 
+  const handleItemClick = (memoId: number) => {
+    navigate(`/memo/${memoId}`);
+  };
+
   return (
     <MemoContainer>
       <HeadText>
@@ -92,7 +96,7 @@ export default function Profile() {
       </HeadText>
 
       {list.map((item, index) => (
-        <MemoInfoBox key={index}>
+        <MemoInfoBox key={index} onClick={() => handleItemClick(item.memoId)}>
           <MemoCreatedDateText>
             <p>{item.createdAt.split('T')[0]}</p>
           </MemoCreatedDateText>
