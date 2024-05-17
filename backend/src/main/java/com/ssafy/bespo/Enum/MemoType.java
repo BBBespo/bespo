@@ -2,6 +2,6 @@ package com.ssafy.bespo.Enum;
 
 public enum MemoType {
 
-    WORRY, TRAINING, INJURY, ETC
+    WORRY, TRAINING, INJURY, ETC, ALL, MY
 
 }

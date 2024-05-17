@@ -5,6 +5,7 @@ import com.ssafy.bespo.dto.MemberDto;
 import com.ssafy.bespo.dto.TeamDto;
 import com.ssafy.bespo.dto.TeamDto.acceptRequest;
 import com.ssafy.bespo.dto.TeamDto.sendJoinTeamRequest;
+import com.ssafy.bespo.entity.Member;
 import com.ssafy.bespo.entity.Team;
 import com.ssafy.bespo.jwt.AuthTokensGenerator;
 import com.ssafy.bespo.service.S3UploaderService;
@@ -32,8 +33,8 @@ public class TeamController {
 
     // 팀 상세 조회하기
     @GetMapping
-    public ResponseEntity<Message> readTeam(@RequestParam("teamId") int teamId){
-        Message message = new Message("팀 상세 조회 성공", teamService.readTeam(teamId));
+    public ResponseEntity<Message> readTeam(@RequestHeader String accessToken, @RequestParam("teamId") int teamId){
+        Message message = new Message("팀 상세 조회 성공", teamService.readTeam(accessToken, teamId));
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
@@ -110,4 +111,10 @@ public class TeamController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
+    @DeleteMapping
+    public ResponseEntity<Message> outTeam(@RequestHeader String accessToken, @RequestParam int teamId){
+        teamService.outTeam(accessToken, teamId);
+        Message message = new Message("팀 나가기 완료");
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
 }

@@ -29,6 +29,7 @@ public class MemberController {
     private final MemberService memberService;
     private final AuthTokensGenerator authTokensGenerator;
     private final S3UploaderService s3UploaderService;
+    private final MemberRepository memberRepository;
 
     @PostMapping("/kakao")
     public ResponseEntity<AuthTokens> loginKakao(@RequestBody KakaoLoginParams params) {
@@ -44,10 +45,13 @@ public class MemberController {
 
     @PutMapping(value = "/update", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Message> updateMember(@RequestHeader String accessToken, @RequestPart MemberDto.UpdateMemberRequest request, @RequestPart(required = false) MultipartFile image) throws IOException {
-        String url = "";
+        String url;
         if(image != null)
             url = s3UploaderService.upload(image, "member");
-        else url = "https://bespo.s3.ap-northeast-2.amazonaws.com/default/member.PNG";
+        else{
+            int memberId = authTokensGenerator.extractMemberId(accessToken);
+            url = memberRepository.findByMemberId(memberId).getImgUrl();
+        }
         memberService.changeMemberInfo(accessToken, request, url);
         Message message = new Message("유저 정보 수정 완료");
         return ResponseEntity.ok(message);
@@ -56,7 +60,7 @@ public class MemberController {
 
     @PostMapping(value = "/signup", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Message> registerMember(@RequestHeader String accessToken, @RequestPart MemberDto.UpdateMemberRequest request, @RequestPart(required = false) MultipartFile image) throws IOException {
-        String url = "";
+        String url;
         if(image != null)
             url = s3UploaderService.upload(image, "member");
         else url = "https://bespo.s3.ap-northeast-2.amazonaws.com/default/member.PNG";
@@ -70,7 +74,6 @@ public class MemberController {
         Message message = new Message("회원탈퇴 완료");
         return ResponseEntity.ok(message);
     }
-
 
 
 }
