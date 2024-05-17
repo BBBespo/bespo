@@ -144,7 +144,7 @@ export default function WriteMemo() {
           선수
         </Button>
         <Button clicked={isClickedManager === true} onClick={() => setIsClickedManager(!isClickedManager)}>
-          관리자
+          감독
         </Button>
         <Button clicked={isClickedCoach === true} onClick={() => setIsClickedCoach(!isClickedCoach)}>
           코치
