@@ -26,8 +26,8 @@ export default function Main() {
       const hasTeam = JSON.parse(localStorage.getItem('login-state')!).state.hasTeam;
       const role = JSON.parse(localStorage.getItem('login-state')!).state.role;
       if (accessToken == null) navigate('/login');
-      else if (role == 'Manager') setValue(0);
       else if (!hasTeam) setValue(1);
+      else if (role == 'Manager') setValue(0);
       else if (role == 'Player') setValue(2);
 
       // navigate('/login');
