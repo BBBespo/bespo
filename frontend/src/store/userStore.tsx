@@ -12,6 +12,7 @@ type User = {
     teamId: number;
     name: string;
     image: string;
+    code: string;
   } | null;
 };
 
@@ -26,6 +27,7 @@ interface Store {
     teamId: number;
     name: string;
     image: string;
+    code: string;
   } | null;
   teamCode: string | null;
   setUserTeamCode: (teamCode: string) => void;

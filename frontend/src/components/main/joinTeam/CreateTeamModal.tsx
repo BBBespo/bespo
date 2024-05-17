@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import close from '../../../assets/images/schedule/close.png';
 import teamDefaultProfile from '../../../assets/images/createTeam/teamDefaultProfile.png';
-import teamProfileEx from '../../../assets/images/createTeam/teamProfileEx.png';
 import copy from '../../../assets/images/createTeam/copy.png';
 import kakao from '../../../assets/images/createTeam/kakao.png';
 import link from '../../../assets/images/createTeam/link.png';
@@ -132,6 +131,7 @@ const IconBox = styled.div`
 
 const CreateTeamModal = ({ onClose }: { onClose: () => void }) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedFileUrl, setSelectedFileUrl] = useState<string>('');
   const [teamName, setTeamName] = useState('');
   const [isTeamCreated, setIsTeamCreated] = useState(false);
   const [teamCode, setTeamCode] = useState('');
@@ -142,6 +142,7 @@ const CreateTeamModal = ({ onClose }: { onClose: () => void }) => {
     if (event.target.files) {
       if (event.target.files.length > 0) {
         setSelectedFile(event.target.files[0]);
+        setSelectedFileUrl(URL.createObjectURL(event.target.files[0]));
       } else {
         setSelectedFile(null);
       }
@@ -168,6 +169,8 @@ const CreateTeamModal = ({ onClose }: { onClose: () => void }) => {
 
     if (selectedFile) {
       console.log('selectedFile', selectedFile);
+      //selectedFile scr에 넣을수있게 변환
+
       formData.append('image', selectedFile);
     } else {
       const teamDefaultProfileB = new Blob([teamDefaultProfile], { type: 'image/png' });
@@ -301,7 +304,7 @@ const CreateTeamModal = ({ onClose }: { onClose: () => void }) => {
             )}
             {selectedFile && (
               <ProfileImageBox>
-                <img src={teamProfileEx} style={{ width: '100px', height: '100px', borderRadius: '50px' }} />
+                <img src={selectedFileUrl} style={{ width: '100px', height: '100px', borderRadius: '50px' }} />
               </ProfileImageBox>
             )}
 
