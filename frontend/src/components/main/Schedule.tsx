@@ -65,7 +65,7 @@ const DayContainer = styled.div`
   display: flex;
   justify-content: space-between;
   width: 95%;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 
   @media (max-width: 900px) {
     margin-bottom: 10px;
@@ -100,7 +100,7 @@ const DateCircle = styled.div<DateProps>`
 `;
 
 const DateText = styled.p<DateProps>`
-  font-size: 22px;
+  font-size: 20px;
   color: ${(props) => (props.isToday ? 'white' : props.theme.colors.gray4)};
   font-weight: 600;
 `;
@@ -113,7 +113,7 @@ const ScheduleContainer = styled.div`
   &::before {
     content: '';
     position: absolute;
-    left: 9px;
+    left: 6px;
     top: 50px;
     bottom: 50px;
     width: 2px;
@@ -134,7 +134,7 @@ const Content = styled.div`
   text-align: center;
   font-size: 20px;
   width: 100%;
-  height: 100px;
+  height: 90px;
 
   p {
     margin-right: 5px;
@@ -159,8 +159,8 @@ const ScheduleText = styled.p<CircleProps>`
 
 const Circle = styled.div<CircleProps>`
   z-index: 10;
-  width: 20px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
   border-radius: 50%;
   margin-right: 30px;
   background-color: ${(props) => (props.active ? 'red' : props.theme.colors.gray2)};
