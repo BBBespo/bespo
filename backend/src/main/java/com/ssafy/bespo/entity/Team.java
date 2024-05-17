@@ -72,4 +72,8 @@ public class Team extends BaseTime {
                 .image(this.getImage())
                 .build();
     }
+
+    public void removeMember(Member member){
+        this.members.remove(member);
+    }
 }

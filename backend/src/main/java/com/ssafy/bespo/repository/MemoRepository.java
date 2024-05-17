@@ -18,4 +18,5 @@ public interface MemoRepository extends JpaRepository<Memo, Integer> {
     List<Memo> findByTeamAndScopeContainingAndFlagFalseOrderByCreatedDate(Team team, String scope);
     List<Memo> findByMemberAndFlagFalseOrderByCreatedDate(Member member);
 
+    List<Memo> findByMemberAndFlagFalse(Member member);
 }
