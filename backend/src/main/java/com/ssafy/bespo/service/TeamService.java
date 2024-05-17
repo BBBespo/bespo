@@ -328,6 +328,7 @@ public class TeamService {
         teamRepository.save(team);
         // 멤버에서 팀id 제거
         member.deleteTeam();
+        member.setMemberRoleType(null);
         memberRepository.save(member);
 
         // 부상, 컨디션, 메모 리스트 제거

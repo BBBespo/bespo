@@ -76,6 +76,8 @@ public class TeamController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
+
+
     // 팀 참가 수락하기
     @PostMapping("/accept")
     public ResponseEntity<Message> acceptTeam(@RequestHeader String accessToken, @RequestBody TeamDto.acceptRequest acceptRequest){

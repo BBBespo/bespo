@@ -113,6 +113,10 @@ public class Member extends BaseTime {
         return response;
     }
 
+    public void setMemberRoleType(RoleType role){
+        this.role = role;
+    }
+
     public void deleteTeam(){
         this.team = null;
     }
