@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import data from '../../../services/dummy/injuryPlayer';
-
+import data from '../../../services/dummy/conditionPlayer';
 import None from '../../../assets/images/player/None.png';
 interface BoardType {
   title: string;
@@ -107,7 +106,6 @@ const Player = ({ boardName, className }: Board1Props) => {
             <p>{board.name}</p>
             <ContentTextInner>
               <p>{board.date}</p>
-              <p>발목</p>
             </ContentTextInner>
           </ContentText>
         </Content>

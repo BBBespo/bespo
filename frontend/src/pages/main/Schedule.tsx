@@ -11,9 +11,7 @@ const ScheduleContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100%;
   padding: 0 5vh;
-  margin-bottom: 100px;
 `;
 
 const ModalBackground = styled.div`
@@ -29,13 +27,6 @@ const ModalBackground = styled.div`
   z-index: 99;
 `;
 
-const HeadBox = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: flex-end;
-  margin-bottom: 30px;
-`;
-
 const AddScheduleBtn = styled.span`
   border: 2px solid ${(props) => props.theme.colors.red};
   color: ${(props) => props.theme.colors.red};
@@ -45,10 +36,13 @@ const AddScheduleBtn = styled.span`
   font-weight: bold;
   cursor: pointer;
   height: auto;
+
+  position: absolute;
+  right: 0;
 `;
 
 const CalendarWrapper = styled.div`
-  padding-bottom: 50px;
+  position: relative;
   width: 100%;
 
   .fc-toolbar.fc-header-toolbar .fc-prev-button,
@@ -58,13 +52,9 @@ const CalendarWrapper = styled.div`
     color: black;
   }
 
-  .fc-toolbar-title {
-    font-size: 20px;
-  }
-  .fc-daygrid-event {
-    background-color: #ffa18e;
-    border: none;
-    margin-bottom: 5px;
+  .fc .fc-button-primary {
+    background-color: transparent;
+    border-color: transparent;
   }
 `;
 
@@ -117,14 +107,6 @@ const Schedule = () => {
 
   return (
     <ScheduleContainer>
-      <HeadBox
-        onClick={() => {
-          setIsOpen(true);
-        }}
-      >
-        <AddScheduleBtn>일정 추가</AddScheduleBtn>
-      </HeadBox>
-
       {isOpen && (
         <ModalBackground>
           <AddScheduleModal getEventsList={getEventsList} onClose={() => setIsOpen(false)} />
@@ -132,6 +114,13 @@ const Schedule = () => {
       )}
 
       <CalendarWrapper>
+        <AddScheduleBtn
+          onClick={() => {
+            setIsOpen(true);
+          }}
+        >
+          일정 추가
+        </AddScheduleBtn>
         <FullCalendar
           locale="kr"
           plugins={[dayGridPlugin]}
@@ -140,9 +129,9 @@ const Schedule = () => {
           events={events}
           eventContent={renderEventContent}
           headerToolbar={{
-            left: 'prev',
+            left: 'prev,next',
             center: 'title',
-            right: 'next',
+            right: ' ',
           }}
           height={'80vh'}
         />
