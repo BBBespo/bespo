@@ -195,43 +195,31 @@ public class TeamService {
 
     // 팀 관리자가 팀에 멤버로 추가
     @Transactional
-    public String acceptTeam(String accessToken, int alarmId){
-        String msg = "";
+    public void acceptTeam(String accessToken, int alarmId){
 
         int memberId = authTokensGenerator.extractMemberId(accessToken);
         Member member = memberRepository.findByMemberIdAndFlagFalse(memberId);
         if(member == null) throw new CustomException((ErrorCode.NO_EXIST_MEMBER));
         Alarm alarm = alarmRepository.findByAlarmIdAndFlagFalse(alarmId);
-        if(alarm == null){
-            throw new CustomException(ErrorCode.No_EXIST_ALARM);
-        }
+        if(alarm == null) throw new CustomException(ErrorCode.No_EXIST_ALARM);
 
         Team team = teamRepository.findByMembersContainingAndFlagFalse(member);
-        if(team == null){
-            throw new CustomException(ErrorCode.No_EXIST_TEAM);
-        }
+        if(team == null) throw new CustomException(ErrorCode.No_EXIST_TEAM);
 
-        if(AcceptType.COMPLETE.equals(alarm.getAcceptType())){ // 수락완료
-            msg = "요청 수락완료";
-            // 요청 리스트에서 제거
-            team.removeAlarm(alarm);
-            alarmRepository.delete(alarm);
-            // 팀에 멤버 추가시 권한 Player
-            member.updateRoleType(RoleType.Player);
-            team.addMember(member);
-            teamRepository.save(team);
-            // 멤버에 팀 추가
-            member.addTeam(team);
-            memberRepository.save(member);
+        if(alarm.getTeam() != team) throw new CustomException(ErrorCode.No_MATCH_TEAM);
 
-        } else if(AcceptType.REFUSE.equals(alarm.getAcceptType())){ // 수락 거절
-            msg = "요청 거절";
-            // 요청리스트에서 제거
-            alarmRepository.delete(alarm);
-        } else{ // 수락대기, 수락 요청,
-            msg = "수락 대기중";
-        }
-        return msg;
+        if(AcceptType.COMPLETE.equals(alarm.getAcceptType())) throw new CustomException(ErrorCode.ALREADY_ACCEPTED);
+        if(AcceptType.REFUSE.equals(alarm.getAcceptType())) throw new CustomException(ErrorCode.ALREADY_REFUSED);
+
+
+        team.removeAlarm(alarm);
+        alarmRepository.delete(alarm);
+        member.updateRoleType(RoleType.Player);
+        team.addMember(member);
+        teamRepository.save(team);
+        // 멤버에 팀 추가
+        member.addTeam(team);
+        memberRepository.save(member);
     }
 
     public Team findByCode(String code){

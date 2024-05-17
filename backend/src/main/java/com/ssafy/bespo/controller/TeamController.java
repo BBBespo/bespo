@@ -87,7 +87,8 @@ public class TeamController {
     // 팀 참가 수락하기
     @PostMapping("/accept")
     public ResponseEntity<Message> acceptTeam(@RequestHeader String accessToken, @RequestParam int alarmId){
-        Message message = new Message(teamService.acceptTeam(accessToken, alarmId));
+        teamService.acceptTeam(accessToken, alarmId);
+        Message message = new Message("팀 참가 요청이 수락되었습니다.");
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
