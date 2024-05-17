@@ -27,10 +27,10 @@ const useStore = create(
       name: null,
       profile: null,
       email: null,
-      // hasTeam: false,
-      // role: null,
-      hasTeam: true,
-      role: 'player',
+      hasTeam: false,
+      role: null,
+      // hasTeam: true,
+      // role: 'player',
       setUser: (user: User) => {
         set({ accessToken: user.accessToken });
         set({ name: user.name });

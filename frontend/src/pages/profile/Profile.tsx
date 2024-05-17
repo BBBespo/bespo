@@ -69,10 +69,11 @@ export default function Profile() {
 
   useEffect(() => {
     instance.get('/members').then((res: AxiosResponse) => {
+      console.log(res.data.data);
       setProfile(res.data.data.imgUrl);
       setUserName(res.data.data.name);
       setEmail(res.data.data.email);
-      setTeamName(res.data.data.team);
+      setTeamName(res.data.data.team.name);
     });
   }, []);
 
