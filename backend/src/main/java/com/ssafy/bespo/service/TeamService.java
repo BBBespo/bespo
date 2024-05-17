@@ -212,14 +212,16 @@ public class TeamService {
         if(AcceptType.REFUSE.equals(alarm.getAcceptType())) throw new CustomException(ErrorCode.ALREADY_REFUSED);
 
 
+        Member application = memberRepository.findByEmailAndFlagFalse(alarm.getEmail());
         team.removeAlarm(alarm);
         alarmRepository.delete(alarm);
-        member.updateRoleType(RoleType.Player);
-        team.addMember(member);
+
+        application.updateRoleType(RoleType.Player);
+        team.addMember(application);
         teamRepository.save(team);
         // 멤버에 팀 추가
-        member.addTeam(team);
-        memberRepository.save(member);
+        application.addTeam(team);
+        memberRepository.save(application);
     }
 
     public Team findByCode(String code){
