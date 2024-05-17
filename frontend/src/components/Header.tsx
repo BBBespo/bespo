@@ -118,6 +118,7 @@ const NavigationText = styled(NavLink)`
   font-family: PretendardVariable;
   font-size: 20px;
   font-weight: 600;
+  position: relative;
 
   &.active {
     color: #ff0000;
@@ -125,6 +126,24 @@ const NavigationText = styled(NavLink)`
 
   &:hover {
     color: #ff0000;
+  }
+
+  &:before {
+    position: absolute;
+    content: '';
+    bottom: -5px; /* 부모 요소의 아래쪽에 위치시킴 */
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #ff0000;
+    border-radius: 5px;
+    transform: scaleX(0);
+    transition: transform 0.6s ease;
+  }
+
+  &:hover:before,
+  &.active:before {
+    transform: scaleX(1);
   }
 
   @media screen and (max-width: 900px) {
