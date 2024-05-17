@@ -186,12 +186,11 @@ const CreateTeamModal = ({ onClose }: { onClose: () => void }) => {
         console.log('팀 생성 성공');
         console.log('팀이름', res.data.data.name);
         console.log('팀Id', res.data.data.teamId);
-        console.log('팀code');
+        setTeamCode(res.data.data.code);
       });
 
     /* 팀 생성 api 호출 후 */
     setIsTeamCreated(true);
-    setTeamCode('3yKlt3');
   };
 
   const setToTeamDefaultProfile = () => {
