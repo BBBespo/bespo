@@ -1,6 +1,8 @@
+import formatDateString from '../../utils/formatData';
 import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
+import { Member } from '../../types/team';
 
 const UserBoardContainer = styled.div`
   display: flex;
@@ -99,7 +101,7 @@ const MemoCard = ({ memo }: { memo: MemoCardProps }) => {
   );
 };
 
-const MemberContent = ({ selectedMember }: { selectedMember: number }) => {
+const MemberContent = ({ selectedMember }: { selectedMember: Member }) => {
   const [injury, setInjury] = useState<MemoCardProps[]>([]);
   const [memo, setMemo] = useState<MemoCardProps[]>([]);
 
@@ -188,6 +190,38 @@ const SelectMemberContainer = styled.div`
   border-radius: 5px;
   box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.25);
 `;
+const MemberInfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  margin-left: 40px;
+  flex: 1;
+`;
+const MemberInfosContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  flex: 1;
+  padding: 20px 0px 10px;
+  border-radius: 5px;
+  gap: 10px;
+`;
+const MemberNameWrapper = styled.div`
+  font-family: PretendardVariable;
+  font-weight: bold;
+  color: #4f4f4f;
+  font-size: 26px;
+  flex: 1;
+  width: 100%;
+  margin-top: 10px;
+  display: flex;
+  gap: 20px;
+
+  @media screen and (max-width: 900px) {
+    font-size: 10px;
+  }
+`;
 
 const SelectMemberText = styled.div`
   font-family: PretendardVariable;
@@ -200,7 +234,7 @@ const MemberProfileImg = styled.img`
   width: 150px;
   height: 150px;
   border-radius: 50%;
-  margin-left: 20px;
+  margin-left: 30px;
 
   @media screen and (max-width: 900px) {
     width: 80px;
@@ -219,11 +253,25 @@ const MemberInfoContent = styled.div`
   }
 `;
 
+const MemberWContiner = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  margin-top: 5px;
+  margin-left: 5px;
+`;
+const MemberNumberWrapper = styled.div`
+  font-family: GiantsInline;
+  color: #ff0000;
+  font-size: 36px;
+`;
 interface MemberProps {
   memberId: number;
   img: string;
   email: string;
   name: string;
+  roleName: string;
   weight: number;
   height: number;
   birth: string;
@@ -231,44 +279,48 @@ interface MemberProps {
   backNumber: number;
 }
 
-const MemberDetail = ({ selectedMember }: { selectedMember: number }) => {
+const MemberDetail = ({ selectedMember }: { selectedMember: Member }) => {
   const [member, setMember] = useState<MemberProps>();
 
   useEffect(() => {
     // todo : 특정 멤버의 정보를 가져오는 API 호출
     setMember({
-      memberId: selectedMember,
-      img: 'https://via.placeholder.com/150',
-      email: 'a@a.com',
-      name: '선수' + selectedMember,
-      weight: 70,
-      height: 180,
-      birth: '1990-01-01',
-      tel: '010-1234-5678',
-      backNumber: 7,
+      memberId: selectedMember.memberId,
+      img: selectedMember.imgUrl,
+      email: selectedMember.email,
+      name: selectedMember.roleName + ' ' + selectedMember.name,
+      roleName: selectedMember.roleName,
+      weight: selectedMember.weight,
+      height: selectedMember.height,
+      birth: formatDateString(selectedMember.birth),
+      tel: '010' + selectedMember.tel,
+      backNumber: selectedMember.backNumber,
     });
   }, [selectedMember]);
 
   return (
     <MemberDetailContainer>
       <MemberProfileImg src={member?.img} />
-      <MemberInfoContent>이름 : {member?.name}</MemberInfoContent>
-      <MemberInfoContent>이메일 : {member?.email}</MemberInfoContent>
-      <MemberInfoContent>몸무게 : {member?.weight}kg</MemberInfoContent>
-      <MemberInfoContent>키 : {member?.height}cm</MemberInfoContent>
-      <MemberInfoContent>생년월일 : {member?.birth}</MemberInfoContent>
-      <MemberInfoContent>전화번호 : {member?.tel}</MemberInfoContent>
-      <MemberInfoContent>등번호 : {member?.backNumber}</MemberInfoContent>
+      <MemberInfoContainer>
+        <MemberNumberWrapper>{member?.backNumber}번</MemberNumberWrapper>
+        <MemberNameWrapper>{member?.name}</MemberNameWrapper>
+        <MemberWContiner>
+          <MemberInfoContent>키 : {member?.height}cm</MemberInfoContent>
+          <MemberInfoContent>|</MemberInfoContent>
+          <MemberInfoContent>몸무게 : {member?.weight}kg</MemberInfoContent>
+        </MemberWContiner>
+        <MemberInfosContainer>
+          <MemberInfoContent>생년월일 : {member?.birth}</MemberInfoContent>
+          <MemberInfoContent>전화번호 : {member?.tel}</MemberInfoContent>
+          <MemberInfoContent>이메일 : {member?.email}</MemberInfoContent>
+        </MemberInfosContainer>
+      </MemberInfoContainer>
     </MemberDetailContainer>
   );
 };
 
-const UserBoard = ({ selectedMember }: { selectedMember: number }) => {
-  useEffect(() => {
-    console.log(selectedMember);
-  }, [selectedMember]);
-
-  if (selectedMember === -1) {
+const UserBoard = ({ selectedMember }: { selectedMember: Member | null }) => {
+  if (selectedMember === null) {
     return (
       <SelectMemberContainer>
         <SelectMemberText>선수를 선택해주세요.</SelectMemberText>
@@ -278,7 +330,9 @@ const UserBoard = ({ selectedMember }: { selectedMember: number }) => {
     return (
       <UserBoardContainer>
         <MemberDetail selectedMember={selectedMember} />
-        <MemberContent selectedMember={selectedMember} />
+        {(selectedMember.roleName === '주장' || selectedMember.roleName === '선수') && (
+          <MemberContent selectedMember={selectedMember} />
+        )}
       </UserBoardContainer>
     );
   }
