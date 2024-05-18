@@ -58,7 +58,7 @@ public class EventController {
 
     // 일정 삭제하기
     @DeleteMapping
-    public ResponseEntity<Message> deleteEvent(@RequestHeader String accessToken, @RequestParam int eventId){
+    public ResponseEntity<Message> deleteEvent(@RequestHeader String accessToken, @RequestHeader int eventId){
         eventService.deleteEvent(accessToken, eventId);
         Message message = new Message("일정 삭제 성공");
         return new ResponseEntity<>(message, HttpStatus.OK);
