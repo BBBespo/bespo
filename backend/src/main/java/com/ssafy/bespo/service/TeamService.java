@@ -385,4 +385,19 @@ public class TeamService {
         List<Event> eventList = eventRepository.findAllByTeamAndFlagFalse(team);
         eventRepository.deleteAll(eventList);
     }
+
+    // 관리자가 팀원 권한 부여
+    public void roleChangeMember(String accessToken, TeamDto.authMemberRequest request){
+        int managerId = authTokensGenerator.extractMemberId(accessToken);
+        Member manager = memberRepository.findByMemberIdAndFlagFalse(managerId);
+        if(manager == null) throw new CustomException(ErrorCode.NO_EXIST_MEMBER);
+        if (manager.getRole() == null) throw new CustomException(ErrorCode.NO_AUTHENTICATION);
+        if(manager.getRole().equals(RoleType.Manager)){
+            Member player = memberRepository.findByMemberIdAndFlagFalse(request.getMemberId());
+            if(player == null) throw new CustomException(ErrorCode.NO_EXIST_MEMBER);
+            player.setMemberRoleType(request.getRoleType());
+        } else {
+            throw new CustomException(ErrorCode.NO_AUTHENTICATION);
+        }
+    }
 }
