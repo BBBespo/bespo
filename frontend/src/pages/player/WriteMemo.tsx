@@ -109,7 +109,7 @@ export default function WriteMemo() {
 
   const handleSubmitBtnClick = () => {
     const receivers =
-      `${isClickedPlayer ? 'Player ' : ''}${isClickedManager ? 'Manager ' : ''}${isClickedCoach ? 'Coach ' : ''}${isClickedCaptain ? 'Captain ' : ''}`.trim();
+      `${isClickedPlayer ? 'PLAYER ' : ''}${isClickedManager ? 'MANAGER ' : ''}${isClickedCoach ? 'COACH ' : ''}${isClickedCaptain ? 'CAPTAIN ' : ''}`.trim();
     console.log(receivers);
 
     instance
