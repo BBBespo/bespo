@@ -10,6 +10,7 @@ import com.ssafy.bespo.dto.TeamDto.acceptRequest;
 import com.ssafy.bespo.dto.TeamDto.sendJoinTeamRequest;
 import com.ssafy.bespo.dto.TeamDto.uploadImageResponse;
 import com.ssafy.bespo.entity.Alarm;
+import com.ssafy.bespo.entity.Event;
 import com.ssafy.bespo.entity.Injury;
 import com.ssafy.bespo.entity.Member;
 import com.ssafy.bespo.entity.Memo;
@@ -21,6 +22,7 @@ import com.ssafy.bespo.exception.CustomException;
 import com.ssafy.bespo.exception.ErrorCode;
 import com.ssafy.bespo.jwt.AuthTokensGenerator;
 import com.ssafy.bespo.repository.AlarmRepository;
+import com.ssafy.bespo.repository.EventRepository;
 import com.ssafy.bespo.repository.InjuryRepository;
 import com.ssafy.bespo.repository.MemberRepository;
 import com.ssafy.bespo.repository.MemoRepository;
@@ -55,6 +57,7 @@ public class TeamService {
     private final NotificationRepository notificationRepository;
     private final TrainingRepository trainingRepository;
     private final StatusRepository statusRepository;
+    private final EventRepository eventRepository;
 
     @Autowired
     private S3UploaderService s3UploaderService;
@@ -335,6 +338,14 @@ public class TeamService {
             throw new CustomException(ErrorCode.NO_EXIST_MEMBER);
         }
         Team team = teamRepository.findByTeamIdAndFlagFalse(teamId);
+        if(team == null){
+            throw new CustomException(ErrorCode.No_EXIST_TEAM);
+        }
+
+        // 관리자가 나가면 팀 삭제
+        if(member.getRole().equals(RoleType.Manager)){
+            deleteTeam(team);
+        }
 
         // 팀에서 멤버 제거
         team.removeMember(member);
@@ -344,7 +355,12 @@ public class TeamService {
         member.setMemberRoleType(null);
         memberRepository.save(member);
 
-        // 부상, 컨디션, 메모 리스트 제거
+        // 팀 멤버가 아무도 없으면 팀 삭제
+        if(team.getMembers().isEmpty()){
+            deleteTeam(team);
+        }
+
+        // 선수 정보,, 부상, 컨디션, 메모 리스트 삭제
         List<Injury> injuryList = injuryRepository.findByMemberAndFlagFalse(member);
         injuryRepository.deleteAll(injuryList);
         List<Status> statusList = statusRepository.findByMemberAndFlagFalse(member);
@@ -354,6 +370,19 @@ public class TeamService {
         List<Training> trainingList = trainingRepository.findByMemberAndFlagFalse(member);
         trainingRepository.deleteAll(trainingList);
 
+
     }
 
+    // 팀 삭제 ,, 공지 알람 메모 일정
+    public void deleteTeam(Team team){
+        team.shallowDelete();
+        List<Notification> notificationList = notificationRepository.findAllByTeamAndFlagFalseOrderByCreatedDateDesc(team);
+        notificationRepository.deleteAll(notificationList);
+        List<Alarm> alarmList = alarmRepository.findByTeamAndFlagFalse(team);
+        alarmRepository.deleteAll(alarmList);
+        List<Memo> memoList = memoRepository.findByTeamAndFlagFalse(team);
+        memoRepository.deleteAll(memoList);
+        List<Event> eventList = eventRepository.findAllByTeamAndFlagFalse(team);
+        eventRepository.deleteAll(eventList);
+    }
 }
