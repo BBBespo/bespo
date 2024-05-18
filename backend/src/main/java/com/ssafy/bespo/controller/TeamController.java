@@ -126,4 +126,11 @@ public class TeamController {
         Message message = new Message("팀 나가기 완료");
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
+
+    @PostMapping("/role")
+    public ResponseEntity<Message> roleChangeMember(@RequestHeader String accessToken, @RequestBody TeamDto.authMemberRequest request){
+        teamService.roleChangeMember(accessToken, request);
+        Message message = new Message("멤버 권한이 수정되었습니다.");
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
 }

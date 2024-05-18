@@ -164,4 +164,11 @@ public class TeamDto {
         private List<Member> members;
     }
 
+    @Getter
+    @Setter
+    public static class authMemberRequest{
+        private int memberId;
+        private RoleType roleType;
+    }
+
 }
