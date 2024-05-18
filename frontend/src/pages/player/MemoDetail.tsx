@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { instance } from 'src/axios/instance';
 import { AxiosResponse } from 'axios';
+import { useNavigate } from 'react-router';
 
 const MemoContainer = styled.div`
   padding: 5px 15px 15px 15px;
@@ -59,6 +60,7 @@ export default function MemoDetail() {
   const [content, setContent] = useState('');
   const [scope, setScope] = useState('');
   const [type, setType] = useState('');
+  const navigate = useNavigate();
 
   const typeMap: any = {
     WORRY: '고민',
@@ -75,13 +77,15 @@ export default function MemoDetail() {
   };
 
   const handleDeleteButton = () => {
-    // instance
-    //   .delete(`/memos`, {
-    //     headers: {
-    //       memoId: id,
-    //     },
-    //   })
-    //   .then(() => {});
+    instance
+      .delete(`/memos`, {
+        headers: {
+          memoId: id,
+        },
+      })
+      .then(() => {
+        navigate(`/memo-list`);
+      });
   };
 
   useEffect(() => {
