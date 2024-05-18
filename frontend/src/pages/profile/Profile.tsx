@@ -4,7 +4,6 @@ import kakao from '../../assets/images/profile/kakao.png';
 import { useNavigate } from 'react-router-dom';
 import { instance } from 'src/axios/instance';
 import { AxiosResponse } from 'axios';
-
 const ProfileContainer = styled.div`
   padding: 5px 15px 15px 15px;
 `;
@@ -58,6 +57,21 @@ const ProfileInfoText = styled.div`
     color: ${(props) => props.theme.colors.gray5};
   }
 `;
+
+const teamId = JSON.parse(localStorage.getItem('login-state')!).state.team.id;
+
+const teamLeave = () => {
+  if (window.confirm('정말로 팀을 탈퇴하시겠습니까?')) {
+    instance
+      .delete(`/teams?teamId=${teamId}`)
+      .then((res: AxiosResponse) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+};
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -117,6 +131,7 @@ export default function Profile() {
           <p>{JSON.parse(localStorage.getItem('login-state')!).state.team.code}</p>
         </ProfileInfoContentBox>
       </ProfileInfoBox>
+      <UpdateProfileButton onClick={() => teamLeave()}>팀 탈퇴</UpdateProfileButton>
     </ProfileContainer>
   );
 }

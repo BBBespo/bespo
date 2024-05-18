@@ -82,9 +82,15 @@ const Schedule = () => {
   const handleEventClick = (clickInfo: EventClickArg) => {
     const eventId = clickInfo.event.extendedProps.eventId; // 커스텀 데이터 속성에서 eventId를 가져옴
     if (window.confirm(`정말로 '${clickInfo.event.title}' 일정을 삭제하시겠습니까?`)) {
-      instance.delete(`/events?eventId=${eventId}`).then(() => {
-        getEventsList(); // 이벤트 목록 갱신
-      });
+      instance
+        .delete(`/events`, {
+          headers: {
+            eventId: eventId,
+          },
+        })
+        .then(() => {
+          getEventsList(); // 이벤트 목록 갱신
+        });
     }
   };
 
