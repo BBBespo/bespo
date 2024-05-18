@@ -44,7 +44,7 @@ public class Team extends BaseTime {
     private List<Memo> memos;
 
     @OneToMany(mappedBy = "team")
-    private List<Alarm> alarms = new ArrayList<>();
+    private List<Alarm> alarms;
 
     public void addMember(Member member){
         if(this.members == null){
@@ -56,6 +56,9 @@ public class Team extends BaseTime {
     }
 
     public void addAlarm(Alarm alarm){
+        if(this.alarms == null){
+            this.alarms = new ArrayList<>();
+        }
         this.alarms.add(alarm);
     }
 
