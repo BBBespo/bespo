@@ -19,4 +19,5 @@ public interface MemoRepository extends JpaRepository<Memo, Integer> {
     List<Memo> findByMemberAndFlagFalseOrderByCreatedDate(Member member);
 
     List<Memo> findByMemberAndFlagFalse(Member member);
+    List<Memo> findByTeamAndFlagFalse(Team team);
 }

@@ -121,7 +121,7 @@ public class TeamController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Message> outTeam(@RequestHeader String accessToken, @RequestParam int teamId){
+    public ResponseEntity<Message> outTeam(@RequestHeader String accessToken, @RequestHeader int teamId){
         teamService.outTeam(accessToken, teamId);
         Message message = new Message("팀 나가기 완료");
         return new ResponseEntity<>(message, HttpStatus.OK);
