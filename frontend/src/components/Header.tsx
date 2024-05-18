@@ -7,10 +7,11 @@ import { NavLink, useNavigate } from 'react-router-dom';
 
 const HeaderContainer = styled.header`
   display: flex;
-  justify-content: start;
+  justify-content: space-between;
   align-items: center;
   background-color: #ffffff;
   padding: 20px 50px;
+  width: 100%;
 
   @media screen and (max-width: 900px) {
     padding: 20px 20px;
@@ -199,14 +200,17 @@ const MyIoPersonSharp = styled(IoPersonSharp)`
   }
 `;
 const Header = () => {
-  const [isLogin, setLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
   const [hasTeam, setHasTeam] = useState(false);
+  const [isManager, setIsManager] = useState(false);
   useEffect(() => {
     if (localStorage.getItem('login-state')) {
-      const isLogin = JSON.parse(localStorage.getItem('login-state')!).state.name;
-      const hasTeam = JSON.parse(localStorage.getItem('login-state')!).state.hasTeam;
-      if (isLogin) setLogin(true);
-      if (hasTeam) setHasTeam(true);
+      const login = JSON.parse(localStorage.getItem('login-state')!).state.name;
+      const Team = JSON.parse(localStorage.getItem('login-state')!).state.hasTeam;
+      const Manager = JSON.parse(localStorage.getItem('login-state')!).state.role;
+      if (login) setIsLogin(true);
+      if (Team) setHasTeam(true);
+      if (Manager === 'MANAGER') setIsManager(true);
     }
   }, []);
   const navigate = useNavigate();
@@ -222,47 +226,52 @@ const Header = () => {
             Bespo
           </HeaderText>
         </HeaderTitle>
-        <HeaderManager>
-          <HeaderManagerTextBox>
-            <HeaderManagerText>MANAGER</HeaderManagerText>
-          </HeaderManagerTextBox>
-        </HeaderManager>
-        {hasTeam && (
-          <NavigationBar>
-            <NavigationButton>
-              <NavigationText to="/">대시보드</NavigationText>
-            </NavigationButton>
-            <NavigationButton>
-              <NavigationText to="/team">선수단</NavigationText>
-            </NavigationButton>
-            <NavigationButton>
-              <NavigationText to="/schedule">일정</NavigationText>
-            </NavigationButton>
-            <NavigationButton>
-              <NavigationText to="/memo">메모</NavigationText>
-            </NavigationButton>
-          </NavigationBar>
-        )}
-        <NavigationGap />
-        {hasTeam && (
-          <HeaderButton $type="red">
-            <MyHiOutlineUserGroup />
-          </HeaderButton>
-        )}
-        {isLogin && (
+        {isManager && (
           <>
-            <HeaderButton onClick={() => {}}>
-              <MyGoBellFill />
-            </HeaderButton>
-            <HeaderButton>
-              <NavLink to="/profile">
-                <MyIoPersonSharp />
-              </NavLink>
-            </HeaderButton>
+            <HeaderManager>
+              <HeaderManagerTextBox>
+                <HeaderManagerText>MANAGER</HeaderManagerText>
+              </HeaderManagerTextBox>
+            </HeaderManager>
+
+            <NavigationBar>
+              <NavigationButton>
+                <NavigationText to="/">대시보드</NavigationText>
+              </NavigationButton>
+              <NavigationButton>
+                <NavigationText to="/team">선수단</NavigationText>
+              </NavigationButton>
+              <NavigationButton>
+                <NavigationText to="/schedule">일정</NavigationText>
+              </NavigationButton>
+              <NavigationButton>
+                <NavigationText to="/memo">메모</NavigationText>
+              </NavigationButton>
+            </NavigationBar>
           </>
         )}
+        <NavigationGap />
+        <div>
+          {hasTeam && (
+            <HeaderButton $type="red">
+              <MyHiOutlineUserGroup />
+            </HeaderButton>
+          )}
+          {isLogin && (
+            <>
+              <HeaderButton onClick={() => {}}>
+                <MyGoBellFill />
+              </HeaderButton>
+              <HeaderButton>
+                <NavLink to="/profile">
+                  <MyIoPersonSharp />
+                </NavLink>
+              </HeaderButton>
+            </>
+          )}
+        </div>
       </HeaderContainer>
-      {hasTeam && (
+      {isManager && (
         <NavigationBarMobile>
           <NavigationButton>
             <NavigationText to="/">대시보드</NavigationText>

@@ -5,8 +5,8 @@ import { instance } from 'src/axios/instance';
 import { AxiosResponse } from 'axios';
 
 interface acceptList {
-  title: string;
-  createdAt: string;
+  email: string;
+  alarmId: string;
 }
 
 const Wrapper = styled.div`
@@ -44,6 +44,17 @@ export default function ApplicationBoard() {
       });
   }, []);
 
+  const accpetTeam = (alarmId: string) => {
+    instance
+      .post(`/teams/accept?alarmId=${alarmId}`)
+      .then((res: AxiosResponse) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <Wrapper>
       <HeadText>
@@ -53,9 +64,9 @@ export default function ApplicationBoard() {
         <p>신청이 없습니다.</p>
       ) : (
         acceptList.map((item, index) => (
-          <div key={index}>
-            <p>{item.title}</p>
-            <p>{item.createdAt}</p>
+          <div key={index} onClick={() => accpetTeam(item.alarmId)}>
+            <p>{item.email}</p>
+            <p>{item.alarmId}</p>
           </div>
         ))
       )}

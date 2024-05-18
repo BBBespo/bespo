@@ -58,6 +58,12 @@ const Content = styled.div`
   color: ${(props) => props.theme.colors.gray4};
 `;
 
+const BoardNameWrapper = styled.div`
+  width: 50%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
 function monthday(date: string) {
   const dateObj = new Date(date);
   return dateObj.toLocaleDateString();
@@ -87,7 +93,9 @@ const Board1 = ({ boardName, className }: Board1Props) => {
 
       {boards.slice(0, 2).map((board, index) => (
         <Content key={index}>
-          <p>{board.name}</p>
+          <BoardNameWrapper>
+            <p>{board.name}</p>
+          </BoardNameWrapper>
           <p>{board.writerName}</p>
           <p>{monthday(board.createdAt)}</p>
         </Content>

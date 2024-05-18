@@ -28,10 +28,33 @@ const ButtonWrapper = styled.div`
 const Button = styled.button<{ selected: boolean }>`
   padding: 0.5rem 1rem;
   border: none;
-  font-weight: 600;
+  font-weight: ${({ selected }) => (selected ? '600' : '500')};
   color: ${({ selected }) => (selected ? 'red' : 'black')};
   cursor: pointer;
   border-radius: 5px;
+
+  p {
+    position: relative;
+
+    &:after {
+      position: absolute;
+      content: '';
+      bottom: -4px; /* 부모 요소의 아래쪽에 위치시킴 */
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: #ff0000;
+      border-radius: 5px;
+      transform: scaleX(0);
+    }
+    &:hover {
+      color: #ff0000;
+    }
+    &:hover:after {
+      transform: scaleX(1);
+      transition: transform 0.6s ease;
+    }
+  }
 `;
 
 const TeamBoard = ({
@@ -60,13 +83,13 @@ const TeamBoard = ({
       <TeamInfo team={team} />
       <ButtonWrapper>
         <Button selected={selectedButton === '팀원 관리'} onClick={() => handleSelectPage('팀원 관리')}>
-          팀원 관리
+          <p>팀원 관리</p>
         </Button>
         <Button selected={selectedButton === '회원가입 관리'} onClick={() => handleSelectPage('회원가입 관리')}>
-          회원가입 관리
+          <p>회원가입 관리</p>
         </Button>
         <Button selected={selectedButton === '공지사항 작성'} onClick={() => handleSelectPage('공지사항 작성')}>
-          공지사항 작성
+          <p>공지사항 작성</p>
         </Button>
       </ButtonWrapper>
       <MemberInfo members={members} onMemberSelected={handleSelectMember} />
