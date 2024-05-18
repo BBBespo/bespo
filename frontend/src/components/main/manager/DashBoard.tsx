@@ -14,7 +14,7 @@ const DashBoardDiv = styled.div`
     'noticewrap   stress   schedule'
     'injury   condition schedule';
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 2fr 3fr;
   gap: 20px;
 
   > .noticewrap {

@@ -70,6 +70,7 @@ const Category: React.FC<CategoryProps> = ({ memoType, categoryName }) => {
         },
       })
       .then((res: AxiosResponse) => {
+        console.log(res.data.data);
         setList(res.data.data);
       });
   }, []);

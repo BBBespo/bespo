@@ -1,6 +1,7 @@
 import UserBoard from '../../components/team/UserBoard';
 import TeamBoard from '../../components/team/TeamBoard';
 import ApplicationBoard from '../../components/team/ApplicationBoard';
+import NoticeRegister from '../../components/team/NoticeRegister';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { instance } from '../../axios/instance';
@@ -25,7 +26,6 @@ const TeamContainer = styled.div`
 
 const Team = () => {
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
-  const [teamManagement, setTeamManagement] = useState(0);
   const [team, setTeam] = useState<TeamProps>({
     teamImg: '',
     teamName: '',
@@ -38,9 +38,16 @@ const Team = () => {
     const member = members.find((member) => member.memberId === memberId);
     if (member) {
       console.log('멤버 선택', member);
+      setPage('팀원 관리');
+
       setSelectedMember(member);
     }
   };
+  const [page, setPage] = useState('팀원 관리');
+  const handleSelectPage = (page: string) => {
+    setPage(page);
+  };
+
   useEffect(() => {
     if (localStorage.getItem('login-state')) {
       const teamId = JSON.parse(localStorage.getItem('login-state')!).state.team.teamId;
@@ -77,20 +84,22 @@ const Team = () => {
 
   return (
     <TeamContainer>
-      <button
-        onClick={() => {
-          if (teamManagement === 0) {
-            setTeamManagement(1);
-          } else {
-            setTeamManagement(0);
-          }
-        }}
-      >
-        {teamManagement === 0 ? '팀원 관리' : '팀원신청 목록'}
-      </button>
-
-      <TeamBoard team={team} members={members} onMemberSelected={handleSelectMember} />
-      {teamManagement === 0 ? <UserBoard selectedMember={selectedMember} /> : <ApplicationBoard />}
+      <TeamBoard
+        team={team}
+        members={members}
+        onMemberSelected={handleSelectMember}
+        onPageSelected={handleSelectPage}
+        selectedButton={page}
+      />
+      {page === '팀원 관리' ? (
+        <UserBoard selectedMember={selectedMember} />
+      ) : page === '회원가입 관리' ? (
+        <ApplicationBoard />
+      ) : page === '공지사항 작성' ? (
+        <NoticeRegister></NoticeRegister>
+      ) : (
+        <></>
+      )}
     </TeamContainer>
   );
 };

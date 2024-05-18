@@ -181,7 +181,7 @@ export default function WriteMemo() {
 
       <InputBox>
         <InputText>
-          <p>설명을 입력해주세요.</p>
+          <p>내용을 입력해주세요.</p>
         </InputText>
         <TextAreaInput value={description} onChange={handleDescriptionChange} />
       </InputBox>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import AddScheduleModal from '../../components/schedule/AddScheduleModal';
 import FullCalendar from '@fullcalendar/react';
+import { EventClickArg } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { EventContentArg } from '@fullcalendar/core';
 import { instance } from 'src/axios/instance';
@@ -64,7 +65,13 @@ const Schedule = () => {
 
   const getEventsList = () => {
     instance.get('/events').then((res: AxiosResponse) => {
-      setEvents(res.data.data);
+      console.log(res.data.data);
+      // 이벤트 데이터에 eventId를 포함시킴
+      const eventsWithId = res.data.data.map((event: any) => ({
+        ...event,
+        extendedProps: { eventId: event.eventId },
+      }));
+      setEvents(eventsWithId);
     });
   };
 
@@ -72,23 +79,14 @@ const Schedule = () => {
     getEventsList();
   }, []);
 
-  // const events = [
-  //   {
-  //     title: '일정1',
-  //     start: '2024-05-07T14:00:00',
-  //     end: '2024-05-08T16:00:00',
-  //   },
-  //   {
-  //     title: '일정2',
-  //     start: '2024-05-07T14:00:00',
-  //     end: '2024-05-08T16:00:00',
-  //   },
-  //   {
-  //     title: '일정3',
-  //     start: '2024-05-07T14:00:00',
-  //     end: '2024-05-08T16:00:00',
-  //   },
-  // ];
+  const handleEventClick = (clickInfo: EventClickArg) => {
+    const eventId = clickInfo.event.extendedProps.eventId; // 커스텀 데이터 속성에서 eventId를 가져옴
+    if (window.confirm(`정말로 '${clickInfo.event.title}' 일정을 삭제하시겠습니까?`)) {
+      instance.delete(`/events?eventId=${eventId}`).then(() => {
+        getEventsList(); // 이벤트 목록 갱신
+      });
+    }
+  };
 
   function renderEventContent(eventInfo: EventContentArg) {
     return (
@@ -128,6 +126,7 @@ const Schedule = () => {
           weekends={true}
           events={events}
           eventContent={renderEventContent}
+          eventClick={handleEventClick}
           headerToolbar={{
             left: 'prev,next',
             center: 'title',

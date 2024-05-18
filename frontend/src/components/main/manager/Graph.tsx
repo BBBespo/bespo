@@ -14,7 +14,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   box-shadow: 0px 4px 39px 9px rgba(81, 69, 159, 0.09);
-  padding: 5px 30px;
+  padding: 5px 0;
 `;
 
 const Header = styled.div`
@@ -23,12 +23,21 @@ const Header = styled.div`
   justify-content: space-between;
   width: 100%;
   margin-top: 15px;
+  padding-left: 30px;
 `;
 
 const HeaderText = styled.p`
   font-size: 18px;
   font-weight: 600;
   color: ${(props) => props.theme.colors.black};
+`;
+
+const GraphWapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 `;
 
 const options = {
@@ -61,8 +70,9 @@ const Graph = ({ className, boardName }: GraphProps) => {
       <Header>
         <HeaderText>{boardName}</HeaderText>
       </Header>
-
-      <Chart options={options} series={series} type="line"></Chart>
+      <GraphWapper>
+        <Chart options={options} series={series} type="line" width="110%"></Chart>
+      </GraphWapper>
     </Wrapper>
   );
 };

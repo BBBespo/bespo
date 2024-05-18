@@ -4,8 +4,9 @@ import { instance } from 'src/axios/instance';
 import { AxiosResponse } from 'axios';
 
 interface BoardType {
-  title: string;
-  date: string;
+  name: string;
+  writerName: string;
+  createdAt: string;
 }
 
 interface Board1Props {
@@ -57,6 +58,11 @@ const Content = styled.div`
   color: ${(props) => props.theme.colors.gray4};
 `;
 
+function monthday(date: string) {
+  const dateObj = new Date(date);
+  return dateObj.toLocaleDateString();
+}
+
 const Board1 = ({ boardName, className }: Board1Props) => {
   const [boards, setBoards] = useState<BoardType[]>([]);
 
@@ -81,8 +87,9 @@ const Board1 = ({ boardName, className }: Board1Props) => {
 
       {boards.slice(0, 2).map((board, index) => (
         <Content key={index}>
-          <p>{board.title}</p>
-          <p>{board.date}</p>
+          <p>{board.name}</p>
+          <p>{board.writerName}</p>
+          <p>{monthday(board.createdAt)}</p>
         </Content>
       ))}
     </Wrapper>

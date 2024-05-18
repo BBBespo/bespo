@@ -136,10 +136,21 @@ const AddScheduleModal = ({ onClose, getEventsList }: { onClose: () => void; get
     };
   };
 
+  const combineDateAndTime = (date: Date, time: Date): string => {
+    const combined = new Date(date);
+    combined.setHours(time.getHours());
+    combined.setMinutes(time.getMinutes());
+    combined.setSeconds(time.getSeconds());
+    return combined.toISOString();
+  };
+
   const handleSubmitBtnClick = () => {
+    console.log(startDate, startTime, endTime);
+    const start = combineDateAndTime(startDate, startTime);
+    const end = combineDateAndTime(startDate, endTime);
     const requestBody = {
-      start: '2024-05-18T12:00:00',
-      end: '2024-05-20T12:00:00',
+      start: start,
+      end: end,
       title: scheduleName,
       content: description,
       type: scheduleType,
