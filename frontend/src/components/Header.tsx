@@ -210,7 +210,7 @@ const Header = () => {
       const Manager = JSON.parse(localStorage.getItem('login-state')!).state.role;
       if (login) setIsLogin(true);
       if (Team) setHasTeam(true);
-      if (Manager === 'MANAGER') setIsManager(true);
+      if (Manager === 'Manager') setIsManager(true);
     }
   }, []);
   const navigate = useNavigate();
