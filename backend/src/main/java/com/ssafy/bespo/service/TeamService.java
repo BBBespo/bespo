@@ -2,6 +2,7 @@ package com.ssafy.bespo.service;
 
 import com.ssafy.bespo.Enum.AcceptType;
 import com.ssafy.bespo.Enum.RoleType;
+import com.ssafy.bespo.dto.AlarmDto;
 import com.ssafy.bespo.dto.MemberDto;
 import com.ssafy.bespo.dto.MemberDto.readMemberRequest;
 import com.ssafy.bespo.dto.TeamDto;
@@ -9,6 +10,7 @@ import com.ssafy.bespo.dto.TeamDto.acceptRequest;
 import com.ssafy.bespo.dto.TeamDto.sendJoinTeamRequest;
 import com.ssafy.bespo.dto.TeamDto.uploadImageResponse;
 import com.ssafy.bespo.entity.Alarm;
+import com.ssafy.bespo.entity.Event;
 import com.ssafy.bespo.entity.Injury;
 import com.ssafy.bespo.entity.Member;
 import com.ssafy.bespo.entity.Memo;
@@ -20,6 +22,7 @@ import com.ssafy.bespo.exception.CustomException;
 import com.ssafy.bespo.exception.ErrorCode;
 import com.ssafy.bespo.jwt.AuthTokensGenerator;
 import com.ssafy.bespo.repository.AlarmRepository;
+import com.ssafy.bespo.repository.EventRepository;
 import com.ssafy.bespo.repository.InjuryRepository;
 import com.ssafy.bespo.repository.MemberRepository;
 import com.ssafy.bespo.repository.MemoRepository;
@@ -54,6 +57,7 @@ public class TeamService {
     private final NotificationRepository notificationRepository;
     private final TrainingRepository trainingRepository;
     private final StatusRepository statusRepository;
+    private final EventRepository eventRepository;
 
     @Autowired
     private S3UploaderService s3UploaderService;
@@ -194,43 +198,33 @@ public class TeamService {
 
     // 팀 관리자가 팀에 멤버로 추가
     @Transactional
-    public String acceptTeam(String accessToken, TeamDto.acceptRequest acceptRequest){
-        String msg = "";
-        Team team = teamRepository.findByCodeAndFlagFalse(acceptRequest.getCode());
-        if(team == null){
-            throw new CustomException(ErrorCode.No_EXIST_TEAM);
-        }
-//        int memberId = authTokensGenerator.extractMemberId(accessToken);
-        
-        Member member = memberRepository.findByMemberIdAndFlagFalse(acceptRequest.getMemberId());
-        if(member == null){
-            throw new CustomException((ErrorCode.NO_EXIST_MEMBER));
-        }
-        Alarm alarm = alarmRepository.findByEmailAndFlagFalse(member.getEmail());
-        if(alarm == null){
-            throw new CustomException(ErrorCode.No_EXIST_ALARM);
-        }
-        if(AcceptType.COMPLETE.equals(acceptRequest.getAcceptType())){ // 수락완료
-            msg = "요청 수락완료";
-            // 요청 리스트에서 제거
-            team.removeAlarm(alarm);
-            alarmRepository.delete(alarm);
-            // 팀에 멤버 추가시 권한 Player
-            member.updateRoleType(RoleType.Player);
-            team.addMember(member);
-            teamRepository.save(team);
-            // 멤버에 팀 추가
-            member.addTeam(team);
-            memberRepository.save(member);
+    public void acceptTeam(String accessToken, int alarmId){
 
-        } else if(AcceptType.REFUSE.equals(acceptRequest.getAcceptType())){ // 수락 거절
-            msg = "요청 거절";
-            // 요청리스트에서 제거
-            alarmRepository.delete(alarm);
-        } else{ // 수락대기, 수락 요청,
-            msg = "수락 대기중";
-        }
-        return msg;
+        int memberId = authTokensGenerator.extractMemberId(accessToken);
+        Member member = memberRepository.findByMemberIdAndFlagFalse(memberId);
+        if(member == null) throw new CustomException((ErrorCode.NO_EXIST_MEMBER));
+        Alarm alarm = alarmRepository.findByAlarmIdAndFlagFalse(alarmId);
+        if(alarm == null) throw new CustomException(ErrorCode.No_EXIST_ALARM);
+
+        Team team = teamRepository.findByMembersContainingAndFlagFalse(member);
+        if(team == null) throw new CustomException(ErrorCode.No_EXIST_TEAM);
+
+        if(alarm.getTeam() != team) throw new CustomException(ErrorCode.No_MATCH_TEAM);
+
+        if(AcceptType.COMPLETE.equals(alarm.getAcceptType())) throw new CustomException(ErrorCode.ALREADY_ACCEPTED);
+        if(AcceptType.REFUSE.equals(alarm.getAcceptType())) throw new CustomException(ErrorCode.ALREADY_REFUSED);
+
+
+        Member application = memberRepository.findByEmailAndFlagFalse(alarm.getEmail());
+        team.removeAlarm(alarm);
+        alarmRepository.delete(alarm);
+
+        application.updateRoleType(RoleType.Player);
+        team.addMember(application);
+        teamRepository.save(team);
+        // 멤버에 팀 추가
+        application.addTeam(team);
+        memberRepository.save(application);
     }
 
     public Team findByCode(String code){
@@ -244,6 +238,28 @@ public class TeamService {
             .build();
 
         memberRepository.save(member);
+    }
+
+    public List<AlarmDto.readAlarmResponse> readAlarmList(String accessToken){
+        List<AlarmDto.readAlarmResponse> responses = new ArrayList<>();
+
+        Member member = memberRepository.findByMemberId(authTokensGenerator.extractMemberId(accessToken));
+        if(member == null)  throw new CustomException(ErrorCode.NO_EXIST_MEMBER);
+        if(member.getRole() == RoleType.Player) throw new CustomException(ErrorCode.NO_AUTHENTICATION);
+
+        List<Alarm> alarms = alarmRepository.findByTeamAndFlagFalse(member.getTeam());
+
+        for(Alarm alarm : alarms){
+            AlarmDto.readAlarmResponse response = AlarmDto.readAlarmResponse.builder()
+                    .alarmId(alarm.getAlarmId())
+                    .is_read(alarm.is_read())
+                    .acceptType(alarm.getAcceptType())
+                    .email(alarm.getEmail())
+                    .build();
+            responses.add(response);
+        }
+
+        return responses;
     }
 
     // 팀 선수단 정보
@@ -322,15 +338,29 @@ public class TeamService {
             throw new CustomException(ErrorCode.NO_EXIST_MEMBER);
         }
         Team team = teamRepository.findByTeamIdAndFlagFalse(teamId);
+        if(team == null){
+            throw new CustomException(ErrorCode.No_EXIST_TEAM);
+        }
+
+        // 관리자가 나가면 팀 삭제
+        if(member.getRole().equals(RoleType.Manager)){
+            deleteTeam(team);
+        }
 
         // 팀에서 멤버 제거
         team.removeMember(member);
         teamRepository.save(team);
         // 멤버에서 팀id 제거
         member.deleteTeam();
+        member.setMemberRoleType(null);
         memberRepository.save(member);
 
-        // 부상, 컨디션, 메모 리스트 제거
+        // 팀 멤버가 아무도 없으면 팀 삭제
+        if(team.getMembers().isEmpty()){
+            deleteTeam(team);
+        }
+
+        // 선수 정보,, 부상, 컨디션, 메모 리스트 삭제
         List<Injury> injuryList = injuryRepository.findByMemberAndFlagFalse(member);
         injuryRepository.deleteAll(injuryList);
         List<Status> statusList = statusRepository.findByMemberAndFlagFalse(member);
@@ -340,6 +370,34 @@ public class TeamService {
         List<Training> trainingList = trainingRepository.findByMemberAndFlagFalse(member);
         trainingRepository.deleteAll(trainingList);
 
+
     }
 
+    // 팀 삭제 ,, 공지 알람 메모 일정
+    public void deleteTeam(Team team){
+        team.shallowDelete();
+        List<Notification> notificationList = notificationRepository.findAllByTeamAndFlagFalseOrderByCreatedDateDesc(team);
+        notificationRepository.deleteAll(notificationList);
+        List<Alarm> alarmList = alarmRepository.findByTeamAndFlagFalse(team);
+        alarmRepository.deleteAll(alarmList);
+        List<Memo> memoList = memoRepository.findByTeamAndFlagFalse(team);
+        memoRepository.deleteAll(memoList);
+        List<Event> eventList = eventRepository.findAllByTeamAndFlagFalse(team);
+        eventRepository.deleteAll(eventList);
+    }
+
+    // 관리자가 팀원 권한 부여
+    public void roleChangeMember(String accessToken, TeamDto.authMemberRequest request){
+        int managerId = authTokensGenerator.extractMemberId(accessToken);
+        Member manager = memberRepository.findByMemberIdAndFlagFalse(managerId);
+        if(manager == null) throw new CustomException(ErrorCode.NO_EXIST_MEMBER);
+        if (manager.getRole() == null) throw new CustomException(ErrorCode.NO_AUTHENTICATION);
+        if(manager.getRole().equals(RoleType.Manager)){
+            Member player = memberRepository.findByMemberIdAndFlagFalse(request.getMemberId());
+            if(player == null) throw new CustomException(ErrorCode.NO_EXIST_MEMBER);
+            player.setMemberRoleType(request.getRoleType());
+        } else {
+            throw new CustomException(ErrorCode.NO_AUTHENTICATION);
+        }
+    }
 }

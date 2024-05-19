@@ -42,6 +42,7 @@ public class TeamDto {
         private Integer teamId;
         private String name;
         private String image;
+        private String code;
     }
 
     @Getter
@@ -161,6 +162,13 @@ public class TeamDto {
         private String image;
         private String code;
         private List<Member> members;
+    }
+
+    @Getter
+    @Setter
+    public static class authMemberRequest{
+        private int memberId;
+        private RoleType roleType;
     }
 
 }

@@ -100,12 +100,12 @@ public class MemoService {
             if(member.getRole() == RoleType.Player)
                 throw new CustomException(ErrorCode.NO_AUTHENTICATION);
             else
-                memos = memoRepository.findByTeamAndScopeContainingAndFlagFalseOrderByCreatedDate(member.getTeam(), String.valueOf(member.getRole()));
+                memos = memoRepository.findByTeamAndScopeContainingAndFlagFalseOrderByCreatedDateDesc(member.getTeam(), String.valueOf(member.getRole()));
         }
         else if (memoType == MemoType.MY)
-            memos = memoRepository.findByMemberAndFlagFalseOrderByCreatedDate(member);
+            memos = memoRepository.findByMemberAndFlagFalseOrderByCreatedDateDesc(member);
         else
-            memos = memoRepository.findByTeamAndTypeAndScopeContainingAndFlagFalseOrderByCreatedDate(member.getTeam(), memoType, String.valueOf(member.getRole()));
+            memos = memoRepository.findByTeamAndTypeAndScopeContainingAndFlagFalseOrderByCreatedDateDesc(member.getTeam(), memoType, String.valueOf(member.getRole()));
 
         for(Memo memo : memos){
             responses.add(memo.toReadMemosResponse());
