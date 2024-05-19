@@ -58,9 +58,8 @@ const ProfileInfoText = styled.div`
   }
 `;
 
-const teamId = JSON.parse(localStorage.getItem('login-state')!).state.team.id;
-
 const teamLeave = () => {
+  const teamId = JSON.parse(localStorage.getItem('login-state')!).state.team.id;
   if (window.confirm('정말로 팀을 탈퇴하시겠습니까?')) {
     instance
       .delete(`/teams?teamId=${teamId}`)
