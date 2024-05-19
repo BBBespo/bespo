@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import close from '../../../assets/images/schedule/close.png';
 import joinTeam from '../../../assets/images/joinTeam.png';
 
+import { instance } from 'src/axios/instance';
+
 const JoinTeamModalContainer = styled.div`
   width: 30%;
   height: 58vh;
@@ -63,12 +65,25 @@ const SubmitButton = styled.button`
   font-size: 14px;
 `;
 
-const handleSubmitButton = () => {
-  console.log('join team');
-};
-
 const JoinTeamModal = ({ onClose }: { onClose: () => void }) => {
   const [teamCode, setTeamCode] = useState('');
+  const email = JSON.parse(localStorage.getItem('login-state')!).state.email;
+  const handleSubmitButton = () => {
+    const requestBody = {
+      code: teamCode,
+      email: email,
+    };
+    instance
+      .post('/teams/send', requestBody)
+      .then((res) => {
+        console.log('팀 참가 요청 완료');
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log('팀 참가 요청 실패');
+        console.log(err);
+      });
+  };
 
   return (
     <JoinTeamModalContainer>

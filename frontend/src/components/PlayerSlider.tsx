@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
-
+type Status = {
+  fatigue: number | null;
+  stress: number | null;
+  muscle: number | null;
+  mood: number | null;
+};
 interface PlayerSliderProps {
   slidername?: string;
+  type: string;
+  setStatusValue: React.Dispatch<React.SetStateAction<Status>>;
 }
 
 const Wrapper = styled.div`
@@ -73,8 +80,12 @@ const Footer = styled.div`
 
 const conditions = ['매우나쁨', '나쁨', '보통', '좋음', '매우좋음'];
 
-export default function PlayerSlider({ slidername }: PlayerSliderProps) {
+export default function PlayerSlider({ slidername, type, setStatusValue }: PlayerSliderProps) {
   const [sliderValue, setSliderValue] = useState<number | number[]>(0);
+
+  useEffect(() => {
+    setStatusValue((prev) => ({ ...prev, [type]: sliderValue }));
+  }, [sliderValue]);
   return (
     <Wrapper>
       <Header>

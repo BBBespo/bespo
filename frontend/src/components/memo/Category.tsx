@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Card from '../../components/memo/Card';
+import { instance } from 'src/axios/instance';
+import { AxiosResponse } from 'axios';
 
 const CategoryContainer = styled.div`
   width: auto;
@@ -39,12 +41,45 @@ const CategoryContent = styled.div`
   overflow-x: auto;
 `;
 
-const Category = () => {
+interface List {
+  memoId: number;
+  name: string;
+  content: string;
+  type: string;
+  image: string;
+  scope: string;
+  writerName: string;
+  writerImgUrl: string;
+  createdAt: string;
+  commentSize: number;
+}
+
+type CategoryProps = {
+  memoType: string;
+  categoryName: string;
+};
+
+const Category: React.FC<CategoryProps> = ({ memoType, categoryName }) => {
+  const [list, setList] = useState<List[]>([]);
+
+  useEffect(() => {
+    instance
+      .get('/memos', {
+        params: {
+          memoType: memoType,
+        },
+      })
+      .then((res: AxiosResponse) => {
+        console.log(res.data.data);
+        setList(res.data.data);
+      });
+  }, []);
+
   return (
     <CategoryContainer>
       <CategoryHeader>
         <CategoryNameText>
-          <p>고민</p>
+          <p>{categoryName}</p>
         </CategoryNameText>
         <ShowMoreText>
           <p>더보기</p>
@@ -52,11 +87,17 @@ const Category = () => {
       </CategoryHeader>
 
       <CategoryContent>
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
+        {list.map((item, index) => (
+          <Card
+            key={index}
+            name={item.name}
+            content={item.content}
+            writerName={item.writerName}
+            writerImgUrl={item.writerImgUrl}
+            createdAt={item.createdAt}
+            commentSize={item.commentSize}
+          />
+        ))}
       </CategoryContent>
     </CategoryContainer>
   );

@@ -8,6 +8,12 @@ type User = {
   email: string;
   hasTeam: boolean;
   role: string;
+  team: {
+    teamId: number;
+    name: string;
+    image: string;
+    code: string;
+  } | null;
 };
 
 interface Store {
@@ -17,6 +23,14 @@ interface Store {
   email: string | null;
   hasTeam: boolean | false;
   role: string | null;
+  team: {
+    teamId: number;
+    name: string;
+    image: string;
+    code: string;
+  } | null;
+  teamCode: string | null;
+  setUserTeamCode: (teamCode: string) => void;
   setUser: (user: User) => void;
 }
 
@@ -29,6 +43,10 @@ const useStore = create(
       email: null,
       hasTeam: false,
       role: null,
+      team: null,
+      teamCode: null,
+      // hasTeam: true,
+      // role: 'player',
       setUser: (user: User) => {
         set({ accessToken: user.accessToken });
         set({ name: user.name });
@@ -36,6 +54,10 @@ const useStore = create(
         set({ email: user.email });
         set({ hasTeam: user.hasTeam });
         set({ role: user.role });
+        set({ team: user.team });
+      },
+      setUserTeamCode: (teamCode: string) => {
+        set({ teamCode: teamCode });
       },
     }),
     {

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import kakao from '../../assets/images/profile/kakao.png';
-import teamDefaultProfile from '../../assets/images/createTeam/teamDefaultProfile.png';
 import { useNavigate } from 'react-router-dom';
-
+import { instance } from 'src/axios/instance';
+import { AxiosResponse } from 'axios';
 const ProfileContainer = styled.div`
   padding: 5px 15px 15px 15px;
 `;
@@ -58,18 +58,38 @@ const ProfileInfoText = styled.div`
   }
 `;
 
+const teamId = JSON.parse(localStorage.getItem('login-state')!).state.team.id;
+
+const teamLeave = () => {
+  if (window.confirm('정말로 팀을 탈퇴하시겠습니까?')) {
+    instance
+      .delete(`/teams?teamId=${teamId}`)
+      .then((res: AxiosResponse) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+};
+
 export default function Profile() {
   const navigate = useNavigate();
   const [profile, setProfile] = useState('');
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [teamName, setTeamName] = useState('');
+  const [teamImg, setTeamImg] = useState('');
 
   useEffect(() => {
-    setProfile('https://bespo.s3.ap-northeast-2.amazonaws.com/teamImage/bm.png');
-    setUserName('박태양');
-    setEmail('sun@kakao.com');
-    setTeamName('짜이원짜이');
+    instance.get('/members').then((res: AxiosResponse) => {
+      console.log(res.data.data);
+      setProfile(res.data.data.imgUrl);
+      setUserName(res.data.data.name);
+      setEmail(res.data.data.email);
+      setTeamName(res.data.data.team.name);
+      setTeamImg(res.data.data.team.image);
+    });
   }, []);
 
   return (
@@ -99,13 +119,19 @@ export default function Profile() {
           <p>팀</p>
         </ProfileInfoText>
         <ProfileInfoContentBox>
-          <img
-            src={teamDefaultProfile}
-            style={{ width: '40px', height: '40px', borderRadius: '50px', marginRight: '8px' }}
-          />
+          <img src={teamImg} style={{ width: '40px', height: '40px', borderRadius: '50px', marginRight: '8px' }} />
           <p>{teamName}</p>
         </ProfileInfoContentBox>
       </ProfileInfoBox>
+      <ProfileInfoBox>
+        <ProfileInfoText>
+          <p>팀코드</p>
+        </ProfileInfoText>
+        <ProfileInfoContentBox>
+          <p>{JSON.parse(localStorage.getItem('login-state')!).state.team.code}</p>
+        </ProfileInfoContentBox>
+      </ProfileInfoBox>
+      <UpdateProfileButton onClick={() => teamLeave()}>팀 탈퇴</UpdateProfileButton>
     </ProfileContainer>
   );
 }

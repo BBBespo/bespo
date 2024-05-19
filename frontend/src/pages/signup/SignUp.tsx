@@ -121,14 +121,7 @@ export default function SignUp() {
   const imageRef = useRef<HTMLInputElement>(null);
   const { setUser } = userStore();
   const navigate = useNavigate();
-  type User = {
-    accessToken: string;
-    name: string;
-    profile: string;
-    email: string;
-    hasTeam: boolean;
-    role: string;
-  };
+
   const requestBody = new FormData();
   const jsonSignUpData = JSON.stringify({
     name: name,
@@ -152,13 +145,14 @@ export default function SignUp() {
         console.log(res.data);
         if (localStorage.getItem('login-state')) {
           const accessToken = JSON.parse(localStorage.getItem('login-state')!).state.accessToken;
-          const user: User = {
+          const user = {
             accessToken: accessToken,
             name: res.data.data.name,
             profile: res.data.data.imgUrl,
             email: res.data.data.email,
             hasTeam: res.data.data.team !== null,
             role: res.data.data.role,
+            team: res.data.data.team,
           };
           setUser(user);
         }
