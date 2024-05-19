@@ -8,8 +8,13 @@ type User = {
   email: string;
   hasTeam: boolean;
   role: string;
+  team: {
+    teamId: number;
+    name: string;
+    image: string;
+    code: string;
+  } | null;
 };
-
 type KakaoProps = {
   code: string;
   setUser: (user: User) => void;
@@ -38,7 +43,9 @@ const KakaoLoginRedirectComponent = ({ code, setUser }: KakaoProps) => {
                 email: res.data.data.email,
                 hasTeam: res.data.data.team !== null,
                 role: res.data.data.role,
+                team: res.data.data.team,
               };
+
               setUser(user);
               if (res.data.data.tel) {
                 window.location.href = '/';
