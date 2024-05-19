@@ -107,7 +107,7 @@ const Player = ({ boardName, className }: Board1Props) => {
             <p>{board.name}</p>
             <ContentTextInner>
               <p>{board.date}</p>
-              <p>발목</p>
+              <p>{board.injury}</p>
             </ContentTextInner>
           </ContentText>
         </Content>
