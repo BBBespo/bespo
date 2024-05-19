@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import AddScheduleModal from '../../components/schedule/AddScheduleModal';
 import FullCalendar from '@fullcalendar/react';
+import { EventClickArg } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { EventContentArg } from '@fullcalendar/core';
+import { instance } from 'src/axios/instance';
+import { AxiosResponse } from 'axios';
 
 const ScheduleContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100%;
   padding: 0 5vh;
-  margin-bottom: 100px;
 `;
 
 const ModalBackground = styled.div`
@@ -27,13 +28,6 @@ const ModalBackground = styled.div`
   z-index: 99;
 `;
 
-const HeadBox = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: flex-end;
-  margin-bottom: 30px;
-`;
-
 const AddScheduleBtn = styled.span`
   border: 2px solid ${(props) => props.theme.colors.red};
   color: ${(props) => props.theme.colors.red};
@@ -43,10 +37,13 @@ const AddScheduleBtn = styled.span`
   font-weight: bold;
   cursor: pointer;
   height: auto;
+
+  position: absolute;
+  right: 0;
 `;
 
 const CalendarWrapper = styled.div`
-  padding-bottom: 50px;
+  position: relative;
   width: 100%;
 
   .fc-toolbar.fc-header-toolbar .fc-prev-button,
@@ -56,36 +53,46 @@ const CalendarWrapper = styled.div`
     color: black;
   }
 
-  .fc-toolbar-title {
-    font-size: 20px;
-  }
-  .fc-daygrid-event {
-    background-color: #ffa18e;
-    border: none;
-    margin-bottom: 5px;
+  .fc .fc-button-primary {
+    background-color: transparent;
+    border-color: transparent;
   }
 `;
 
 const Schedule = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [events, setEvents] = useState([]);
 
-  const events = [
-    {
-      title: '일정1',
-      start: '2024-05-07T14:00:00',
-      end: '2024-05-08T16:00:00',
-    },
-    {
-      title: '일정2',
-      start: '2024-05-07T14:00:00',
-      end: '2024-05-08T16:00:00',
-    },
-    {
-      title: '일정3',
-      start: '2024-05-07T14:00:00',
-      end: '2024-05-08T16:00:00',
-    },
-  ];
+  const getEventsList = () => {
+    instance.get('/events').then((res: AxiosResponse) => {
+      console.log(res.data.data);
+      // 이벤트 데이터에 eventId를 포함시킴
+      const eventsWithId = res.data.data.map((event: any) => ({
+        ...event,
+        extendedProps: { eventId: event.eventId },
+      }));
+      setEvents(eventsWithId);
+    });
+  };
+
+  useEffect(() => {
+    getEventsList();
+  }, []);
+
+  const handleEventClick = (clickInfo: EventClickArg) => {
+    const eventId = clickInfo.event.extendedProps.eventId; // 커스텀 데이터 속성에서 eventId를 가져옴
+    if (window.confirm(`정말로 '${clickInfo.event.title}' 일정을 삭제하시겠습니까?`)) {
+      instance
+        .delete(`/events`, {
+          headers: {
+            eventId: eventId,
+          },
+        })
+        .then(() => {
+          getEventsList(); // 이벤트 목록 갱신
+        });
+    }
+  };
 
   function renderEventContent(eventInfo: EventContentArg) {
     return (
@@ -104,21 +111,20 @@ const Schedule = () => {
 
   return (
     <ScheduleContainer>
-      <HeadBox
-        onClick={() => {
-          setIsOpen(true);
-        }}
-      >
-        <AddScheduleBtn>일정 추가</AddScheduleBtn>
-      </HeadBox>
-
       {isOpen && (
         <ModalBackground>
-          <AddScheduleModal onClose={() => setIsOpen(false)} />
+          <AddScheduleModal getEventsList={getEventsList} onClose={() => setIsOpen(false)} />
         </ModalBackground>
       )}
 
       <CalendarWrapper>
+        <AddScheduleBtn
+          onClick={() => {
+            setIsOpen(true);
+          }}
+        >
+          일정 추가
+        </AddScheduleBtn>
         <FullCalendar
           locale="kr"
           plugins={[dayGridPlugin]}
@@ -126,10 +132,11 @@ const Schedule = () => {
           weekends={true}
           events={events}
           eventContent={renderEventContent}
+          eventClick={handleEventClick}
           headerToolbar={{
-            left: 'prev',
+            left: 'prev,next',
             center: 'title',
-            right: 'next',
+            right: ' ',
           }}
           height={'80vh'}
         />

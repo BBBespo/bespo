@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-
+import { Member } from '../../types/team';
 const MemberInfoContainer = styled.div`
   display: flex;
   justify-content: flex-start;
@@ -51,7 +51,7 @@ const MemberCard = ({
   onClick,
   isSelected,
 }: {
-  member: MemberProps;
+  member: Member;
   onClick: (memberId: number) => void;
   isSelected: boolean;
 }) => {
@@ -63,46 +63,24 @@ const MemberCard = ({
       }}
     >
       <MemberCardText $isSelected={isSelected}>{member.name}</MemberCardText>
-      <MemberCardText $isSelected={isSelected}>{member.isCaptain ? '주장' : ''}</MemberCardText>
-      <MemberCardText $isSelected={isSelected}>{member.number}</MemberCardText>
+      <MemberCardText $isSelected={isSelected}>{member.roleName}</MemberCardText>
+      <MemberCardText $isSelected={isSelected}>{member.backNumber}</MemberCardText>
     </MemberCardContainer>
   );
 };
 
-interface MemberProps {
-  memberId: number;
-  name: string;
-  isCaptain: boolean;
-  number: number;
-}
-
-const MemberInfo = ({ onMemberSelected }: { onMemberSelected: (memberId: number) => void }) => {
-  const [members, setMembers] = useState<MemberProps[]>([{ memberId: 0, name: '', isCaptain: false, number: 0 }]);
-  const [selectedMember, setSelectedMember] = useState<number>(0);
-
-  // todo : 멤버 정보를 가져오는 API 호출
-  useEffect(() => {
-    setMembers([
-      { name: '김팀장', isCaptain: true, number: 1, memberId: 1 },
-      { name: '박팀원', isCaptain: false, number: 2, memberId: 2 },
-      { name: '이팀원', isCaptain: false, number: 3, memberId: 3 },
-      { name: '최팀원', isCaptain: false, number: 4, memberId: 4 },
-      { name: '김팀장', isCaptain: false, number: 1, memberId: 5 },
-      { name: '박팀원', isCaptain: false, number: 2, memberId: 6 },
-      { name: '이팀원', isCaptain: false, number: 3, memberId: 7 },
-      { name: '최팀원', isCaptain: false, number: 4, memberId: 8 },
-      { name: '김팀장', isCaptain: false, number: 1, memberId: 9 },
-      { name: '박팀원', isCaptain: false, number: 2, memberId: 10 },
-      { name: '이팀원', isCaptain: false, number: 3, memberId: 11 },
-      { name: '최팀원', isCaptain: false, number: 4, memberId: 12 },
-    ]);
-
-    setSelectedMember(members[0].memberId);
-  }, []);
+const MemberInfo = ({
+  members,
+  onMemberSelected,
+}: {
+  members: Array<Member>;
+  onMemberSelected: (memberId: number) => void;
+}) => {
+  const [selectedMember, setSelectedMember] = useState<number | null>(null);
 
   const handleSelectMember = (memberId: number) => {
-    onMemberSelected(memberId); // 선택된 멤버의 memberId를 부모 컴포넌트로 전달
-    setSelectedMember(memberId); // 선택된 멤버의 memberId를 저장
+    onMemberSelected(memberId);
+    setSelectedMember(memberId);
   };
 
   return (

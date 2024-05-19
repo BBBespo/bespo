@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import close from '../../../assets/images/schedule/close.png';
 import teamDefaultProfile from '../../../assets/images/createTeam/teamDefaultProfile.png';
-import teamProfileEx from '../../../assets/images/createTeam/teamProfileEx.png';
 import copy from '../../../assets/images/createTeam/copy.png';
 import kakao from '../../../assets/images/createTeam/kakao.png';
 import link from '../../../assets/images/createTeam/link.png';
 
+import userStore from 'src/store/userStore';
 import { instance } from 'src/axios/instance';
 import { AxiosResponse } from 'axios';
 
@@ -131,20 +131,18 @@ const IconBox = styled.div`
 
 const CreateTeamModal = ({ onClose }: { onClose: () => void }) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedFileUrl, setSelectedFileUrl] = useState<string>('');
   const [teamName, setTeamName] = useState('');
   const [isTeamCreated, setIsTeamCreated] = useState(false);
   const [teamCode, setTeamCode] = useState('');
-  const jsonSignUpData = JSON.stringify({
-    name: teamName,
-  });
-  const requestBody = new FormData();
-  const teamname = new Blob([jsonSignUpData], { type: 'application/json' });
-  requestBody.append('request', teamname);
+
+  const { setUserTeamCode, setUser } = userStore();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       if (event.target.files.length > 0) {
         setSelectedFile(event.target.files[0]);
+        setSelectedFileUrl(URL.createObjectURL(event.target.files[0]));
       } else {
         setSelectedFile(null);
       }
@@ -158,18 +156,29 @@ const CreateTeamModal = ({ onClose }: { onClose: () => void }) => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    const jsonSignUpData = JSON.stringify({
+      name: teamName,
+    });
+
+    console.log('팀이름', jsonSignUpData);
+
+    const teamname = new Blob([jsonSignUpData], { type: 'application/json' });
     const formData = new FormData();
+
+    formData.append('request', teamname);
+
     if (selectedFile) {
-      formData.append('file', selectedFile);
-      requestBody.append('image', selectedFile);
+      console.log('selectedFile', selectedFile);
+      //selectedFile scr에 넣을수있게 변환
+
+      formData.append('image', selectedFile);
     } else {
-      formData.append('file', teamDefaultProfile);
-      requestBody.append('image', teamDefaultProfile);
+      const teamDefaultProfileB = new Blob([teamDefaultProfile], { type: 'image/png' });
+      formData.append('image', teamDefaultProfileB);
     }
-    formData.append('otherField', teamName);
 
     instance
-      .post('/teams', requestBody, {
+      .post('/teams', formData, {
         headers: {
           'content-type': 'multipart/form-data',
         },
@@ -179,13 +188,17 @@ const CreateTeamModal = ({ onClose }: { onClose: () => void }) => {
         throw new Error(error.message);
       })
       .then((res: AxiosResponse) => {
-        console.log('팀 생성 성공');
         console.log(res);
+        console.log('팀 생성 성공');
+        console.log('팀이름', res.data.data.name);
+        console.log('팀Id', res.data.data.teamId);
+        console.log('팀코드', res.data.data.code);
+        setTeamCode(res.data.data.code);
+        setUserTeamCode(res.data.data.code);
       });
 
     /* 팀 생성 api 호출 후 */
     setIsTeamCreated(true);
-    setTeamCode('3yKlt3');
   };
 
   const setToTeamDefaultProfile = () => {
@@ -195,12 +208,49 @@ const CreateTeamModal = ({ onClose }: { onClose: () => void }) => {
   const copyTeamCode = () => {
     navigator.clipboard.writeText(teamCode);
   };
+  const ModalClose = () => {
+    console.log('모달 닫기');
+    const zustandData = localStorage.getItem('login-state');
+    if (zustandData) {
+      const jsonZustandData = JSON.parse(zustandData);
+      const accessToken = jsonZustandData.state.accessToken;
+      console.log('accessToken', accessToken);
+      instance
+        .get('/members', {
+          headers: {
+            accessToken: accessToken,
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          const user = {
+            accessToken: accessToken,
+            name: res.data.data.name,
+            profile: res.data.data.imgUrl,
+            email: res.data.data.email,
+            hasTeam: res.data.data.team !== null,
+            role: res.data.data.role,
+            team: res.data.data.team,
+          };
 
+          setUser(user);
+          onClose();
+          window.location.reload();
+        });
+    }
+  };
   return (
     <>
       <CreateTeamModalContainer>
         <CloseButtonBox>
-          <img src={close} onClick={onClose} alt="close" style={{ width: '17px', height: '17px', cursor: 'pointer' }} />
+          <img
+            src={close}
+            onClick={() => {
+              ModalClose();
+            }}
+            alt="close"
+            style={{ width: '17px', height: '17px', cursor: 'pointer' }}
+          />
         </CloseButtonBox>
 
         {isTeamCreated && (
@@ -255,7 +305,7 @@ const CreateTeamModal = ({ onClose }: { onClose: () => void }) => {
             )}
             {selectedFile && (
               <ProfileImageBox>
-                <img src={teamProfileEx} style={{ width: '100px', height: '100px', borderRadius: '50px' }} />
+                <img src={selectedFileUrl} style={{ width: '100px', height: '100px', borderRadius: '50px' }} />
               </ProfileImageBox>
             )}
 

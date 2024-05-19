@@ -41,6 +41,23 @@ const PlayerSchedule = styled(Schedule)`
   margin-bottom: 20px;
 `;
 
+const WriteMemoButtonBox = styled.div`
+  width: 90%;
+  margin-top: 20px;
+`;
+
+const WriteMemoButton = styled.button`
+  margin-bottom: 15px;
+  background-color: ${(props) => props.theme.colors.red};
+  color: #f3f3f3;
+  width: 100%;
+  height: 35px;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 14px;
+  margin-bottom: 15px;
+`;
+
 export default function PlayerMain() {
   const navigate = useNavigate();
   return (
@@ -56,6 +73,9 @@ export default function PlayerMain() {
           <p>부상 체크</p>
         </ConditionButtonWrapper>
       </ConditionWrapper>
+      <WriteMemoButtonBox>
+        <WriteMemoButton onClick={() => navigate('/memo-list')}>메모 목록</WriteMemoButton>
+      </WriteMemoButtonBox>
     </Wrapper>
   );
 }

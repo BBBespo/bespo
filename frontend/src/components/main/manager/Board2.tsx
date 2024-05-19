@@ -4,7 +4,8 @@ import { instance } from 'src/axios/instance';
 import { AxiosResponse } from 'axios';
 
 interface BoardType {
-  title: string;
+  name: string;
+  writerName: string;
   createdAt: string;
 }
 
@@ -57,6 +58,12 @@ const Content = styled.div`
   color: ${(props) => props.theme.colors.gray4};
 `;
 
+const BoardNameWrapper = styled.div`
+  width: 50%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
 function monthday(date: string) {
   const dateObj = new Date(date);
   return dateObj.toLocaleDateString();
@@ -67,7 +74,7 @@ const Board1 = ({ boardName, className }: Board1Props) => {
 
   useEffect(() => {
     instance
-      .get(`/${className}`)
+      .get(`/memos?memoType=ALL`)
       .then((res: AxiosResponse) => {
         console.log(res.data);
         setBoards(res.data.data);
@@ -86,7 +93,10 @@ const Board1 = ({ boardName, className }: Board1Props) => {
 
       {boards.slice(0, 2).map((board, index) => (
         <Content key={index}>
-          <p>{board.title}</p>
+          <BoardNameWrapper>
+            <p>{board.name}</p>
+          </BoardNameWrapper>
+          <p>{board.writerName}</p>
           <p>{monthday(board.createdAt)}</p>
         </Content>
       ))}

@@ -9,7 +9,12 @@ interface ScheduleProps {
 }
 
 interface CircleProps {
-  active: boolean;
+  active?: boolean;
+  past?: boolean;
+}
+
+interface DateProps {
+  isToday: boolean;
 }
 
 const Wrapper = styled.div`
@@ -61,7 +66,7 @@ const DayContainer = styled.div`
   display: flex;
   justify-content: space-between;
   width: 95%;
-  margin-bottom: 60px;
+  margin-bottom: 20px;
 
   @media (max-width: 900px) {
     margin-bottom: 10px;
@@ -82,9 +87,22 @@ const DayText = styled.p`
   margin-bottom: 20px;
 `;
 
-const DateText = styled.p`
-  font-size: 22px;
-  color: ${(props) => props.theme.colors.gray2};
+const DateCircle = styled.div<DateProps>`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: ${(props) => (props.isToday ? 'red' : 'transparent')};
+  color: ${(props) => (props.isToday ? 'white' : props.theme.colors.gray4)};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  font-weight: 600;
+`;
+
+const DateText = styled.p<DateProps>`
+  font-size: 20px;
+  color: ${(props) => (props.isToday ? 'white' : props.theme.colors.gray4)};
   font-weight: 600;
 `;
 
@@ -96,7 +114,7 @@ const ScheduleContainer = styled.div`
   &::before {
     content: '';
     position: absolute;
-    left: 9px;
+    left: 6px;
     top: 50px;
     bottom: 50px;
     width: 2px;
@@ -117,7 +135,7 @@ const Content = styled.div`
   text-align: center;
   font-size: 20px;
   width: 100%;
-  height: 100px;
+  height: 90px;
 
   p {
     margin-right: 5px;
@@ -133,7 +151,7 @@ const ScheduleText = styled.p<CircleProps>`
   font-family: PretendardSemiBold;
   justify-content: center;
   text-align: center;
-  color: ${(props) => (props.active ? 'red' : props.theme.colors.gray4)};
+  color: ${(props) => (props.past ? props.theme.colors.gray2 : props.active ? 'red' : props.theme.colors.gray4)};
 
   @media (max-width: 900px) {
     font-size: 18px;
@@ -142,8 +160,8 @@ const ScheduleText = styled.p<CircleProps>`
 
 const Circle = styled.div<CircleProps>`
   z-index: 10;
-  width: 20px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
   border-radius: 50%;
   margin-right: 30px;
   background-color: ${(props) => (props.active ? 'red' : props.theme.colors.gray2)};
@@ -171,6 +189,7 @@ const Player = ({ className }: ScheduleProps) => {
       dayList.push({
         day: date.getDate(),
         weekDay: weekDays[date.getDay()],
+        isToday: i === 0,
       });
     }
 
@@ -189,6 +208,11 @@ const Player = ({ className }: ScheduleProps) => {
     return nowStr >= starttime && nowStr <= endtime;
   };
 
+  const checkIfPast = (starttime: string, endtime: string) => {
+    const nowStr = getCurrentTime();
+    return nowStr >= endtime;
+  };
+
   return (
     <Wrapper className={className}>
       <Header>
@@ -202,7 +226,9 @@ const Player = ({ className }: ScheduleProps) => {
         {dayList.map((week, index) => (
           <DayBox key={index}>
             <DayText>{week.weekDay}</DayText>
-            <DateText>{week.day}</DateText>
+            <DateCircle isToday={week.isToday}>
+              <DateText isToday={week.isToday}>{week.day}</DateText>
+            </DateCircle>
           </DayBox>
         ))}
       </DayContainer>
@@ -211,7 +237,10 @@ const Player = ({ className }: ScheduleProps) => {
         {data.map((board, index) => (
           <Content key={index}>
             <Circle active={checkIfCurrent(board.starttime, board.endtime)} />
-            <ScheduleText active={checkIfCurrent(board.starttime, board.endtime)}>
+            <ScheduleText
+              active={checkIfCurrent(board.starttime, board.endtime)}
+              past={checkIfPast(board.starttime, board.endtime)}
+            >
               {board.starttime} {board.title}
             </ScheduleText>
           </Content>
