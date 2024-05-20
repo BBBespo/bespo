@@ -30,6 +30,15 @@ const HeadText = styled.div`
   }
 `;
 
+const InnerBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  cursor: pointer;
+`;
 export default function ApplicationBoard() {
   const [acceptList, setAcceptList] = useState<acceptList[]>([]);
   useEffect(() => {
@@ -64,10 +73,10 @@ export default function ApplicationBoard() {
         <p>신청이 없습니다.</p>
       ) : (
         acceptList.map((item, index) => (
-          <div key={index} onClick={() => accpetTeam(item.alarmId)}>
+          <InnerBox key={index} onClick={() => accpetTeam(item.alarmId)}>
             <p>{item.email}</p>
-            <p>{item.alarmId}</p>
-          </div>
+            <button>수락하기</button>
+          </InnerBox>
         ))
       )}
     </Wrapper>
