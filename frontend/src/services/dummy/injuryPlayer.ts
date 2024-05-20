@@ -5,6 +5,7 @@ const data = [
   {
     name: '최원재',
     date: '2024-05-19',
+    image: '',
     injury: '발목',
   },
   {

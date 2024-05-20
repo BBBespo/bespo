@@ -3,9 +3,13 @@ import styled from 'styled-components';
 import data from '../../../services/dummy/injuryPlayer';
 
 import None from '../../../assets/images/player/None.png';
+
+// BoardType 인터페이스 수정
 interface BoardType {
-  title: string;
+  name: string;
   date: string;
+  image?: string; // optional image property
+  injury?: string;
 }
 
 interface Board1Props {
@@ -46,13 +50,6 @@ const MoreText = styled.p`
   text-underline-offset: 5px;
   cursor: pointer;
 `;
-
-// const PlayerPic = styled.img`
-//   width: 50px;
-//   height: 50px;
-//   border-radius: 50%;
-//   margin-right: 20px;
-// `;
 
 const PlayerImg = styled.img`
   width: 40px;
@@ -107,7 +104,7 @@ const Player = ({ boardName, className }: Board1Props) => {
             <p>{board.name}</p>
             <ContentTextInner>
               <p>{board.date}</p>
-              <p>발목</p>
+              <p>{board.injury || '발목'}</p> {/* '발목'을 기본 값으로 설정 */}
             </ContentTextInner>
           </ContentText>
         </Content>
