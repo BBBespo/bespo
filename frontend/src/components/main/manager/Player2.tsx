@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import data from '../../../services/dummy/conditionPlayer';
+// import data from '../../../services/dummy/conditionPlayer';
 import None from '../../../assets/images/player/None.png';
+
+import useStore from '../../../store/userStore';
+import { instance } from 'src/axios/instance';
+import { AxiosResponse } from 'axios';
 interface BoardType {
-  title: string;
-  date: string;
+  name: string;
+  createDate: string;
+  image?: string; // optional image property
 }
 
 interface Board1Props {
@@ -91,7 +96,19 @@ const ContentTextInner = styled.div`
   font-size: 12px;
 `;
 
+const formatDate = (dateString: string) => {
+  return dateString.substring(0, 10); // 슬라이싱하여 "YYYY-MM-DD" 형식으로 변환
+};
+
 const Player = ({ boardName, className }: Board1Props) => {
+  const teamId = useStore((state) => state.team?.teamId);
+  const [listData, setListData] = React.useState<BoardType[]>([]);
+  useEffect(() => {
+    instance.get(`/status?teamId=${teamId}`).then((res: AxiosResponse) => {
+      console.log(res.data.data);
+      setListData(res.data.data);
+    });
+  }, []);
   return (
     <Wrapper className={className}>
       <Header>
@@ -99,13 +116,13 @@ const Player = ({ boardName, className }: Board1Props) => {
         <MoreText>더보기</MoreText>
       </Header>
 
-      {data.slice(0, 3).map((board, index) => (
+      {listData.slice(0, 3).map((board, index) => (
         <Content key={index}>
           {board.image ? <PlayerImg src={board.image} alt="player" /> : <PlayerImg src={None} alt="player" />}
           <ContentText>
             <p>{board.name}</p>
             <ContentTextInner>
-              <p>{board.date}</p>
+              <p>{formatDate(board.createDate)}</p>
             </ContentTextInner>
           </ContentText>
         </Content>

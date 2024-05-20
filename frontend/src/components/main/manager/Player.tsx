@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import data from '../../../services/dummy/injuryPlayer';
+// import data from '../../../services/dummy/injuryPlayer';
 
 import None from '../../../assets/images/player/None.png';
-
+import useStore from '../../../store/userStore';
+import { instance } from 'src/axios/instance';
+import { AxiosResponse } from 'axios';
 // BoardType 인터페이스 수정
 interface BoardType {
   name: string;
-  date: string;
+  createDate: string;
   image?: string; // optional image property
   injury?: string;
 }
@@ -80,6 +82,10 @@ const ContentText = styled.div`
   }
 `;
 
+const formatDate = (dateString: string) => {
+  return dateString.substring(0, 10); // 슬라이싱하여 "YYYY-MM-DD" 형식으로 변환
+};
+
 const ContentTextInner = styled.div`
   display: flex;
   width: 100%;
@@ -90,6 +96,14 @@ const ContentTextInner = styled.div`
 `;
 
 const Player = ({ boardName, className }: Board1Props) => {
+  const teamId = useStore((state) => state.team?.teamId);
+  const [listData, setListData] = React.useState<BoardType[]>([]);
+  useEffect(() => {
+    instance.get(`/injury?teamId=${teamId}`).then((res: AxiosResponse) => {
+      console.log(res.data.data);
+      setListData(res.data.data);
+    });
+  }, []);
   return (
     <Wrapper className={className}>
       <Header>
@@ -97,14 +111,13 @@ const Player = ({ boardName, className }: Board1Props) => {
         <MoreText>더보기</MoreText>
       </Header>
 
-      {data.slice(0, 3).map((board, index) => (
+      {listData.slice(0, 3).map((board, index) => (
         <Content key={index}>
           {board.image ? <PlayerImg src={board.image} alt="player" /> : <PlayerImg src={None} alt="player" />}
           <ContentText>
             <p>{board.name}</p>
             <ContentTextInner>
-              <p>{board.date}</p>
-              <p>{board.injury || '발목'}</p> {/* '발목'을 기본 값으로 설정 */}
+              <p>{formatDate(board.createDate)}</p>
             </ContentTextInner>
           </ContentText>
         </Content>
